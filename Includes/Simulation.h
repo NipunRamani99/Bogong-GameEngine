@@ -31,8 +31,8 @@ public:
 	{  
 		m_Shader      = p_Shader;
 		m_Scale       = 0.001f;
-		m_RiplShader.LoadShader("VertexShaderRipple.glsl", ShaderType::VERTEX);
-		m_RiplShader.LoadShader("FragmentShaderRipple.glsl", ShaderType::FRAGMENT);
+		m_RiplShader.LoadShader("Shaders/VertexShaderRipple.glsl", ShaderType::VERTEX);
+		m_RiplShader.LoadShader("Shaders/FragmentShaderRipple.glsl", ShaderType::FRAGMENT);
 		m_RiplShader.LoadProgram();
 		error();
 		ICallbacks::AddShader(m_RiplShader);
@@ -92,4 +92,4 @@ public:
 		sphere.Draw();
 		error();
 	}
-};
+};   
