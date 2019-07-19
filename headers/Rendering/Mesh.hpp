@@ -13,7 +13,7 @@ protected:
 	IndexBuffer m_IBO;
 	VertexBuffer m_VBO;
 
-	int m_Count = 0;
+	size_t m_Count = 0;
 public:
 	 Mesh()=default;
 	 Mesh(Mesh && p_Mesh)
@@ -50,7 +50,7 @@ public:
 	 {
 		 return m_IBO;
 	 }
-	 int GetCount()
+	 size_t GetCount()
 	 {
 		 return m_Count;
 	 }

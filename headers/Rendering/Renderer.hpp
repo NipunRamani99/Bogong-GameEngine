@@ -16,13 +16,12 @@ private:
 	Shader m_Shader;
 	VertexArray m_VAO;
 	VertexBufferLayout  m_Layout;
-	GLenum   m_DrawMode=GL_LINES;
-	DrawCall  m_DrawCall = [](GLenum,int)-> void {};
+	GLenum   m_DrawMode = GL_LINES;
+	DrawCall  m_DrawCall = [](GLenum,size_t)-> void {};
 	glm::mat4 m_Model=glm::mat4(1.0);
 	
 public:
 	Renderer() = default;
-	
 	Renderer(Mesh & p_Mesh, VertexBufferLayout & p_Layout)
 		:
 		m_Layout(p_Layout)
@@ -30,11 +29,11 @@ public:
 		m_Mesh = p_Mesh;
 		if (m_Mesh.GetIndexBuffer().GetID() != 0)
 		{
-			m_DrawCall = [](GLenum DrawMode,int count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
+			m_DrawCall = [](GLenum DrawMode,size_t count) { glDrawElements(DrawMode, (GLsizei)count, GL_UNSIGNED_INT, 0); };
 		}
 		else
 		{
-			m_DrawCall = [](GLenum DrawMode,int count) { glDrawArrays(DrawMode, 0,count);  };
+			m_DrawCall = [](GLenum DrawMode,size_t count) { glDrawArrays(DrawMode, 0,(GLsizei)count);  };
 		}
 		m_VAO = VertexArray();
 	}
@@ -59,7 +58,6 @@ public:
 		m_DrawMode(std::move(renderer.m_DrawMode)),
 		m_DrawCall(std::move(renderer.m_DrawCall))
 	{
-		
 	}
 	void SetShader(Shader p_Shader)
 	{

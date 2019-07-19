@@ -51,13 +51,13 @@ namespace Callbacks {
 		if (camID == 0) {
 			if (leftMousePressed) {
 				// compute new camera parameters
-				phi += (lastX - xpos)*1.2 / width;
-				theta -= (ypos - lastY)*1.2 / height;
+				phi += float((lastX - xpos)*1.2 / width);
+				theta -= float((ypos - lastY)*1.2 / height);
 				theta = std::fmax(0.01f, std::fmin(theta, 3.14f));
 				updateCamera();
 			}
 			else if (rightMousePressed) {
-				zoom += (ypos - lastY) / height;
+				zoom += float((ypos - lastY) / height);
 				zoom = std::fmax(0.1f, std::fmin(zoom, 5.0f));
 				updateCamera();
 			}

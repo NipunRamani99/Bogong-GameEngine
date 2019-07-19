@@ -17,7 +17,7 @@ void Renderer::BindBuffers()
 	m_Mesh.GetIndexBuffer().Bind();
 	m_Shader.Bind();
 	int stride = m_Layout.GetStride();
-	int offset = 0;
+	size_t offset = 0;
 	int i = 0;
 	for (auto element : m_Layout.GetElements())
 	{
@@ -34,7 +34,7 @@ void Renderer::BindBuffers()
 	}
 	m_Shader.setMat4("model", m_Model);
 	error();
-	int count = m_Mesh.GetCount();
+	size_t count = m_Mesh.GetCount();
 	m_DrawCall(m_DrawMode, count);
 	error();
 }

@@ -19,9 +19,9 @@ public:
 	{
 		m_Center = p_Center;
 		int steps = 100;
-		float delStep = width / steps;
-		width = steps / 2;
-		int height = steps/ 2;
+		float delStep = width / float(steps);
+		width = float(steps / 2.0f);
+		int height = steps / 2;
 		//Create Vertices.
 		m_Vertices.resize(steps*steps+1);
 		int idx = 0;
@@ -35,15 +35,15 @@ public:
 			for (int j = -steps/2; j < steps/2; j++)
 			{
 				float z = j * delStep;
-				float y = 0.03*sin(f*(x*x + z*z)*180/M_PI);
+				float y = (float)0.03*sin(f*(x*x + z*z)*180/(float)M_PI);
 				m_Vertices[idx].x = x;
 				m_Vertices[idx].y = y;
 				m_Vertices[idx].z = z;
 				m_Vertices[idx].r = 1.0f;
 				m_Vertices[idx].g = 0.5f;
 				m_Vertices[idx].a = 1.0f;
-				float d1 = 2*f*x*0.03*cos(f*((x*x + z * z) * 180 / M_PI));
-				float d2 = 2*f*z*0.03*cos(f*(x*x + z * z) * 180 / M_PI);
+				float d1 = (float)2.0f*f*x*0.03f*cos(f*((x*x + z * z) * 180.0f / (float)M_PI));
+				float d2 = (float)2.0f*f*z*0.03f*cos(f*(x*x + z * z) * 180.0f /(float) M_PI);
 				xTangent.y = d1;
 				zTangent.y = d2;
 				res = glm::normalize( glm::cross(zTangent, xTangent) );

@@ -27,7 +27,7 @@ public:
 		line2(glm::vec3(0.0f,-100.0f,0.0f),glm::vec3(0.0f,100.0f,0.0f)),
 	    line3(glm::vec3(0.0f,0.0f,-100.0f),glm::vec3(0.0f,0.0f,100.0f)),
 		ripple(glm::vec3(0,0,0),1),
-		sphere(1,10,10)
+		sphere(1,100,100)
 	{  
 		m_Shader      = p_Shader;
 		m_Scale       = 0.001f;

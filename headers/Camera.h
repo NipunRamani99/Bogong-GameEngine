@@ -127,7 +127,7 @@ public:
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			glfwSetWindowShouldClose(window, true);
 
-		float cameraSpeed = 0.05;
+		float cameraSpeed = 0.05f;
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			cameraPos += cameraSpeed * cameraFront;
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -167,15 +167,15 @@ public:
 	{
 		if (this->firstMouse)
 		{
-			lastX = xpos;
-			lastY = ypos;
+			lastX =(float) xpos;
+			lastY =(float) ypos;
 			firstMouse = false;
 		}
 
-		float xoffset = xpos - lastX;
-		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-		lastX = xpos;
-		lastY = ypos;
+		float xoffset = float(xpos - lastX);
+		float yoffset = float(lastY - ypos); // reversed since y-coordinates go from bottom to top
+		lastX =(float) xpos;
+		lastY =(float) ypos;
 
 		float sensitivity = 0.1f; // change this value to your liking
 		xoffset *= sensitivity;

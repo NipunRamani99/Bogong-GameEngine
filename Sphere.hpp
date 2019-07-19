@@ -18,15 +18,14 @@ public:
 	{
 
 	}
-	Sphere(int p_Radius, int p_Stacks, int p_Slices)
+	Sphere(float p_Radius, int p_Stacks, int p_Slices)
 	{
 		m_Radius = p_Radius;
 		m_Stacks = p_Stacks;
 		m_Slices = p_Slices;
-		float x, y, z, w;
-		float pi = 3.141592653;
-		float nx, ny, nz, lengthInv = 1.0f / m_Radius;
-		float s, t;
+	    
+		float pi = 3.141592653f;
+		float lengthInv = 1.0f / m_Radius;
 		float sliceStep = 2 * pi / m_Slices;
 		float stackStep = pi / m_Stacks;
 		for (int i = 0; i <= m_Stacks; i++)
@@ -37,8 +36,8 @@ public:
 			for (int j = 0; j <= m_Slices; j++)
 			{
 				float sectorAngle = j * sliceStep;
-				x = xz * sinf(sectorAngle);
-				z = xz * cosf(sectorAngle);
+				float x = xz * sinf(sectorAngle);
+				float z = xz * cosf(sectorAngle);
 				Vertex<float> vertex;
 				vertex.x = x;
 				vertex.y = y;
