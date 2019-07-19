@@ -11,4 +11,4 @@ Currently I use this setup to render simple scenes.
 - Assimp integration.
 
 ## Preview
-<img src="https://i.imgur.com/zx0ehKc.png" width="400" height="315" />
+<img src="https://i.imgur.com/ZNYincp.png" width="400" height="315" />
