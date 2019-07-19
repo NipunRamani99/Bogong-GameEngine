@@ -5,9 +5,7 @@
 void Renderer::RenderMesh()
 {
 	BindBuffers();
-    
 	UnbindBuffers();
-
 }
 void Renderer::BindBuffers()
 {
@@ -35,7 +33,7 @@ void Renderer::BindBuffers()
 	m_Shader.setMat4("model", m_Model);
 	error();
 	size_t count = m_Mesh.GetCount();
-	m_DrawCall(m_DrawMode, count);
+	m_DrawCall(m_DrawMode, (unsigned int)count);
 	error();
 }
 void Renderer::UnbindBuffers()

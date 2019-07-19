@@ -1,5 +1,5 @@
-#include "headers/Rendering/ShapeMesh.hpp"
-#include "headers/Rendering/Renderer.hpp"
+#include "Rendering/ShapeMesh.hpp"
+#include "Rendering/Renderer.hpp"
 class Lines
 {
 	ShapeMesh m_Mesh;

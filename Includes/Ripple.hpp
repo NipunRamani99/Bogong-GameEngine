@@ -1,7 +1,7 @@
 #include <vector>
-#include "headers/Vertex.h"
-#include "headers/Rendering/ShapeMesh.hpp"
-#include "headers/Rendering/Renderer.hpp"
+#include "Vertex.h"
+#include "Rendering/ShapeMesh.hpp"
+#include "Rendering/Renderer.hpp"
 #include <glm/vec3.hpp>
 #define _USE_MATH_DEFINES
 #include <math.h>

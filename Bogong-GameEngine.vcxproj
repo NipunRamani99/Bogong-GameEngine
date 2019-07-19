@@ -115,32 +115,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="headers\Callbacks.h" />
-    <ClInclude Include="headers\Camera.h" />
-    <ClInclude Include="headers\Engine.h" />
-    <ClInclude Include="headers\ErrorLog.h" />
-    <ClInclude Include="headers\GLSetup.h" />
-    <ClInclude Include="headers\Globals.h" />
-    <ClInclude Include="headers\GuideLines.h" />
-    <ClInclude Include="headers\ICallbacks.h" />
-    <ClInclude Include="headers\gui.h" />
-    <ClInclude Include="headers\IndexBuffer.h" />
-    <ClInclude Include="headers\Init.hpp" />
-    <ClInclude Include="headers\Keyboard.h" />
-    <ClInclude Include="headers\Lights.hpp" />
-    <ClInclude Include="headers\Mouse.h" />
-    <ClInclude Include="headers\Render.h" />
-    <ClInclude Include="headers\Rendering\Mesh.hpp" />
-    <ClInclude Include="headers\Rendering\Renderer.hpp" />
-    <ClInclude Include="headers\Rendering\ShapeMesh.hpp" />
-    <ClInclude Include="headers\Shaders.hpp" />
-    <ClInclude Include="headers\Simulation.h" />
-    <ClInclude Include="headers\stb_image.h" />
-    <ClInclude Include="headers\Texture.h" />
-    <ClInclude Include="headers\Vertex.h" />
-    <ClInclude Include="headers\VertexArray.hpp" />
-    <ClInclude Include="headers\VertexBuffer.hpp" />
-    <ClInclude Include="headers\VertexBufferLayout.hpp" />
+    <ClInclude Include="Includes\Callbacks.h" />
+    <ClInclude Include="Includes\Camera.h" />
+    <ClInclude Include="Includes\Engine.h" />
+    <ClInclude Include="Includes\ErrorLog.h" />
+    <ClInclude Include="Includes\GLSetup.h" />
+    <ClInclude Include="Includes\Globals.h" />
+    <ClInclude Include="Includes\GuideLines.h" />
+    <ClInclude Include="Includes\ICallbacks.h" />
+    <ClInclude Include="Includes\gui.h" />
+    <ClInclude Include="Includes\IndexBuffer.h" />
+    <ClInclude Include="Includes\Init.hpp" />
+    <ClInclude Include="Includes\Keyboard.h" />
+    <ClInclude Include="Includes\Lights.hpp" />
+    <ClInclude Include="Includes\Mouse.h" />
+    <ClInclude Include="Includes\Render.h" />
+    <ClInclude Include="Includes\Rendering\Mesh.hpp" />
+    <ClInclude Include="Includes\Rendering\Renderer.hpp" />
+    <ClInclude Include="Includes\Rendering\ShapeMesh.hpp" />
+    <ClInclude Include="Includes\Shaders.hpp" />
+    <ClInclude Include="Includes\Simulation.h" />
+    <ClInclude Include="Includes\stb_image.h" />
+    <ClInclude Include="Includes\Texture.h" />
+    <ClInclude Include="Includes\Vertex.h" />
+    <ClInclude Include="Includes\VertexArray.hpp" />
+    <ClInclude Include="Includes\VertexBuffer.hpp" />
+    <ClInclude Include="Includes\VertexBufferLayout.hpp" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_glfw.h" />
@@ -149,28 +149,28 @@
     <ClInclude Include="Imgui\imstb_rectpack.h" />
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
-    <ClInclude Include="Lines.hpp" />
-    <ClInclude Include="Ripple.hpp" />
-    <ClInclude Include="Sphere.hpp" />
+    <ClInclude Include="Includes\Lines.hpp" />
+    <ClInclude Include="Includes\Ripple.hpp" />
+    <ClInclude Include="Includes\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GLSetup.cpp" />
-    <ClCompile Include="Globals.cpp" />
-    <ClCompile Include="headers\Rendering\Renderer.cpp" />
+    <ClCompile Include="Source\GLSetup.cpp" />
+    <ClCompile Include="Source\Globals.cpp" />
+    <ClCompile Include="Includes\Rendering\Renderer.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
     <ClCompile Include="Imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="Imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
-    <ClCompile Include="Init.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Source\Init.cpp" />
+    <ClCompile Include="Source\Keyboard.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="headers\kernel.cu" />
-    <None Include="headers\LightFragmentShader.glsl" />
+    <None Include="Includes\kernel.cu" />
+    <None Include="Includes\LightFragmentShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

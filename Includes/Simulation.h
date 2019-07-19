@@ -3,9 +3,9 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "ICallbacks.h"
-#include "../Lines.hpp"
-#include "../Ripple.hpp"
-#include "../Sphere.hpp"
+#include "Lines.hpp"
+#include "Ripple.hpp"
+#include "Sphere.hpp"
 class Simulation
 {
 private:

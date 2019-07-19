@@ -1,4 +1,4 @@
-#include "headers/Init.hpp"
+#include "../Includes/Init.hpp"
 using namespace Init;
 void Init::LogError(std::string p_ErrMsg)
 {

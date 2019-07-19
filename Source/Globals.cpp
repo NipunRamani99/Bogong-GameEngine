@@ -1,4 +1,4 @@
-#include "headers/Globals.h"
+#include "../Includes/Globals.h"
 
 bool error()
 {
