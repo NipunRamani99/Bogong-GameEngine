@@ -23,8 +23,6 @@ public:
 		 m_Indices = std::move(p_Mesh.m_Indices);
 		 m_Vertices = std::move(p_Mesh.m_Vertices);
 		 m_VBO = std::move(p_Mesh.m_VBO);
-
-		 
 	 }
 	 Mesh & operator=(Mesh&&p_Mesh)
 	 {
@@ -42,7 +40,6 @@ public:
 		 m_IBO      =  p_Mesh.m_IBO;
 		 m_VBO      =  p_Mesh.m_VBO;
 		 m_Count    =  p_Mesh.m_Count;
-		 
 		 return *this;
 	 }
 	 virtual VertexBuffer GetVertexBuffer()

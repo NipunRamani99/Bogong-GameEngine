@@ -3,7 +3,7 @@
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.h"
-#include "Imgui.h"
+#include "gui.h"
 #include "Callbacks.h"
 #include "Simulation.h"
 #include "Camera.h"
@@ -43,7 +43,7 @@ public:
 		kbd.SetCallback(window);
 		glfwSetCursorPosCallback(window, Callbacks::mousePositionCallback);
 		glfwSetMouseButtonCallback(window, Callbacks::mouseButtonCallback);
-		Init::InitImgui(*window);
+		gui::InitImgui(*window);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -67,7 +67,7 @@ public:
 		int display_w, display_h;
 		glfwMakeContextCurrent(window);
 		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glClearColor(Init::clear_color.x, Init::clear_color.y, Init::clear_color.z, Init::clear_color.w);
+		glClearColor(gui::clear_color.x, gui::clear_color.y, gui::clear_color.z, gui::clear_color.w);
 		glViewport(0, 0, display_w, display_h);
 		cam->setShader(shader);
 		free->SetShader(shader);
@@ -84,9 +84,9 @@ public:
 		{
 			cam->updateCamera();
 		}
-		if (ImGui::ColorEdit3("clear color", (float*)&Init::clear_color))
+		if (ImGui::ColorEdit3("clear color", (float*)&gui::clear_color))
 		{
-			glClearColor(Init::clear_color.x, Init::clear_color.y, Init::clear_color.z, Init::clear_color.w);
+			glClearColor(gui::clear_color.x, gui::clear_color.y, gui::clear_color.z, gui::clear_color.w);
 		}
 		if (camID == 0) {
 			if (ImGui::Button("Switch Camera"))
@@ -120,8 +120,8 @@ public:
 	void RenderEverything()
 	{
 		DrawCalls();
-		Init::Render();
-		Init::EndImguiFrame();
+		gui::Render();
+		gui::EndImguiFrame();
 		glfwSwapBuffers(window);
 		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
@@ -145,8 +145,8 @@ public:
 		{
 			std::cout << "KEY A Is Released.";
 		}
-		Init::StartImguiFrame();
-		Init::PrepareImguiFrame();
+		gui::StartImguiFrame();
+		gui::PrepareImguiFrame();
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glfwPollEvents();
 		

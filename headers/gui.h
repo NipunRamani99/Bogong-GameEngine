@@ -3,7 +3,7 @@
 #include "../Imgui/imgui_impl_glfw.h"
 #include "../Imgui/imgui_impl_opengl3.h"
 
-namespace Init {
+namespace gui {
 	bool show_demo_window = true;
 	bool show_another_window = false;
 	ImVec4 clear_color = ImVec4(1.0f, 1.0f, 1.00f, 1.00f);

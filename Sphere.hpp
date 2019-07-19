@@ -1,15 +1,19 @@
 #include <vector>
 #include "headers/Vertex.h"
-#include "headers/Rendering/Mesh.hpp"
+#include "headers/Rendering/ShapeMesh.hpp"
 #include "headers/Rendering/Renderer.hpp"
 class Sphere
 {
+private:
 	std::vector<Vertex<float>> m_Vertices;
 	std::vector<unsigned int> m_Indices;
+	VertexBufferLayout m_Layout;
+	ShapeMesh m_Mesh;
+	Renderer m_Renderer;
 	float m_Radius = 1.0f;
 	int m_Stacks = 3;
 	int m_Slices = 3;
-
+public:
 	Sphere()
 	{
 
@@ -75,5 +79,19 @@ class Sphere
 			}
 		}
 
+		m_Mesh = ShapeMesh(m_Vertices, m_Indices);
+		m_Layout.AddElement<float>(3);
+		m_Layout.AddElement<float>(4);
+		m_Layout.AddElement<float>(3);
+		m_Renderer = Renderer(m_Mesh, m_Layout);
+		m_Renderer.SetDrawMode(GL_TRIANGLES);
+	}
+	void SetShader(Shader & p_Shader)
+	{
+		m_Renderer.SetShader(p_Shader);
+	}
+	void Draw()
+	{
+		m_Renderer.RenderMesh();
 	}
 };

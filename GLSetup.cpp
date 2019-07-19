@@ -1,6 +1,6 @@
 #pragma once
 
-#include "headers/GLIntferace.h"
+#include "headers/GLSetup.h"
 using namespace GLI;
 GLSetup::GLSetup(int * err)
 {

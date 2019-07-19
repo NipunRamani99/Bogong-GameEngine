@@ -5,7 +5,7 @@
 #include "ICallbacks.h"
 #include "../Lines.hpp"
 #include "../Ripple.hpp"
-
+#include "../Sphere.hpp"
 class Simulation
 {
 private:
@@ -17,6 +17,7 @@ private:
 	Lines line2;
 	Lines line3;
 	Ripple ripple;
+	Sphere sphere;
 	float m_Scale = 0.895f;
 public:
 	Simulation() = default;
@@ -25,7 +26,8 @@ public:
 		line(glm::vec3(-100.0f,0.0f,0.0f),glm::vec3(100.0f,0.0f,0.0f)),
 		line2(glm::vec3(0.0f,-100.0f,0.0f),glm::vec3(0.0f,100.0f,0.0f)),
 	    line3(glm::vec3(0.0f,0.0f,-100.0f),glm::vec3(0.0f,0.0f,100.0f)),
-		ripple(glm::vec3(0,0,0),1)
+		ripple(glm::vec3(0,0,0),1),
+		sphere(1,10,10)
 	{  
 		m_Shader      = p_Shader;
 		m_Scale       = 0.001f;
@@ -38,7 +40,7 @@ public:
 		line.SetShader(m_Shader);
 		line2.SetShader(m_Shader);
 		line3.SetShader(m_Shader);
-		ripple.SetShader(m_RiplShader);
+		sphere.SetShader(m_RiplShader);
 		m_RiplShader.Bind();
 		m_RiplShader.setVec3("lightLocation",lightPos);
 		error();
@@ -53,6 +55,7 @@ public:
 		ripple = std::move(simulation.ripple);
 		lightPos = std::move(simulation.lightPos);
 		m_RiplShader = std::move(simulation.m_RiplShader);
+		sphere = std::move(simulation.sphere);
 	}
 
 	Simulation & operator=(Simulation&&p_Simulation)
@@ -65,6 +68,7 @@ public:
 		ripple = std::move(p_Simulation.ripple);
 		lightPos = std::move(p_Simulation.lightPos);
 		m_RiplShader = std::move(p_Simulation.m_RiplShader);
+		sphere = std::move(p_Simulation.sphere);
 		return *this;
 	}
 	void Begin()
@@ -85,7 +89,7 @@ public:
 		line.Draw();
 		line2.Draw();
 		line3.Draw();
-		ripple.Draw();
+		sphere.Draw();
 		error();
 	}
 };

@@ -115,26 +115,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="headers\App.h" />
     <ClInclude Include="headers\Callbacks.h" />
     <ClInclude Include="headers\Camera.h" />
-    <ClInclude Include="headers\Cube.h" />
-    <ClInclude Include="headers\Cube.hpp" />
-    <ClInclude Include="headers\Cube_norm.h" />
     <ClInclude Include="headers\Engine.h" />
     <ClInclude Include="headers\ErrorLog.h" />
-    <ClInclude Include="headers\GLIntferace.h" />
+    <ClInclude Include="headers\GLSetup.h" />
     <ClInclude Include="headers\Globals.h" />
-    <ClInclude Include="headers\GL_Calls.h" />
     <ClInclude Include="headers\GuideLines.h" />
     <ClInclude Include="headers\ICallbacks.h" />
-    <ClInclude Include="headers\Imgui.h" />
+    <ClInclude Include="headers\gui.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
     <ClInclude Include="headers\Init.hpp" />
     <ClInclude Include="headers\Keyboard.h" />
     <ClInclude Include="headers\Lights.hpp" />
-    <ClInclude Include="headers\Mesh.h" />
-    <ClInclude Include="headers\Model.h" />
     <ClInclude Include="headers\Mouse.h" />
     <ClInclude Include="headers\Render.h" />
     <ClInclude Include="headers\Rendering\Mesh.hpp" />
@@ -161,7 +154,7 @@
     <ClInclude Include="Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GLInterface.cpp" />
+    <ClCompile Include="GLSetup.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="headers\Rendering\Renderer.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
