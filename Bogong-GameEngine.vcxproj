@@ -128,6 +128,7 @@
     <ClInclude Include="Includes\Init.hpp" />
     <ClInclude Include="Includes\Keyboard.h" />
     <ClInclude Include="Includes\Lights.hpp" />
+    <ClInclude Include="Includes\Markers\Markers.hpp" />
     <ClInclude Include="Includes\Mouse.h" />
     <ClInclude Include="Includes\Render.h" />
     <ClInclude Include="Includes\Rendering\Mesh.hpp" />
@@ -169,8 +170,11 @@
     <ClCompile Include="Source\Mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Includes\kernel.cu" />
     <None Include="Includes\LightFragmentShader.glsl" />
+    <None Include="Includes\Markers\Marker.frag" />
+    <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
+    <None Include="Includes\Markers\MarkerVertexShader.glsl" />
+    <None Include="Includes\Markers\Marker.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

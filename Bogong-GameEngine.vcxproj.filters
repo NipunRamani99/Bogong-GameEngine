@@ -132,6 +132,9 @@
     <ClInclude Include="Includes\VertexBufferLayout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Includes\Markers\Markers.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -175,11 +178,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Includes\kernel.cu">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="Includes\LightFragmentShader.glsl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Includes\Markers\MarkerVertexShader.glsl" />
+    <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
+    <None Include="Includes\Markers\Marker.vert" />
+    <None Include="Includes\Markers\Marker.frag" />
   </ItemGroup>
 </Project>

@@ -26,7 +26,7 @@ public:
 		line(glm::vec3(-100.0f,0.0f,0.0f),glm::vec3(100.0f,0.0f,0.0f)),
 		line2(glm::vec3(0.0f,-100.0f,0.0f),glm::vec3(0.0f,100.0f,0.0f)),
 	    line3(glm::vec3(0.0f,0.0f,-100.0f),glm::vec3(0.0f,0.0f,100.0f)),
-		ripple(glm::vec3(0,0,0),1),
+		ripple(glm::vec3(0,0.01,0),2),
 		sphere(1,100,100)
 	{  
 		m_Shader      = p_Shader;
@@ -40,7 +40,7 @@ public:
 		line.SetShader(m_Shader);
 		line2.SetShader(m_Shader);
 		line3.SetShader(m_Shader);
-		sphere.SetShader(m_RiplShader);
+		ripple.SetShader(m_RiplShader);
 		m_RiplShader.Bind();
 		m_RiplShader.setVec3("lightLocation",lightPos);
 		error();
@@ -89,7 +89,7 @@ public:
 		line.Draw();
 		line2.Draw();
 		line3.Draw();
-		sphere.Draw();
+		ripple.Draw();
 		error();
 	}
 };   
