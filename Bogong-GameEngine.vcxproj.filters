@@ -135,6 +135,9 @@
     <ClInclude Include="Includes\Markers\Markers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -176,6 +179,9 @@
     <ClCompile Include="Includes\Rendering\Renderer.cpp">
       <Filter>Header Files\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Includes\Grid\Grid.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Includes\LightFragmentShader.glsl">
@@ -185,5 +191,20 @@
     <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
     <None Include="Includes\Markers\Marker.vert" />
     <None Include="Includes\Markers\Marker.frag" />
+    <None Include="Shaders\fragmentShader(N).glsl" />
+    <None Include="Shaders\fragmentShader.glsl" />
+    <None Include="Shaders\FragmentShaderLight.glsl" />
+    <None Include="Shaders\FragmentShaderRipple.glsl" />
+    <None Include="Shaders\vertexShader(N).glsl" />
+    <None Include="Shaders\vertexShader.glsl" />
+    <None Include="Shaders\VertexShaderLight.glsl" />
+    <None Include="Shaders\vertexShaderNorm.glsl" />
+    <None Include="Shaders\VertexShaderRipple.glsl" />
+    <None Include="Shaders\MarkerVertexShader.glsl" />
+    <None Include="Shaders\MarkerFragmentShader.glsl" />
+    <None Include="Includes\Grid\Grid.vert" />
+    <None Include="Includes\Grid\Grid.frag" />
+    <None Include="Shaders\Grid.vert" />
+    <None Include="Shaders\Grid.frag" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-#version 330
+#version 120
 const float SQRT_2 = 1.4142135623730951;
 uniform float size, orientation, linewidth, antialias;
 attribute vec3 position;

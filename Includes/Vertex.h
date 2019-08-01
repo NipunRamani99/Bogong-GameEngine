@@ -1,5 +1,5 @@
 #pragma once
-
+#include <glm/glm.hpp>
 template<typename T>
 struct Vertex
 {
@@ -15,19 +15,22 @@ struct Vertex
 	float nz = 0.0f;
 	float u  = 0.0f;
 	float v  = 0.0f;
-};
-template<typename T>
-Vertex<T> CreateVertex(glm::vec3 p_Pos, glm::vec4 p_Color)
-{
-	Vertex<T> vertex;
-	vertex.x = p_Pos.x;
-	vertex.y = p_Pos.y;
-	vertex.z = p_Pos.z;
-	vertex.r = p_Color.r;
-	vertex.g = p_Color.g;
-	vertex.b = p_Color.b;
-	vertex.a = p_Color.a;
-	return vertex;
+	Vertex<T>(){}
+	Vertex<T>(glm::vec3 pos, glm::vec4 color, glm::vec3 normals=glm::vec3(0,0,0), glm::vec2 uv = glm::vec2(0,0))
+	{
+		x  = pos.x;
+		y  = pos.y;
+		z  = pos.z;
+		r  = color.r;
+		g  = color.g;
+		b  = color.b;
+		a  = color.a;
+		nx = normals.x;
+		ny = normals.y;
+		nz = normals.z;
+		u  = uv.x;
+		v  = uv.y;
+	}
 };
 template<typename T>
 Vertex<T> CreateVertex(glm::vec3 p_Pos, glm::vec4 p_Color, glm::vec2 p_UV)

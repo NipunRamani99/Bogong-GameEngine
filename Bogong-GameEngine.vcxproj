@@ -131,6 +131,7 @@
     <ClInclude Include="Includes\Markers\Markers.hpp" />
     <ClInclude Include="Includes\Mouse.h" />
     <ClInclude Include="Includes\Render.h" />
+    <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp" />
     <ClInclude Include="Includes\Rendering\Mesh.hpp" />
     <ClInclude Include="Includes\Rendering\Renderer.hpp" />
     <ClInclude Include="Includes\Rendering\ShapeMesh.hpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Includes\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Includes\Grid\Grid.hpp" />
     <ClCompile Include="Source\GLSetup.cpp" />
     <ClCompile Include="Source\Globals.cpp" />
     <ClCompile Include="Includes\Rendering\Renderer.cpp" />
@@ -170,11 +172,26 @@
     <ClCompile Include="Source\Mouse.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Includes\Grid\Grid.frag" />
+    <None Include="Includes\Grid\Grid.vert" />
     <None Include="Includes\LightFragmentShader.glsl" />
     <None Include="Includes\Markers\Marker.frag" />
     <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
     <None Include="Includes\Markers\MarkerVertexShader.glsl" />
     <None Include="Includes\Markers\Marker.vert" />
+    <None Include="Shaders\fragmentShader(N).glsl" />
+    <None Include="Shaders\fragmentShader.glsl" />
+    <None Include="Shaders\FragmentShaderLight.glsl" />
+    <None Include="Shaders\FragmentShaderRipple.glsl" />
+    <None Include="Shaders\Grid.frag" />
+    <None Include="Shaders\Grid.vert" />
+    <None Include="Shaders\MarkerFragmentShader.glsl" />
+    <None Include="Shaders\MarkerVertexShader.glsl" />
+    <None Include="Shaders\vertexShader(N).glsl" />
+    <None Include="Shaders\vertexShader.glsl" />
+    <None Include="Shaders\VertexShaderLight.glsl" />
+    <None Include="Shaders\vertexShaderNorm.glsl" />
+    <None Include="Shaders\VertexShaderRipple.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
