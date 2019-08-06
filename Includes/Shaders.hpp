@@ -10,7 +10,9 @@ enum ShaderType
 {
 	VERTEX,
 	FRAGMENT,
-	GEOMETRY
+	GEOMETRY,
+	TESS_CONTROL,
+	TESS_EVAL
 };
 class Shader
 {
@@ -19,13 +21,17 @@ private:
 	unsigned int m_VertID;
 	unsigned int m_FragID;
 	unsigned int m_GeomID;
+	unsigned int m_TCS;
+	unsigned int m_TES;
 public:
 	Shader()
 		:
 		m_ProgID(0),
 		m_VertID(0),
 		m_FragID(0),
-		m_GeomID(0)
+		m_GeomID(0),
+		m_TCS(0),
+		m_TES(0)
 	{
 
 	}
@@ -97,6 +103,16 @@ public:
 			shader = "Vertex: ";
 			m_VertID = glCreateShader(GL_VERTEX_SHADER);
 			l_ID = &m_VertID;
+			break;
+		case ShaderType::TESS_EVAL:
+			shader = "TESS_EVAL: ";
+			m_TES = glCreateShader(GL_TESS_EVALUATION_SHADER);
+			l_ID = &m_TES;
+			break;
+		case ShaderType::TESS_CONTROL:
+			shader = "TESS_EVAL: ";
+			m_TES = glCreateShader(GL_TESS_CONTROL_SHADER);
+			l_ID = &m_TES;
 			break;
 		}
 		GLint l_Result = GL_FALSE;

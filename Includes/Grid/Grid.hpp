@@ -10,21 +10,33 @@ public:
 	Grid() {};
 	Grid(glm::vec3 p_Pos)
 	{
-		Vertex<float> vert1(glm::vec3(0.50f,0.0f,0.5f),glm::vec4(1.0f,0.0f,0.0f,1.0f));
-		Vertex<float> vert2(glm::vec3(0.50f,0.0f,-0.5f),glm::vec4(0.0f,1.0f,0.0f,1.0f));
-		Vertex<float> vert3(glm::vec3(-0.50f,0.0f,-0.5f),glm::vec4(0.0f,0.0f,1.0f,1.0f));
-		Vertex<float> vert4(glm::vec3(-0.50f, 0.0f,0.5f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+		float zmin = -10.0f;
+		float zmax = 10.0f;
+		float xmin = -10.0f;
+		float xmax = 10.0f;
+		float freq = 0.1f;
 		std::vector<Vertex<float>> vertices;
-		vertices.push_back(vert1);
-		vertices.push_back(vert2);
-		vertices.push_back(vert3);
-		vertices.push_back(vert4);
+		glm::vec4 color = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		for (float z = zmin; z <= zmax; z += freq)
+		{
+			Vertex<float> vertex1(glm::vec3(xmin, 0, z), color, glm::vec3(0, 0, 0), glm::vec2(0, 0));
+			Vertex<float> vertex2(glm::vec3(xmax, 0, z), color, glm::vec3(0, 0, 0), glm::vec2(0, 0));
+			vertices.push_back(vertex1);
+			vertices.push_back(vertex2);
+		}
+		for (float x = xmin; x <= xmax; x += freq)
+		{
+			Vertex<float> vertex1(glm::vec3(x, 0, zmin), color, glm::vec3(0, 0, 0), glm::vec2(0, 0));
+			Vertex<float> vertex2(glm::vec3(x, 0, zmax), color, glm::vec3(0, 0, 0), glm::vec2(0, 0));
+			vertices.push_back(vertex1);
+			vertices.push_back(vertex2);
+		}
 		VertexBufferLayout vbl;
 		vbl.AddElement<float>(3);
 		vbl.AddElement<float>(4);
 		m_Mesh = std::move(ShapeMesh(vertices));
 		m_Renderer = std::move(Renderer(m_Mesh,vbl));
-		m_Renderer.SetDrawMode(GL_QUADS);
+		m_Renderer.SetDrawMode(GL_LINES);
 	}
 	void SetShader(Shader p_Shader)
 	{
@@ -32,6 +44,10 @@ public:
 	}
 	void Draw()
 	{
+		glPushAttrib(GL_LINE_BIT);
+		glEnable(GL_LINE_SMOOTH);
+		glLineWidth(1.0f);
 		m_Renderer.RenderMesh();
+		glPopAttrib();
 	}
 };
