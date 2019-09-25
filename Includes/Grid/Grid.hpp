@@ -2,10 +2,11 @@
 #include "../Rendering/ShapeMesh.hpp"
 #include "../Rendering/Renderer.hpp"
 #include "../VertexBufferLayout.hpp"
+#include <memory>
 class Grid
 {
-	ShapeMesh m_Mesh;
-	Renderer m_Renderer;
+	std::shared_ptr<ShapeMesh> m_Mesh;
+	std::shared_ptr<Renderer> m_Renderer;
 public:
 	Grid() {};
 	Grid(glm::vec3 p_Pos)
@@ -34,20 +35,20 @@ public:
 		VertexBufferLayout vbl;
 		vbl.AddElement<float>(3);
 		vbl.AddElement<float>(4);
-		m_Mesh = std::move(ShapeMesh(vertices));
-		m_Renderer = std::move(Renderer(m_Mesh,vbl));
-		m_Renderer.SetDrawMode(GL_LINES);
+		m_Mesh = std::make_shared<ShapeMesh>(ShapeMesh(vertices));
+		m_Renderer = std::make_shared<Renderer>(Renderer(std::make_shared<Mesh>(m_Mesh),vbl));
+		m_Renderer->SetDrawMode(GL_LINES);
 	}
 	void SetShader(Shader p_Shader)
 	{
-		m_Renderer.SetShader(p_Shader);
+		m_Renderer->SetShader(p_Shader);
 	}
 	void Draw()
 	{
 		glPushAttrib(GL_LINE_BIT);
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(1.0f);
-		m_Renderer.RenderMesh();
+		m_Renderer->RenderMesh();
 		glPopAttrib();
 	}
 };

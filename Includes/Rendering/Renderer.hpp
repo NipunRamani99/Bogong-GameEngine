@@ -8,11 +8,12 @@
 #include <string>
 #include <functional>
 #include <map>
+#include <memory>
 class Renderer
 {
 private:
 	using DrawCall = std::function<void(GLenum,int)>;
-	Mesh m_Mesh;
+	std::shared_ptr<Mesh> m_Mesh;
 	Shader m_Shader;
 	VertexArray m_VAO;
 	VertexBufferLayout  m_Layout;
@@ -22,12 +23,12 @@ private:
 	
 public:
 	Renderer() = default;
-	Renderer(Mesh & p_Mesh, VertexBufferLayout & p_Layout)
+	Renderer(const std::shared_ptr<Mesh> & p_Mesh, const VertexBufferLayout & p_Layout)
 		:
 		m_Layout(p_Layout)
 	{
 		m_Mesh = p_Mesh;
-		if (m_Mesh.GetIndexBuffer().GetID() != 0)
+		if (m_Mesh->GetIndexBuffer().GetID() != 0)
 		{
 			m_DrawCall = [](GLenum DrawMode,size_t count) { glDrawElements(DrawMode, (GLsizei)count, GL_UNSIGNED_INT, 0); };
 		}
@@ -37,7 +38,7 @@ public:
 		}
 		m_VAO = VertexArray();
 	}
-	Renderer & operator=(Renderer && p_Renderer)
+	/*Renderer & operator=(Renderer && p_Renderer)
 	{
 	    m_Mesh     = std::move(p_Renderer.m_Mesh);
 		m_DrawCall = std::move(p_Renderer.m_DrawCall);
@@ -48,7 +49,7 @@ public:
 		m_Shader   = std::move(p_Renderer.m_Shader);
 		
 	    return *this;
-	}
+	}*/
 	Renderer(Renderer && renderer)
 		:
 		m_Mesh(std::move(renderer.m_Mesh)),
@@ -67,7 +68,7 @@ public:
 	{
 		m_Layout = p_Layout;
 	}
-	void SetMesh(Mesh & p_Mesh)
+	void SetMesh(std::shared_ptr<Mesh> & p_Mesh)
 	{
 		m_Mesh  = p_Mesh;
 	}

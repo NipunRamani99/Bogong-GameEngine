@@ -24,16 +24,16 @@ public:
 		 m_Vertices = std::move(p_Mesh.m_Vertices);
 		 m_VBO = std::move(p_Mesh.m_VBO);
 	 }
-	 Mesh & operator=(Mesh&&p_Mesh)
-	 {
-		 m_Vertices = std::move(p_Mesh.m_Vertices);
-		 m_Indices  = std::move(p_Mesh.m_Indices);
-		 m_IBO      = std::move(p_Mesh.m_IBO);
-		 m_VBO      = std::move(p_Mesh.m_VBO);
-		 m_Count    = std::move(p_Mesh.m_Count);
-		 return *this;
-	 }
-	 Mesh & operator=(Mesh & p_Mesh)
+	 //Mesh & operator=(Mesh&&p_Mesh)
+	 //{
+		// /*m_Vertices = std::move(p_Mesh.m_Vertices);
+		// m_Indices  = std::move(p_Mesh.m_Indices);
+		// m_IBO      = std::move(p_Mesh.m_IBO);
+		// m_VBO      = std::move(p_Mesh.m_VBO);
+		// m_Count    = std::move(p_Mesh.m_Count);*/
+		// return *this;
+	 //}
+	/* Mesh & operator=(Mesh & p_Mesh)
 	 {
 		 m_Vertices =  p_Mesh.m_Vertices;
 		 m_Indices  =  p_Mesh.m_Indices;
@@ -41,7 +41,7 @@ public:
 		 m_VBO      =  p_Mesh.m_VBO;
 		 m_Count    =  p_Mesh.m_Count;
 		 return *this;
-	 }
+	 }*/
 	 virtual VertexBuffer GetVertexBuffer()
 	 {
 		 return m_VBO;

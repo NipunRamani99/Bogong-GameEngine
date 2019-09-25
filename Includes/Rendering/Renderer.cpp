@@ -11,8 +11,8 @@ void Renderer::BindBuffers()
 {
 	m_VAO.Bind();
 	error();
-	m_Mesh.GetVertexBuffer().Bind();
-	m_Mesh.GetIndexBuffer().Bind();
+	m_Mesh->GetVertexBuffer().Bind();
+	m_Mesh->GetIndexBuffer().Bind();
 	m_Shader.Bind();
 	int stride = m_Layout.GetStride();
 	size_t offset = 0;
@@ -32,13 +32,13 @@ void Renderer::BindBuffers()
 	}
 	m_Shader.setMat4("model", m_Model);
 	error();
-	size_t count = m_Mesh.GetCount();
+	size_t count = m_Mesh->GetCount();
 	m_DrawCall(m_DrawMode, (unsigned int)count);
 	error();
 }
 void Renderer::UnbindBuffers()
 {
-	m_Mesh.GetIndexBuffer().Unbind();
-	m_Mesh.GetVertexBuffer().Unbind();
+	m_Mesh->GetIndexBuffer().Unbind();
+	m_Mesh->GetVertexBuffer().Unbind();
 	m_VAO.Unbind();
 }
