@@ -32,10 +32,9 @@ public:
 		f2.a = 1.0f;
 		vertices.push_back(f);
 		vertices.push_back(f2);
-		m_Mesh = ShapeMesh(vertices);
 		layout.AddElement<float>(3);
 		layout.AddElement<float>(4);
-		m_Renderer = std::move(Renderer(m_Mesh,layout));
+		
 	}
 	void Draw()
 	{

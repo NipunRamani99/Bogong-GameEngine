@@ -41,8 +41,6 @@ public:
 		vertex[0]   = Vertex<float>(pos, fg_color, { 0,0,0 }, { 0,0 });
 		vbl.AddElement<float>(3);
 		vbl.AddElement<float>(4);
-		m_Mesh      = std::move(ShapeMesh(vertex));
-		m_Renderer  = std::move(Renderer(m_Mesh, vbl));
 		m_Renderer.SetDrawMode(GL_POINTS);
 	}
 	void SetShader(Shader  m_Shader)

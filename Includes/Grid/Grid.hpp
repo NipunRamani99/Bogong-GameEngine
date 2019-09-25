@@ -36,7 +36,7 @@ public:
 		vbl.AddElement<float>(3);
 		vbl.AddElement<float>(4);
 		m_Mesh = std::make_shared<ShapeMesh>(ShapeMesh(vertices));
-		m_Renderer = std::make_shared<Renderer>(Renderer(std::make_shared<Mesh>(m_Mesh),vbl));
+		m_Renderer = std::make_shared<Renderer>(Renderer(vbl));
 		m_Renderer->SetDrawMode(GL_LINES);
 	}
 	void SetShader(Shader p_Shader)
@@ -48,7 +48,7 @@ public:
 		glPushAttrib(GL_LINE_BIT);
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(1.0f);
-		m_Renderer->RenderMesh();
+		m_Renderer->RenderMesh(m_Mesh);
 		glPopAttrib();
 	}
 };

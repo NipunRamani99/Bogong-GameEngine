@@ -5,7 +5,7 @@
 class ShapeMesh : public Mesh
 {
 public:
-	ShapeMesh() = default;
+	ShapeMesh() {}
 	ShapeMesh(std::vector<Vertex<float>> & p_Vertices)
 	{
 		m_Vertices = std::move(p_Vertices);

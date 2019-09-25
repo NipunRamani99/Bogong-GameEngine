@@ -78,11 +78,10 @@ public:
 			}
 		}
 
-		m_Mesh = ShapeMesh(m_Vertices, m_Indices);
 		m_Layout.AddElement<float>(3);
 		m_Layout.AddElement<float>(4);
 		m_Layout.AddElement<float>(3);
-		m_Renderer = Renderer(m_Mesh, m_Layout);
+		
 		m_Renderer.SetDrawMode(GL_TRIANGLES);
 	}
 	void SetShader(Shader & p_Shader)

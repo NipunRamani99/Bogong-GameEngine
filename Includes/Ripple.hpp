@@ -80,26 +80,24 @@ public:
 		}
 		
 		
-		m_Mesh = ShapeMesh(m_Vertices,m_Indices);
+		
 		
 		m_Layout.AddElement<float>(3);
 		m_Layout.AddElement<float>(4);
 		m_Layout.AddElement<float>(3);
-		m_Renderer = Renderer(m_Mesh,m_Layout);
+	
 		m_Renderer.SetDrawMode(GL_QUADS);
 	}
 	Ripple(Ripple && p_Ripple)
 	{
 		m_Vertices = std::move(p_Ripple.m_Vertices);
-		m_Mesh = std::move(p_Ripple.m_Mesh);
-		m_Renderer = std::move(p_Ripple.m_Renderer);
+	
 		m_Layout = std::move(p_Ripple.m_Layout);
 	}
 	Ripple & operator = (Ripple && p_Ripple)
 	{
 		m_Vertices = std::move(p_Ripple.m_Vertices);
-		m_Mesh = std::move(p_Ripple.m_Mesh);
-		m_Renderer = std::move(p_Ripple.m_Renderer);
+		
 		m_Layout = std::move(p_Ripple.m_Layout);
 		return *this;
 	}

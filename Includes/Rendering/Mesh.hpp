@@ -15,15 +15,16 @@ protected:
 
 	size_t m_Count = 0;
 public:
-	 Mesh()=default;
-	 Mesh(Mesh && p_Mesh)
+	Mesh() {}
+	
+	/* Mesh(Mesh && p_Mesh)
 	 {
 		 m_Count = std::move(p_Mesh.m_Count);
 		 m_IBO = std::move(p_Mesh.m_IBO);
 		 m_Indices = std::move(p_Mesh.m_Indices);
 		 m_Vertices = std::move(p_Mesh.m_Vertices);
 		 m_VBO = std::move(p_Mesh.m_VBO);
-	 }
+	 }*/
 	 //Mesh & operator=(Mesh&&p_Mesh)
 	 //{
 		// /*m_Vertices = std::move(p_Mesh.m_Vertices);

@@ -13,7 +13,7 @@ class Renderer
 {
 private:
 	using DrawCall = std::function<void(GLenum,int)>;
-	std::shared_ptr<Mesh> m_Mesh;
+	
 	Shader m_Shader;
 	VertexArray m_VAO;
 	VertexBufferLayout  m_Layout;
@@ -23,19 +23,10 @@ private:
 	
 public:
 	Renderer() = default;
-	Renderer(const std::shared_ptr<Mesh> & p_Mesh, const VertexBufferLayout & p_Layout)
+	Renderer(const VertexBufferLayout & p_Layout)
 		:
 		m_Layout(p_Layout)
 	{
-		m_Mesh = p_Mesh;
-		if (m_Mesh->GetIndexBuffer().GetID() != 0)
-		{
-			m_DrawCall = [](GLenum DrawMode,size_t count) { glDrawElements(DrawMode, (GLsizei)count, GL_UNSIGNED_INT, 0); };
-		}
-		else
-		{
-			m_DrawCall = [](GLenum DrawMode,size_t count) { glDrawArrays(DrawMode, 0,(GLsizei)count);  };
-		}
 		m_VAO = VertexArray();
 	}
 	/*Renderer & operator=(Renderer && p_Renderer)
@@ -50,16 +41,7 @@ public:
 		
 	    return *this;
 	}*/
-	Renderer(Renderer && renderer)
-		:
-		m_Mesh(std::move(renderer.m_Mesh)),
-		m_Layout(std::move(renderer.m_Layout)),
-		m_VAO(std::move(renderer.m_VAO)),
-		m_Shader(std::move(renderer.m_Shader)),
-		m_DrawMode(std::move(renderer.m_DrawMode)),
-		m_DrawCall(std::move(renderer.m_DrawCall))
-	{
-	}
+	
 	void SetShader(Shader p_Shader)
 	{
 		m_Shader = p_Shader;
@@ -68,16 +50,61 @@ public:
 	{
 		m_Layout = p_Layout;
 	}
-	void SetMesh(std::shared_ptr<Mesh> & p_Mesh)
-	{
-		m_Mesh  = p_Mesh;
-	}
+	
 	void SetDrawMode(GLenum p_DrawMode)
 	{
 		m_DrawMode = p_DrawMode;
 	}
-	void RenderMesh();
-	void BindBuffers();
-	void UnbindBuffers();
+	template<typename T>
+	void RenderMesh(const std::shared_ptr<T> & mesh)
+	{
+		if (mesh->GetIndexBuffer().GetID() != 0)
+		{
+			m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, (GLsizei)count, GL_UNSIGNED_INT, 0); };
+		}
+		else
+		{
+			m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, (GLsizei)count);  };
+		}
+		BindBuffers(mesh);
+		UnbindBuffers(mesh);
+	}
+	template<typename T>
+	void BindBuffers(const std::shared_ptr<T> & mesh)
+	{
+		m_VAO.Bind();
+		error();
+		mesh->GetVertexBuffer().Bind();
+		mesh->GetIndexBuffer().Bind();
+		m_Shader.Bind();
+		int stride = m_Layout.GetStride();
+		size_t offset = 0;
+		int i = 0;
+		for (auto element : m_Layout.GetElements())
+		{
+			glEnableVertexAttribArray(i);
+			i++;
+		}
+		error();
+		i = 0;
+		for (auto element : m_Layout.GetElements())
+		{
+			glVertexAttribPointer(i, element.count, element.type, element.isNormalized, sizeof(Vertex<float>), (void*)(offset));
+			offset += element.count * sizeof(element.type);
+			i++;
+		}
+		m_Shader.setMat4("model", m_Model);
+		error();
+		size_t count = mesh->GetCount();
+		m_DrawCall(m_DrawMode, (unsigned int)count);
+		error();
+	}
+	template<typename T>
+	void UnbindBuffers(const std::shared_ptr<T> & mesh)
+	{
+		mesh->GetIndexBuffer().Unbind();
+		mesh->GetVertexBuffer().Unbind();
+		m_VAO.Unbind();
+	}
 
 };
