@@ -35,7 +35,7 @@ public:
 		ripple(glm::vec3(0, 0.01, 0), 2),
 		sphere(1, 100, 100),
 		marker(glm::vec3(1.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)),
-		grid(glm::vec3(0.0f,0.0f,0.0f))
+		grid(glm::vec3(0.27450f,0.27450f,0.27450f))
 	{  
 		m_Shader      = p_Shader;
 		m_Scale       = 0.001f;

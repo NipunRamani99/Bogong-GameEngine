@@ -10,13 +10,13 @@ public:
 	Grid() {};
 	Grid(glm::vec3 p_Pos)
 	{
-		float zmin = -10.0f;
-		float zmax = 10.0f;
-		float xmin = -10.0f;
-		float xmax = 10.0f;
-		float freq = 0.1f;
+		float zmin = -5.0f;
+		float zmax = 5.0f;
+		float xmin = -5.0f;
+		float xmax = 5.0f;
+		float freq = 0.5f;
 		std::vector<Vertex<float>> vertices;
-		glm::vec4 color = glm::vec4(1.0, 0.0, 0.0, 1.0);
+		glm::vec4 color = glm::vec4(0.27450, 0.27450, 0.27450, 1.0);
 		for (float z = zmin; z <= zmax; z += freq)
 		{
 			Vertex<float> vertex1(glm::vec3(xmin, 0, z), color, glm::vec3(0, 0, 0), glm::vec2(0, 0));
