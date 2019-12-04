@@ -29,18 +29,7 @@ public:
 	{
 		m_VAO = VertexArray();
 	}
-	/*Renderer & operator=(Renderer && p_Renderer)
-	{
-	    m_Mesh     = std::move(p_Renderer.m_Mesh);
-		m_DrawCall = std::move(p_Renderer.m_DrawCall);
-		m_Layout   = std::move(p_Renderer.m_Layout);
-		m_Model    = std::move(p_Renderer.m_Model);
-		m_VAO      = std::move(p_Renderer.m_VAO);
-		m_DrawMode = std::move(p_Renderer.m_DrawMode);
-		m_Shader   = std::move(p_Renderer.m_Shader);
-		
-	    return *this;
-	}*/
+	
 	
 	void SetShader(Shader p_Shader)
 	{
@@ -66,8 +55,13 @@ public:
 		{
 			m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, (GLsizei)count);  };
 		}
-		BindBuffers(mesh);
-		UnbindBuffers(mesh);
+		m_VAO.Bind();
+		m_Shader.Bind();
+		m_Shader.setMat4("model", m_Model);
+		error();
+		size_t count = mesh->GetCount();
+		m_DrawCall(m_DrawMode, (unsigned int)count);
+		error();
 	}
 	template<typename T>
 	void BindBuffers(const std::shared_ptr<T> & mesh)
@@ -76,7 +70,6 @@ public:
 		error();
 		mesh->GetVertexBuffer().Bind();
 		mesh->GetIndexBuffer().Bind();
-		m_Shader.Bind();
 		int stride = m_Layout.GetStride();
 		size_t offset = 0;
 		int i = 0;
@@ -93,10 +86,6 @@ public:
 			offset += element.count * sizeof(element.type);
 			i++;
 		}
-		m_Shader.setMat4("model", m_Model);
-		error();
-		size_t count = mesh->GetCount();
-		m_DrawCall(m_DrawMode, (unsigned int)count);
 		error();
 	}
 	template<typename T>

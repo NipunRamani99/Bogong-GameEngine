@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="Includes\Callbacks.h" />
     <ClInclude Include="Includes\Camera.h" />
+    <ClInclude Include="Includes\CameraPosVisualizer.hpp" />
     <ClInclude Include="Includes\Engine.h" />
     <ClInclude Include="Includes\ErrorLog.h" />
     <ClInclude Include="Includes\GLSetup.h" />
@@ -130,7 +131,6 @@
     <ClInclude Include="Includes\Lights.hpp" />
     <ClInclude Include="Includes\Markers\Markers.hpp" />
     <ClInclude Include="Includes\Mouse.h" />
-    <ClInclude Include="Includes\Render.h" />
     <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp" />
     <ClInclude Include="Includes\Rendering\Mesh.hpp" />
     <ClInclude Include="Includes\Rendering\Renderer.hpp" />

@@ -99,9 +99,6 @@
     <ClInclude Include="Includes\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Render.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Includes\Ripple.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -136,6 +133,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes\CameraPosVisualizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

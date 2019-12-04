@@ -38,6 +38,7 @@ public:
 		m_Mesh = std::make_shared<ShapeMesh>(ShapeMesh(vertices));
 		m_Renderer = std::make_shared<Renderer>(Renderer(vbl));
 		m_Renderer->SetDrawMode(GL_LINES);
+		m_Renderer->BindBuffers(m_Mesh);
 	}
 	void SetShader(Shader p_Shader)
 	{
