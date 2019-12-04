@@ -1,4 +1,7 @@
 #pragma once
-#include "../Includes/Mouse.h"
-std::map<BUTTON, MOUSE_STATUS> Mouse::MouseMap= std::map<BUTTON,MOUSE_STATUS>();
-
+#include "../include/Mouse.h"
+namespace bogong {
+	std::map<BUTTON, MOUSE_STATUS> Mouse::MouseMap = std::map<BUTTON, MOUSE_STATUS>();
+	double Mouse::x = 0;
+	double Mouse::y = 0;
+}

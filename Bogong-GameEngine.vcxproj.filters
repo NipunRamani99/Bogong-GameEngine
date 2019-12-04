@@ -45,97 +45,85 @@
     <ClInclude Include="Imgui\imstb_truetype.h">
       <Filter>Imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Rendering\Mesh.hpp">
+    <ClInclude Include="include\Rendering\Mesh.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Rendering\Renderer.hpp">
+    <ClInclude Include="include\Rendering\Renderer.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Rendering\ShapeMesh.hpp">
+    <ClInclude Include="include\Rendering\ShapeMesh.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Callbacks.h">
+    <ClInclude Include="include\Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Camera.h">
+    <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Engine.h">
+    <ClInclude Include="include\CameraPosVisualizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\ErrorLog.h">
+    <ClInclude Include="include\Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Globals.h">
+    <ClInclude Include="include\ErrorLog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\GLSetup.h">
+    <ClInclude Include="include\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\gui.h">
+    <ClInclude Include="include\GLSetup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\GuideLines.h">
+    <ClInclude Include="include\GuideLines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\ICallbacks.h">
+    <ClInclude Include="include\Imgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\IndexBuffer.h">
+    <ClInclude Include="include\IndexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Init.hpp">
+    <ClInclude Include="include\Init.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Keyboard.h">
+    <ClInclude Include="include\Keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Lights.hpp">
+    <ClInclude Include="include\Lights.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Lines.hpp">
+    <ClInclude Include="include\Lines.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Mouse.h">
+    <ClInclude Include="include\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Ripple.hpp">
+    <ClInclude Include="include\Shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Shaders.hpp">
+    <ClInclude Include="include\Simulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Simulation.h">
+    <ClInclude Include="include\Sphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Sphere.hpp">
+    <ClInclude Include="include\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\stb_image.h">
+    <ClInclude Include="include\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Texture.h">
+    <ClInclude Include="include\Vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\Vertex.h">
+    <ClInclude Include="include\VertexArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\VertexArray.hpp">
+    <ClInclude Include="include\VertexBuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Includes\VertexBuffer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\VertexBufferLayout.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\Markers\Markers.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Includes\CameraPosVisualizer.hpp">
+    <ClInclude Include="include\VertexBufferLayout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,21 +164,20 @@
     <ClCompile Include="Source\Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Includes\Rendering\Renderer.cpp">
-      <Filter>Header Files\Rendering</Filter>
+    <ClCompile Include="Source\Engine.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Includes\Grid\Grid.hpp">
+    <ClCompile Include="include\Grid\Grid.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Includes\LightFragmentShader.glsl">
-      <Filter>Header Files</Filter>
-    </None>
-    <None Include="Includes\Markers\MarkerVertexShader.glsl" />
-    <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
-    <None Include="Includes\Markers\Marker.vert" />
-    <None Include="Includes\Markers\Marker.frag" />
     <None Include="Shaders\fragmentShader(N).glsl" />
     <None Include="Shaders\fragmentShader.glsl" />
     <None Include="Shaders\FragmentShaderLight.glsl" />
@@ -202,9 +189,12 @@
     <None Include="Shaders\VertexShaderRipple.glsl" />
     <None Include="Shaders\MarkerVertexShader.glsl" />
     <None Include="Shaders\MarkerFragmentShader.glsl" />
-    <None Include="Includes\Grid\Grid.vert" />
-    <None Include="Includes\Grid\Grid.frag" />
     <None Include="Shaders\Grid.vert" />
     <None Include="Shaders\Grid.frag" />
+    <None Include="include\Grid\Grid.frag" />
+    <None Include="include\Grid\Grid.vert" />
+    <None Include="include\LightFragmentShader.glsl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

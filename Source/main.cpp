@@ -1,8 +1,9 @@
 
-#include "../Includes/Engine.h"
+#include "../include/Engine.h"
+
 int main()
-{		
-	Engine engine;
+{
+	bogong::Engine engine;
     engine.Start();
 	do {
 	   engine.Loop();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Includes/GLSetup.h"
+#include "../include/GLSetup.h"
 using namespace GLI;
 GLSetup::GLSetup(int * err)
 {

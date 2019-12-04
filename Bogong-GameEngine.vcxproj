@@ -115,34 +115,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Includes\Callbacks.h" />
-    <ClInclude Include="Includes\Camera.h" />
-    <ClInclude Include="Includes\CameraPosVisualizer.hpp" />
-    <ClInclude Include="Includes\Engine.h" />
-    <ClInclude Include="Includes\ErrorLog.h" />
-    <ClInclude Include="Includes\GLSetup.h" />
-    <ClInclude Include="Includes\Globals.h" />
-    <ClInclude Include="Includes\GuideLines.h" />
-    <ClInclude Include="Includes\ICallbacks.h" />
-    <ClInclude Include="Includes\gui.h" />
-    <ClInclude Include="Includes\IndexBuffer.h" />
-    <ClInclude Include="Includes\Init.hpp" />
-    <ClInclude Include="Includes\Keyboard.h" />
-    <ClInclude Include="Includes\Lights.hpp" />
-    <ClInclude Include="Includes\Markers\Markers.hpp" />
-    <ClInclude Include="Includes\Mouse.h" />
-    <ClInclude Include="Includes\Rendering\MarkerRenderer.hpp" />
-    <ClInclude Include="Includes\Rendering\Mesh.hpp" />
-    <ClInclude Include="Includes\Rendering\Renderer.hpp" />
-    <ClInclude Include="Includes\Rendering\ShapeMesh.hpp" />
-    <ClInclude Include="Includes\Shaders.hpp" />
-    <ClInclude Include="Includes\Simulation.h" />
-    <ClInclude Include="Includes\stb_image.h" />
-    <ClInclude Include="Includes\Texture.h" />
-    <ClInclude Include="Includes\Vertex.h" />
-    <ClInclude Include="Includes\VertexArray.hpp" />
-    <ClInclude Include="Includes\VertexBuffer.hpp" />
-    <ClInclude Include="Includes\VertexBufferLayout.hpp" />
+    <ClInclude Include="include\Callbacks.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\CameraPosVisualizer.hpp" />
+    <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\ErrorLog.h" />
+    <ClInclude Include="include\GLSetup.h" />
+    <ClInclude Include="include\Globals.h" />
+    <ClInclude Include="include\GuideLines.h" />
+    <ClInclude Include="include\Imgui.h" />
+    <ClInclude Include="include\IndexBuffer.h" />
+    <ClInclude Include="include\Init.hpp" />
+    <ClInclude Include="include\Keyboard.h" />
+    <ClInclude Include="include\Lights.hpp" />
+    <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Rendering\Mesh.hpp" />
+    <ClInclude Include="include\Rendering\Renderer.hpp" />
+    <ClInclude Include="include\Rendering\ShapeMesh.hpp" />
+    <ClInclude Include="include\Shaders.hpp" />
+    <ClInclude Include="include\Simulation.h" />
+    <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\Vertex.h" />
+    <ClInclude Include="include\VertexArray.hpp" />
+    <ClInclude Include="include\VertexBuffer.hpp" />
+    <ClInclude Include="include\VertexBufferLayout.hpp" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_glfw.h" />
@@ -151,15 +148,15 @@
     <ClInclude Include="Imgui\imstb_rectpack.h" />
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
-    <ClInclude Include="Includes\Lines.hpp" />
-    <ClInclude Include="Includes\Ripple.hpp" />
-    <ClInclude Include="Includes\Sphere.hpp" />
+    <ClInclude Include="include\Lines.hpp" />
+    <ClInclude Include="include\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Includes\Grid\Grid.hpp" />
+    <ClCompile Include="include\Grid\Grid.hpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\GLSetup.cpp" />
     <ClCompile Include="Source\Globals.cpp" />
-    <ClCompile Include="Includes\Rendering\Renderer.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -170,15 +167,12 @@
     <ClCompile Include="Source\Keyboard.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
+    <ClCompile Include="Source\Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Includes\Grid\Grid.frag" />
-    <None Include="Includes\Grid\Grid.vert" />
-    <None Include="Includes\LightFragmentShader.glsl" />
-    <None Include="Includes\Markers\Marker.frag" />
-    <None Include="Includes\Markers\MarkerFragmentShader.glsl" />
-    <None Include="Includes\Markers\MarkerVertexShader.glsl" />
-    <None Include="Includes\Markers\Marker.vert" />
+    <None Include="include\Grid\Grid.frag" />
+    <None Include="include\Grid\Grid.vert" />
+    <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\fragmentShader(N).glsl" />
     <None Include="Shaders\fragmentShader.glsl" />
     <None Include="Shaders\FragmentShaderLight.glsl" />
