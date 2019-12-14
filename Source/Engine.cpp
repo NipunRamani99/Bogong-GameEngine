@@ -25,7 +25,7 @@ void bogong::Engine::Start()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	assert((bool)!error());
-	sim = std::make_shared<Simulation>();
+	game = std::make_shared<Game>();
 	int display_w, display_h;
 	glfwMakeContextCurrent(window);
 	glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -40,12 +40,12 @@ void bogong::Engine::Start()
 void bogong::Engine::Update(float deltime)
 {
 
-	sim->Update(kbd, mouse, static_cast<float>(deltime));
+	game->Update(kbd, mouse, static_cast<float>(deltime));
 }
 
 void bogong::Engine::DrawCalls() const
 {
-	sim->Draw();
+	game->Draw();
 }
 
 void bogong::Engine::RenderEverything()
@@ -69,7 +69,7 @@ void bogong::Engine::Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 	Update(currentTime - prevTime);
-	float fps = 1 / (currentTime - prevTime);
+
 	RenderEverything();
 
 }

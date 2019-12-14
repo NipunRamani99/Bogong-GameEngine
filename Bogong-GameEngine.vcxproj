@@ -121,18 +121,17 @@
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\ErrorLog.h" />
     <ClInclude Include="include\Globals.h" />
-    <ClInclude Include="include\GuideLines.h" />
     <ClInclude Include="include\Imgui.h" />
     <ClInclude Include="include\IndexBuffer.h" />
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\Lights.hpp" />
     <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />
     <ClInclude Include="include\Rendering\Renderer.hpp" />
-    <ClInclude Include="include\Rendering\ShapeMesh.hpp" />
     <ClInclude Include="include\Shaders.hpp" />
-    <ClInclude Include="include\Simulation.h" />
+    <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Vertex.h" />
@@ -147,12 +146,9 @@
     <ClInclude Include="Imgui\imstb_rectpack.h" />
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
-    <ClInclude Include="include\Lines.hpp" />
     <ClInclude Include="include\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\Grid\Grid.hpp" />
-    <ClCompile Include="include\Quad.hpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Globals.cpp" />
@@ -166,11 +162,10 @@
     <ClCompile Include="Source\Keyboard.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
-    <ClCompile Include="Source\Simulation.cpp" />
+    <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\Grid\Grid.frag" />
-    <None Include="include\Grid\Grid.vert" />
     <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\SimpleFragmentShader.glsl" />
     <None Include="Shaders\SimpleVertexShader.glsl" />

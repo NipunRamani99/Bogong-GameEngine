@@ -13,89 +13,65 @@ namespace bogong {
 	class Renderer
 	{
 	private:
-		using DrawCall = std::function<void(GLenum, int)>;
 
-		bogong::Shader m_Shader;
 		VertexArray m_VAO;
-		VertexBufferLayout  m_Layout;
-		GLenum   m_DrawMode = GL_LINES;
-		DrawCall  m_DrawCall = [](GLenum, size_t)-> void {};
 		glm::mat4 m_Model = glm::mat4(1.0);
-
+		GLenum m_DrawMode;
+		Shader m_Shader;
+		using DrawCall = std::function<void(GLenum, int)>;
+		DrawCall  m_DrawCall = [](GLenum, int)-> void {};
 	public:
-		Renderer();
-		Renderer(const VertexBufferLayout & p_Layout)
-			:
-			m_Layout(p_Layout)
+
+		Renderer()
 		{
 			m_VAO = VertexArray();
 		}
 
+		template<typename T>
+		void RenderMesh(const std::shared_ptr<T> & mesh)
+		{
+			m_VAO.Bind();
+			m_Shader.Bind();
+			if (mesh->GetIndexBuffer().GetID() != 0)
+			{
+				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
+			}
+			else
+			{
+				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, count);  };
+			}
 
-		void SetShader(bogong::Shader p_Shader)
+			size_t count = mesh->GetCount();
+			m_Shader.setMat4("model", m_Model);
+			m_DrawCall(m_DrawMode, count);
+			error();
+		}
+		template<typename T>
+		void BindBuffer(const std::shared_ptr<T> & mesh)
+		{
+			m_VAO.Bind();
+			m_Shader.Bind();
+			assert(!error());
+			mesh->Bind();
+			error();
+		}
+		template<typename T>
+		void UnbindBuffer(const std::shared_ptr<T> & mesh)
+		{
+			mesh->Unbind();
+			m_VAO.Unbind();
+		}
+		void SetShader(Shader p_Shader)
 		{
 			m_Shader = p_Shader;
 		}
-		void SetLayout(VertexBufferLayout p_Layout)
-		{
-			m_Layout = p_Layout;
-		}
-
 		void SetDrawMode(GLenum p_DrawMode)
 		{
 			m_DrawMode = p_DrawMode;
 		}
-		template<typename T>
-		void RenderMesh(const std::shared_ptr<T> & mesh)
+		void SetDrawCall(DrawCall p_DrawCall)
 		{
-			if (mesh->GetIndexBuffer().GetID() != 0)
-			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, (GLsizei)count, GL_UNSIGNED_INT, 0); };
-			}
-			else
-			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, (GLsizei)count);  };
-			}
-			m_VAO.Bind();
-			m_Shader.Bind();
-			m_Shader.setMat4("model", m_Model);
-			error();
-			size_t count = mesh->GetCount();
-			m_DrawCall(m_DrawMode, (unsigned int)count);
-			error();
+			m_DrawCall = p_DrawCall;
 		}
-		template<typename T>
-		void BindBuffers(const std::shared_ptr<T> & mesh)
-		{
-			m_VAO.Bind();
-			error();
-			mesh->GetVertexBuffer().Bind();
-			mesh->GetIndexBuffer().Bind();
-			int stride = m_Layout.GetStride();
-			size_t offset = 0;
-			int i = 0;
-			for (auto element : m_Layout.GetElements())
-			{
-				glEnableVertexAttribArray(i);
-				i++;
-			}
-			error();
-			i = 0;
-			for (auto element : m_Layout.GetElements())
-			{
-				glVertexAttribPointer(i, element.count, element.type, element.isNormalized, sizeof(Vertex<float>), (void*)(offset));
-				offset += element.count * sizeof(element.type);
-				i++;
-			}
-			error();
-		}
-		template<typename T>
-		void UnbindBuffers(const std::shared_ptr<T> & mesh)
-		{
-			mesh->GetIndexBuffer().Unbind();
-			mesh->GetVertexBuffer().Unbind();
-			m_VAO.Unbind();
-		}
-
 	};
 }

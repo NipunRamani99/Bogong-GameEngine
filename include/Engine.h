@@ -7,7 +7,7 @@
 #include <memory>
 #include "Keyboard.h"
 #include "Mouse.h"
-#include "Simulation.h"
+#include "Game.h"
 
 namespace bogong
 {
@@ -19,7 +19,7 @@ namespace bogong
 		GLFWwindow* window;
 		GLuint programID;
 
-		std::shared_ptr<Simulation> sim;
+		std::shared_ptr<Game> game;
 		std::shared_ptr<Keyboard> kbd;
 		std::shared_ptr<Mouse> mouse;
 		int camID = 0;

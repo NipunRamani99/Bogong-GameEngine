@@ -51,9 +51,6 @@
     <ClInclude Include="include\Rendering\Renderer.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\ShapeMesh.hpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="include\Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,9 +69,6 @@
     <ClInclude Include="include\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GuideLines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Imgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -90,16 +84,10 @@
     <ClInclude Include="include\Lights.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lines.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Shaders.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Simulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Sphere.hpp">
@@ -121,6 +109,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\VertexBufferLayout.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -161,22 +155,17 @@
     <ClCompile Include="Source\Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Grid\Grid.hpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Simulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\Quad.hpp">
+    <ClCompile Include="Source\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Quad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\Grid\Grid.frag" />
-    <None Include="include\Grid\Grid.vert" />
     <None Include="include\LightFragmentShader.glsl">
       <Filter>Header Files</Filter>
     </None>
