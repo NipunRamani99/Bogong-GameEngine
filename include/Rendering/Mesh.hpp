@@ -5,25 +5,30 @@
 #include <vector>
 #include <memory>
 #include "../Vertex.h"
+#include "../Texture.h"
 namespace bogong {
+	typedef std::pair<std::shared_ptr<VertexBuffer>, VertexBufferLayout> Buffer;
 	class Mesh
 	{
+		
 	protected:
-		std::vector<Vertex<float>> m_Vertices = std::vector<Vertex<float>>();
-		std::vector<unsigned int> m_Indices = std::vector<unsigned int>();
+		std::vector<Buffer> m_BufferVector;
 		IndexBuffer m_IBO;
-		VertexBuffer m_VBO;
-
+		std::vector<std::shared_ptr<Texture>> m_TexVector;
 		size_t m_Count = 0;
 	public:
 		Mesh() {}
-		virtual VertexBuffer GetVertexBuffer()
+		std::vector<Buffer> & GetBuffer()
 		{
-			return m_VBO;
+			return m_BufferVector;
 		}
-		virtual IndexBuffer GetIndexBuffer()
+		IndexBuffer GetIndexBuffer()
 		{
 			return m_IBO;
+		}
+		std::vector<std::shared_ptr<Texture>> & GetTexVector()
+		{
+			return m_TexVector;
 		}
 		size_t GetCount()
 		{

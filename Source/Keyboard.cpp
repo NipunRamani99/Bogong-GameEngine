@@ -1,6 +1,8 @@
-#include "../Includes/Keyboard.h"
+
 #include "../Imgui/imgui.h"
 #include <string>
+#include "../include/Keyboard.h"
+
 namespace bogong {
 	std::map<int, STATUS> Keyboard::KeyMap = std::map<int, STATUS>();
 

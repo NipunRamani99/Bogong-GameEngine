@@ -72,9 +72,6 @@
     <ClInclude Include="include\Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\GLSetup.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\GuideLines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -149,9 +146,6 @@
     <ClCompile Include="Source\Globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GLSetup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Init.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -176,25 +170,17 @@
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\Quad.hpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\fragmentShader(N).glsl" />
-    <None Include="Shaders\fragmentShader.glsl" />
-    <None Include="Shaders\FragmentShaderLight.glsl" />
-    <None Include="Shaders\FragmentShaderRipple.glsl" />
-    <None Include="Shaders\vertexShader(N).glsl" />
-    <None Include="Shaders\vertexShader.glsl" />
-    <None Include="Shaders\VertexShaderLight.glsl" />
-    <None Include="Shaders\vertexShaderNorm.glsl" />
-    <None Include="Shaders\VertexShaderRipple.glsl" />
-    <None Include="Shaders\MarkerVertexShader.glsl" />
-    <None Include="Shaders\MarkerFragmentShader.glsl" />
-    <None Include="Shaders\Grid.vert" />
-    <None Include="Shaders\Grid.frag" />
     <None Include="include\Grid\Grid.frag" />
     <None Include="include\Grid\Grid.vert" />
     <None Include="include\LightFragmentShader.glsl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Shaders\SimpleFragmentShader.glsl" />
+    <None Include="Shaders\SimpleVertexShader.glsl" />
   </ItemGroup>
 </Project>

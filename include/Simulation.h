@@ -14,7 +14,6 @@ namespace bogong {
 	private:
 		glm::vec3 lightPos = glm::vec3(-1.0f, 0.2f, 0.0f);
 		Shader m_Shader;
-		Shader gerstener;
 		std::shared_ptr<FPCamera> camera;
 		public:
 

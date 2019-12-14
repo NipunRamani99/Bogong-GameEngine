@@ -1,7 +1,7 @@
-#include "../Includes/Imgui.h"
-#include "../Includes/Engine.h"
-#include "../Includes/Init.hpp"
-
+#include "../include/Imgui.h"
+#include "../include/Engine.h"
+#include "../include/Init.hpp"
+#include "../include/Globals.h"
 bogong::Engine::Engine()
 {
 	int gpuDevice = 0;
