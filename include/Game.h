@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Globals.h"
 #include "Models/Cube.hpp"
+#include "Models/Plane.hpp"
 namespace bogong {
 	class Game
 	{
@@ -15,8 +16,7 @@ namespace bogong {
 		glm::vec3 lightPos = glm::vec3(-1.0f, 0.2f, 0.0f);
 		Shader m_Shader;
 		std::shared_ptr<FPCamera> camera;
-		std::shared_ptr<Quad> quad;
-		std::shared_ptr<Cube> cube;
+		std::shared_ptr<Plane> plane;
 		public:
 
 		Game();

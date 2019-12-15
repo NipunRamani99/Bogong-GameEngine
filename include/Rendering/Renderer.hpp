@@ -38,7 +38,7 @@ namespace bogong {
 			m_Shader.Bind();
 			assert(!error(), __LINE__);
 
-			if (mesh->GetIndexBuffer()->GetID() != 0)
+			if (mesh->GetIndexBuffer())
 			{
 				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
 			}

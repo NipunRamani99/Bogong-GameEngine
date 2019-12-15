@@ -127,6 +127,7 @@
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\Lights.hpp" />
     <ClInclude Include="include\Models\Cube.hpp" />
+    <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />

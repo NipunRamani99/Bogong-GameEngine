@@ -65,7 +65,7 @@ namespace bogong {
 				}
 			}
 			assert(!error());
-			if (m_IBO->GetID())
+			if (m_IBO)
 				m_IBO->Bind();
 			for (auto & t : m_TexVector) {
 				t->Bind();
