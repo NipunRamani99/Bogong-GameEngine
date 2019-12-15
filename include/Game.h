@@ -7,6 +7,7 @@
 #include "Surface.hpp"
 #include "Camera.h"
 #include "Globals.h"
+#include "Models/Cube.hpp"
 namespace bogong {
 	class Game
 	{
@@ -15,6 +16,7 @@ namespace bogong {
 		Shader m_Shader;
 		std::shared_ptr<FPCamera> camera;
 		std::shared_ptr<Quad> quad;
+		std::shared_ptr<Cube> cube;
 		public:
 
 		Game();

@@ -30,9 +30,15 @@ namespace bogong {
 		template<typename T>
 		void RenderMesh(const std::shared_ptr<T> & mesh)
 		{
+			assert(!error(), __LINE__);
+
 			m_VAO.Bind();
+			assert(!error(), __LINE__);
+
 			m_Shader.Bind();
-			if (mesh->GetIndexBuffer().GetID() != 0)
+			assert(!error(), __LINE__);
+
+			if (mesh->GetIndexBuffer()->GetID() != 0)
 			{
 				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
 			}
@@ -42,9 +48,13 @@ namespace bogong {
 			}
 
 			size_t count = mesh->GetCount();
+			assert(!error(), __LINE__);
+
 			m_Shader.setMat4("model", m_Model);
+			assert(!error(), __LINE__);
+
 			m_DrawCall(m_DrawMode, count);
-			error();
+			assert(!error(),__LINE__);
 		}
 		template<typename T>
 		void BindBuffer(const std::shared_ptr<T> & mesh)

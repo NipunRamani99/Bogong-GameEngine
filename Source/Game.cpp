@@ -9,20 +9,24 @@ bogong::Game::Game()
 	m_Shader.LoadShader("Shaders/SimpleVertexShader.glsl", ShaderType::VERTEX);
 	m_Shader.LoadProgram();
 	assert(!error());
-	quad = std::make_shared<Quad>();
-	quad->SetShader(m_Shader);
+	cube = std::make_shared<Cube>();
+	cube->SetShader(m_Shader);
 	assert(!error());
-	
+	camera = std::make_shared<FPCamera>();
 }
 
 void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse> &mouse,
 	float delta)
 {
-	
+	m_Shader.Bind();
+	camera->Update(kbd, mouse,delta);
+	m_Shader.setMat4("projection", camera->GetProjection());
+	m_Shader.setMat4("view", camera->GetView());
 }
 
 void bogong::Game::Draw() const
 {
-	quad->Draw();
+	assert(!error(), __LINE__);
+	cube->Draw();
 	assert(!error());
 }

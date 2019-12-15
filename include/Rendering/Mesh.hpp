@@ -9,12 +9,13 @@
 #include "../Globals.h"
 namespace bogong {
 	typedef std::pair<std::shared_ptr<VertexBuffer>, VertexBufferLayout> Buffer;
+	
 	class Mesh
 	{
 		
 	protected:
 		std::vector<Buffer> m_BufferVector;
-		IndexBuffer m_IBO;
+		std::shared_ptr<IndexBuffer> m_IBO;
 		std::vector<std::shared_ptr<Texture>> m_TexVector;
 		size_t count = 0;
 	public:
@@ -23,7 +24,7 @@ namespace bogong {
 		{
 			return m_BufferVector;
 		}
-		IndexBuffer GetIndexBuffer()
+		std::shared_ptr<IndexBuffer> GetIndexBuffer()
 		{
 			return m_IBO;
 		}
@@ -64,8 +65,8 @@ namespace bogong {
 				}
 			}
 			assert(!error());
-			if (m_IBO.GetID())
-				m_IBO.Bind();
+			if (m_IBO->GetID())
+				m_IBO->Bind();
 			for (auto & t : m_TexVector) {
 				t->Bind();
 			}

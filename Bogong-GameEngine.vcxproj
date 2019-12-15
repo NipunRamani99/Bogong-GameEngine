@@ -126,6 +126,7 @@
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\Lights.hpp" />
+    <ClInclude Include="include\Models\Cube.hpp" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />
@@ -163,7 +164,6 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
     <ClCompile Include="Source\Game.cpp" />
-    <ClCompile Include="Source\Quad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl" />

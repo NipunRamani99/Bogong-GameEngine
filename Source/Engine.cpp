@@ -34,6 +34,9 @@ void bogong::Engine::Start()
 	mouse = std::make_shared<Mouse>();
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);  	
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 
 }
 
@@ -62,14 +65,18 @@ void bogong::Engine::RenderEverything()
 
 void bogong::Engine::Loop()
 {
+	assert(!error(), " " + __LINE__);
+
 	prevTime = currentTime;
 	currentTime = glfwGetTime();
 	Init::StartImguiFrame();
 	Init::PrepareImguiFrame();
+	assert(!error(), " " + __LINE__);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
+	assert(!error(), " " + __LINE__);
 	Update(currentTime - prevTime);
-
+	assert(!error(), " "+__LINE__);
 	RenderEverything();
 
 }

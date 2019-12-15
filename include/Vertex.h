@@ -15,6 +15,7 @@ struct Vertex
 	float nz = 0.0f;
 	float u  = 0.0f;
 	float v  = 0.0f;
+	char padding[16];
 	Vertex<T>(){}
 	Vertex<T>(glm::vec3 pos, glm::vec4 color, glm::vec3 normals=glm::vec3(0,0,0), glm::vec2 uv = glm::vec2(0,0))
 	{
