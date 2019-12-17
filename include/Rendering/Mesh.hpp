@@ -18,6 +18,7 @@ namespace bogong {
 		std::shared_ptr<IndexBuffer> m_IBO;
 		std::vector<std::shared_ptr<Texture>> m_TexVector;
 		size_t count = 0;
+		glm::mat4 model = glm::mat4(1.0f);
 	public:
 		Mesh() {}
 		std::vector<Buffer> & GetBuffer()
@@ -31,6 +32,10 @@ namespace bogong {
 		std::vector<std::shared_ptr<Texture>> & GetTexVector()
 		{
 			return m_TexVector;
+		}
+		glm::mat4 GetModel()
+		{
+			return model;
 		}
 		void Bind()
 		{

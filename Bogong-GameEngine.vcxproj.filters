@@ -81,9 +81,6 @@
     <ClInclude Include="include\Keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Lights.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -121,6 +118,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Models\Plane.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Entity.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -174,5 +174,7 @@
     </None>
     <None Include="Shaders\SimpleFragmentShader.glsl" />
     <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\PhongVertexShader.glsl" />
+    <None Include="Shaders\PhongFragmentShader.glsl" />
   </ItemGroup>
 </Project>

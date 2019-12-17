@@ -119,13 +119,13 @@
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\CameraPosVisualizer.hpp" />
     <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\Entity.hpp" />
     <ClInclude Include="include\ErrorLog.h" />
     <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\Imgui.h" />
     <ClInclude Include="include\IndexBuffer.h" />
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />
-    <ClInclude Include="include\Lights.hpp" />
     <ClInclude Include="include\Models\Cube.hpp" />
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Mouse.h" />
@@ -168,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl" />
+    <None Include="Shaders\PhongFragmentShader.glsl" />
+    <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\SimpleFragmentShader.glsl" />
     <None Include="Shaders\SimpleVertexShader.glsl" />
   </ItemGroup>

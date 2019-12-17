@@ -6,23 +6,19 @@
 namespace bogong {
 	class Mouse;
 }
-
 glm::mat4 bogong::Camera::GetProjection()
 {
 	return projection;
 }
-
 glm::mat4 bogong::Camera::GetView()
 {
 	return view;
 }
-
 bogong::FPCamera::FPCamera()
 {
 	projection = glm::perspective(glm::radians(45.0f), float(screenWidth) / float(screenHeight), 0.1f, 100.0f);
 	view = lookAt(cameraPos, cameraPos + cameraFront, up);
 }
-
 void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::shared_ptr<Mouse>& mouse, float delta)
 {
 

@@ -61,6 +61,9 @@ namespace bogong {
 			auto buffer1 = std::make_pair(vbo, vbl);
 			m_BufferVector.push_back(buffer1);
 		}
+		void bind_uniforms(Shader & shader) {
+
+		}
 	};
 	class Quad{
 	private:

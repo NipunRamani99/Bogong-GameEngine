@@ -49,8 +49,9 @@ namespace bogong {
 
 			size_t count = mesh->GetCount();
 			assert(!error(), __LINE__);
-
-			m_Shader.setMat4("model", m_Model);
+			mesh->bind_uniforms(m_Shader);
+			glm::mat4 model = mesh->GetModel();
+			m_Shader.setMat4("model", model);
 			assert(!error(), __LINE__);
 
 			m_DrawCall(m_DrawMode, count);

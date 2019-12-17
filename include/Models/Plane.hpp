@@ -42,6 +42,9 @@ namespace bogong {
 			m_BufferVector.push_back(buffer1);
 			count = 4;
 		}
+		void bind_uniforms(Shader & shader) {
+
+		}
 	};
 	class Plane {
 	private:
