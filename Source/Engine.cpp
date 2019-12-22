@@ -43,7 +43,7 @@ void bogong::Engine::Start()
 void bogong::Engine::Update(float deltime)
 {
 
-	game->Update(kbd, mouse, static_cast<float>(deltime));
+	game->Update(kbd, mouse, static_cast<float>(deltime),window);
 }
 
 void bogong::Engine::DrawCalls() const

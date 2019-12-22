@@ -2,6 +2,7 @@
 #include "../Rendering/Renderer.hpp"
 #include "../Globals.h"
 #include "../Entity.hpp"
+#include "../../Imgui/imgui.h"
 namespace bogong {
 	class CubeMesh : public Mesh{
 	private:
@@ -10,7 +11,10 @@ namespace bogong {
 		std::shared_ptr<Texture> tex;
 		glm::vec4 object_colour;
 	public:
-		CubeMesh(glm::vec4 colour) {
+		CubeMesh(glm::vec4 colour) 
+			:
+			Mesh()
+		{
 			object_colour = colour;
 			float vertices[] = {
 			  -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -72,12 +76,19 @@ namespace bogong {
 			shader.setVec4("object_colour", object_colour);
 		}
 	};
-	class Cube {
+	class Cube :public Entity
+	{
 		std::shared_ptr<CubeMesh> mesh;
 		std::shared_ptr<Renderer> renderer;
 		std::shared_ptr<Renderer> dots;
 	public:
-		Cube(glm::vec4 colour) {
+		Cube(glm::vec4 colour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+			 glm::vec3 pos    = glm::vec3(0.0f, 0.0f, 0.0f),
+			 glm::vec3 scale  = glm::vec3(1.0f,1.0f,1.0f)
+			)
+			:
+			Entity(pos,scale)
+		{
 			mesh = std::make_shared<CubeMesh>(colour);
 			renderer = std::make_shared<Renderer>();
 			dots = std::make_shared<Renderer>();
@@ -85,18 +96,34 @@ namespace bogong {
 			renderer->BindBuffer(mesh);
 			renderer->SetDrawMode(GL_TRIANGLES);
 			dots->SetDrawMode(GL_POINTS);
+			UpdateModel();
 		}
-
+		void Update(std::string id) {
+			std::string label1 = "Input Scale##"+id;
+			std::string label2 = "Input Pos##"+id;
+			std::string label3 = "Input Rotate##"+id;
+			if (ImGui::InputFloat3(label1.c_str(), (float*)&scale, 4))
+			{
+				Scale(scale);
+			}
+			if (ImGui::InputFloat3(label2.c_str(), (float*)&pos, 4))
+			{
+				Translate(pos);
+			}
+			if (ImGui::InputFloat3(label3.c_str(), (float*)&rotate, 4))
+			{
+				Rotate(rotate);
+			}
+		}
 		void SetShader(Shader & shader) {
 			renderer->SetShader(shader);
-			dots->SetShader(shader);
+		
 		}
 		void Draw()
 		{
 			glPointSize(5.0f);
 			assert(!error(), __LINE__);
-			renderer->RenderMesh(mesh);
-			dots->RenderMesh(mesh);
+			renderer->RenderMesh(mesh,model);
 			assert(!error());
 		}
 	};

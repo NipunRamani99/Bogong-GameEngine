@@ -37,6 +37,8 @@ namespace bogong
 	public:
 		FPCamera();
 		void Update(const std::shared_ptr<Keyboard> &kbd, const std::shared_ptr<Mouse> & mouse, float delta);
+		void debug();
+		void ClearMouse(const std::shared_ptr<Mouse>& mouse);
 	};
 
 

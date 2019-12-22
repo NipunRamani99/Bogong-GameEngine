@@ -117,7 +117,6 @@
   <ItemGroup>
     <ClInclude Include="include\Callbacks.h" />
     <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\CameraPosVisualizer.hpp" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Entity.hpp" />
     <ClInclude Include="include\ErrorLog.h" />

@@ -9,6 +9,7 @@
 #include "Globals.h"
 #include "Models/Cube.hpp"
 #include "Models/Plane.hpp"
+#include <GLFW/glfw3.h>
 namespace bogong {
 	class Game
 	{
@@ -20,10 +21,18 @@ namespace bogong {
 		std::shared_ptr<FPCamera> camera;
 		std::shared_ptr<Plane> plane;
 		std::shared_ptr<Cube> cube;
+		std::shared_ptr<Cube> light_cube;
+		float currentTime = 0.0f;
+		float totalTime = 3.0f;
+		
+		bool isMouseEnabled = false;
+
+		float timer = 0.0f;
+		bool canToggle = true;
 		public:
 
 		Game();
-		void Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse>& mouse, float delta);
+		void Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse>& mouse, float delta,GLFWwindow * window);
 		void Draw() const;
 	};
 }
