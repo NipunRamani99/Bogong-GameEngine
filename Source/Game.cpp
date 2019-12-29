@@ -5,6 +5,10 @@
 #include "../include/Surface.hpp"
 #include <GLFW/glfw3.h>
 #define TO_DEG(x) 3.141592f*x/180.0f
+
+struct KeyFrame {
+	glm::vec3 Pos;
+};
 float lerp(float v0,float v1,float t) {
 	return (1 - t)*v0 + t * v1;
 }
