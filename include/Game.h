@@ -14,7 +14,7 @@ namespace bogong {
 	class Game
 	{
 	private:
-		glm::vec3 light_pos = glm::vec3(-1.0f, 0.2f, 0.0f);
+		glm::vec3 light_pos = glm::vec3(4.0f, 4.0f, 0.0f);
 		glm::vec4 object_colour = glm::vec4(0.5f, 0.1f, 0.4f, 1.0f);
 		Shader m_Shader;
 		Shader phong_shader;

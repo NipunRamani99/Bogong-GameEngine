@@ -70,7 +70,6 @@ void bogong::Engine::Loop()
 	prevTime = currentTime;
 	currentTime = glfwGetTime();
 	Init::StartImguiFrame();
-	Init::PrepareImguiFrame();
 	assert(!error(), " " + __LINE__);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();

@@ -19,8 +19,8 @@ glm::vec3 lerp(glm::vec3 v0, glm::vec3 v1, float t) {
 	retn_val.z = lerp(v0.z, v1.z, t);
 	return retn_val;
 }
-glm::vec3 start_val = glm::vec3(0.0f);
-glm::vec3 end_val = glm::vec3(1.0f);
+glm::vec3 start_val = glm::vec3(4.0f,4.0f,0.0f);
+glm::vec3 end_val = glm::vec3(-4.0f,4.0f,0.0f);
 bogong::Game::Game()
 {
 	m_Shader.LoadShader("Shaders/SimpleFragmentShader.glsl", ShaderType::FRAGMENT);
@@ -43,12 +43,11 @@ bogong::Game::Game()
 void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse> &mouse,
 	float delta,GLFWwindow * window)
 {
+
 	currentTime += delta;
 	float amt = sinf( currentTime );
 	glm::vec3 val = lerp(start_val, end_val, amt);
-	
-
-
+	light_pos = val;
 	if (kbd->isKeyPressed(KEY::KEY_K))
 	{
 		if (canToggle) {
@@ -82,9 +81,14 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 	phong_shader.Bind();
 	phong_shader.setMat4("projection", camera->GetProjection());
 	phong_shader.setMat4("view", camera->GetView());
+	ImGui::Begin("Bogong");
+	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
+	ImGui::SetWindowSize(ImVec2(400.0f, 500.0f));
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
 	ImGui::Text("Cube 1:");
 	cube->Update("1");
-	light_pos = val;
+	
 	ImGui::InputFloat("Total Time: ", (float*)&totalTime, 4);
 	ImGui::InputFloat3("Start Val: ", (float*)&start_val, 4);
 	ImGui::InputFloat3("End Val: ", (float*)&end_val, 4);
@@ -96,8 +100,8 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 		light_cube->Translate(light_pos);
 		phong_shader.setVec3("light_pos", light_pos);
 	}
-
-
+	phong_shader.setVec3("viewPos", camera->GetPos());
+	ImGui::End();
 }
 
 void bogong::Game::Draw() const
