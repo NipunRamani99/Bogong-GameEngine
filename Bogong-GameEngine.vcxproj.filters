@@ -51,9 +51,6 @@
     <ClInclude Include="include\Rendering\Renderer.hpp">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="include\Callbacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>

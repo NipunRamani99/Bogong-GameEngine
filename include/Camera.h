@@ -34,12 +34,15 @@ namespace bogong
 		float currMouseY = 0.0f;
 		float pitch = 0.0f;
 		float yaw = -90.0f;
+		bool debug = true;
 	public:
 		FPCamera();
 		void Update(const std::shared_ptr<Keyboard> &kbd, const std::shared_ptr<Mouse> & mouse, float delta);
 
 		glm::vec3 GetPos() { 
 			return cameraPos; };
+		inline void ToggleDebug() { debug = !debug; }
+		
 		void ClearMouse(const std::shared_ptr<Mouse>& mouse);
 	};
 

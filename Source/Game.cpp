@@ -19,8 +19,23 @@ glm::vec3 lerp(glm::vec3 v0, glm::vec3 v1, float t) {
 	retn_val.z = lerp(v0.z, v1.z, t);
 	return retn_val;
 }
+struct Material {
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+	float shininess;
+};
+struct Light {
+	glm::vec3 ambient;
+	glm::vec3 diffuse;
+	glm::vec3 specular;
+};
+glm::vec3 light_colour = glm::vec3(1.0f, 1.0f, 1.0f);
+Material material;
+Light light;
 glm::vec3 start_val = glm::vec3(4.0f,4.0f,0.0f);
 glm::vec3 end_val = glm::vec3(-4.0f,4.0f,0.0f);
+static float amt = 0.0f;
 bogong::Game::Game()
 {
 	m_Shader.LoadShader("Shaders/SimpleFragmentShader.glsl", ShaderType::FRAGMENT);
@@ -32,6 +47,21 @@ bogong::Game::Game()
 	phong_shader.Bind();
 	phong_shader.setVec3("light_pos", light_pos);	
 	phong_shader.setFloat("ambient_str", 0.2f);
+	light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
+	light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+	phong_shader.setVec3("light.ambient", light.ambient);
+	phong_shader.setVec3("light.diffuse", light.diffuse);
+	phong_shader.setVec3("light.specular", light.specular);
+	material.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+	material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+	material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+	material.shininess = 32.0f;
+	phong_shader.setVec3("material.ambient", material.ambient);
+	phong_shader.setVec3("material.diffuse", material.diffuse);
+	phong_shader.setVec3("material.specular", material.specular);
+	phong_shader.setFloat("material.shininess", material.shininess);
+	phong_shader.setVec3("light_colour", light_colour);
 	assert(!error());
 	cube = std::make_shared<Cube>(object_colour);
 	cube->SetShader(phong_shader);
@@ -45,7 +75,7 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 {
 
 	currentTime += delta;
-	float amt = sinf( currentTime );
+	amt = 0.5 - 0.5*sinf(currentTime);
 	glm::vec3 val = lerp(start_val, end_val, amt);
 	light_pos = val;
 	if (kbd->isKeyPressed(KEY::KEY_K))
@@ -88,11 +118,10 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 
 	ImGui::Text("Cube 1:");
 	cube->Update("1");
-	
 	ImGui::InputFloat("Total Time: ", (float*)&totalTime, 4);
 	ImGui::InputFloat3("Start Val: ", (float*)&start_val, 4);
 	ImGui::InputFloat3("End Val: ", (float*)&end_val, 4);
-
+	ImGui::InputFloat("Lerp amt: ", &amt, 4);
 	phong_shader.setVec3("light_pos", light_pos);
 	light_cube->Translate(light_pos);
 
@@ -101,6 +130,8 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 		phong_shader.setVec3("light_pos", light_pos);
 	}
 	phong_shader.setVec3("viewPos", camera->GetPos());
+
+	if (ImGui::Button("Camera Debug")) { camera->ToggleDebug(); }
 	ImGui::End();
 }
 

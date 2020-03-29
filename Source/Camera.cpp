@@ -52,11 +52,17 @@ void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::s
 	currMouseY = mouse->y;
 	float xoffset = currMouseX - prevMouseX;
 	float yoffset = prevMouseY - currMouseY;
-	ImGui::SetWindowPos(ImVec2(800, 0));
+
 	std::string pos = "X Pos: " + std::to_string(currMouseX) + " Y Pos: " + std::to_string(currMouseY);
 	std::string offstr = "X Offset: "+std::to_string(xoffset) + " Y Offset: " + std::to_string(yoffset);
-	ImGui::Text(pos.c_str());
-	ImGui::Text(offstr.c_str());
+
+	if (debug) {
+		ImGui::Begin("Camera debug.");
+		ImGui::SetWindowPos(ImVec2(800, 0));
+		ImGui::Text(pos.c_str());
+		ImGui::Text(offstr.c_str());
+		ImGui::End();
+	}
 	xoffset = 0.05*xoffset;
 	yoffset = 0.05*yoffset;
 	yaw += xoffset;
