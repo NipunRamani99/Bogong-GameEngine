@@ -63,7 +63,6 @@ namespace bogong {
 		}
 		void Draw() {
 			renderer->RenderMesh(plane);
-			assert(!error(), __LINE__);
 		}
 	};
 }

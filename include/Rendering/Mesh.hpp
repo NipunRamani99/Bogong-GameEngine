@@ -72,8 +72,11 @@ namespace bogong {
 			assert(!error());
 			if (m_IBO)
 				m_IBO->Bind();
+			int id = 0;
 			for (auto & t : m_TexVector) {
+				glActiveTexture(GL_TEXTURE0+id);
 				t->Bind();
+				id++;
 			}
 		}
 		void Unbind()

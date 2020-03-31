@@ -117,6 +117,9 @@
     <ClInclude Include="include\Entity.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Models\TextureFactory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -161,6 +164,9 @@
     <ClCompile Include="Source\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\Models\TextureFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl">
@@ -170,5 +176,7 @@
     <None Include="Shaders\SimpleVertexShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
+    <None Include="Shaders\LightMapVertexShader.glsl" />
+    <None Include="Shaders\LightMapFragmentShader.glsl" />
   </ItemGroup>
 </Project>

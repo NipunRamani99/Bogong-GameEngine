@@ -65,17 +65,13 @@ void bogong::Engine::RenderEverything()
 
 void bogong::Engine::Loop()
 {
-	assert(!error(), " " + __LINE__);
 
 	prevTime = currentTime;
-	currentTime = glfwGetTime();
+	currentTime = (float)glfwGetTime();
 	Init::StartImguiFrame();
-	assert(!error(), " " + __LINE__);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
-	assert(!error(), " " + __LINE__);
 	Update(currentTime - prevTime);
-	assert(!error(), " "+__LINE__);
 	RenderEverything();
 
 }

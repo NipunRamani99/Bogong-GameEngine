@@ -1,74 +1,97 @@
+#pragma once
 #include "../Rendering/Mesh.hpp"
 #include "../Rendering/Renderer.hpp"
 #include "../Globals.h"
 #include "../Entity.hpp"
 #include "../../Imgui/imgui.h"
+
+#include "TextureFactory.hpp"
+
 namespace bogong {
+	
 	class CubeMesh : public Mesh{
 	private:
 		std::shared_ptr<VertexBuffer> vbo;
 		std::shared_ptr<IndexBuffer> ibo;
 		std::shared_ptr<Texture> tex;
 		glm::vec4 object_colour;
+		int width = 0;
+		int height = 0;
 	public:
 		CubeMesh(glm::vec4 colour) 
 			:
 			Mesh()
 		{
+
 			object_colour = colour;
 			float vertices[] = {
-			  -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			   0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			   0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			   0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			  -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-			  -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-	
-			  -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			   0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			  -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			   0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-			  -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
 
-			  -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			  -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			  -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			  -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-			  -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-			  -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		
-			   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			   0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			   0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-			   0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-			   0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		
-			  -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			   0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-			   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			   0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			  -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-			  -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		
-			   0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			  -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-			   0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			  -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			   0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-			  -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
+
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
+
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
+		     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
+
+
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
+
+		    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
+		    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
+		    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
+
 			};
 			vbo = std::make_shared<VertexBuffer>(&vertices,sizeof(vertices));
 			
-			assert(!error());
+			
 			count = sizeof(vertices)/(sizeof(float)*6);
 			VertexBufferLayout vbl;
 			vbl.AddElement<float>(3);
 			vbl.AddElement<float>(3);
+			vbl.AddElement<float>(2);
 			auto buffer1 = std::make_pair(vbo, vbl);
 			m_BufferVector.push_back(buffer1);
+		
+			tex = TextureFactory::make_texture("./assets/models/crate/container2.png"); 
+			assert(!error());
+			auto tex2 = TextureFactory::make_texture("./assets/models/crate/container2_specular.png");
 			
+			m_TexVector.push_back(tex);
+			m_TexVector.push_back(tex2);
 		}
 	
 		void bind_uniforms(Shader & shader)
@@ -116,13 +139,15 @@ namespace bogong {
 			}
 		}
 		void SetShader(Shader & shader) {
+			shader.Bind();
+			shader.setInt("s", 0);
+			shader.setInt("map", 1);
 			renderer->SetShader(shader);
 		
 		}
 		void Draw()
 		{
 			glPointSize(5.0f);
-			assert(!error(), __LINE__);
 			renderer->RenderMesh(mesh,model);
 			assert(!error());
 		}

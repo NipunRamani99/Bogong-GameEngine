@@ -41,12 +41,12 @@ bogong::Game::Game()
 	m_Shader.LoadShader("Shaders/SimpleFragmentShader.glsl", ShaderType::FRAGMENT);
 	m_Shader.LoadShader("Shaders/SimpleVertexShader.glsl", ShaderType::VERTEX);
 	m_Shader.LoadProgram();
-	phong_shader.LoadShader("shaders/PhongVertexShader.glsl", ShaderType::VERTEX);
-	phong_shader.LoadShader("shaders/PhongFragmentShader.glsl", ShaderType::FRAGMENT);
+	phong_shader.LoadShader("shaders/LightMapVertexShader.glsl", ShaderType::VERTEX);
+	phong_shader.LoadShader("shaders/LightMapFragmentShader.glsl", ShaderType::FRAGMENT);
 	phong_shader.LoadProgram();
 	phong_shader.Bind();
 	phong_shader.setVec3("light_pos", light_pos);	
-	phong_shader.setFloat("ambient_str", 0.2f);
+	
 	light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 	light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
 	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -56,7 +56,7 @@ bogong::Game::Game()
 	material.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
 	material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
 	material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
-	material.shininess = 32.0f;
+	material.shininess = 2.0f;
 	phong_shader.setVec3("material.ambient", material.ambient);
 	phong_shader.setVec3("material.diffuse", material.diffuse);
 	phong_shader.setVec3("material.specular", material.specular);
@@ -133,11 +133,42 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 
 	if (ImGui::Button("Camera Debug")) { camera->ToggleDebug(); }
 	ImGui::End();
+	ImGui::Begin("Material and Light");
+	if (ImGui::InputFloat3("Material Ambient", (float*)&material.ambient, 4))
+	{
+		phong_shader.setVec3("material.ambient", material.ambient);
+	}
+	if (ImGui::InputFloat3("Material diffuse", (float*)&material.diffuse, 4))
+	{
+		phong_shader.setVec3("material.diffuse", material.diffuse);
+	}
+	if (ImGui::InputFloat3("Material Specular", (float*)&material.specular, 4))
+	{
+		phong_shader.setVec3("material.specular", material.specular);
+	}
+	if (ImGui::InputFloat("Material Shininess", (float*)&material.shininess, 4))
+	{
+		phong_shader.setFloat ("material.shininess", material.shininess);
+	}
+
+	if (ImGui::InputFloat3("Light Ambient", (float*)&light.ambient, 4))
+	{
+		phong_shader.setVec3("light.ambient", light.ambient);
+	}
+	if (ImGui::InputFloat3("Light Diffuse", (float*)&light.diffuse, 4))
+	{
+		phong_shader.setVec3("light.ambient", light.diffuse);
+	}
+	if (ImGui::InputFloat3("Light Specular", (float*)&light.specular, 4))
+	{
+		phong_shader.setVec3("light.ambient", light.specular);
+	}
+	ImGui::End();
 }
 
 void bogong::Game::Draw() const
 {
-	assert(!error(), __LINE__);
+	
 	cube->Draw();
 	light_cube->Draw();
 	assert(!error());

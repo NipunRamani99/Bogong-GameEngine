@@ -23,8 +23,8 @@ namespace bogong
 		std::shared_ptr<Keyboard> kbd;
 		std::shared_ptr<Mouse> mouse;
 		int camID = 0;
-		double prevTime = 0.0;
-		double currentTime = 0.0;
+		float prevTime = 0.0;
+		float currentTime = 0.0;
 	public:
 
 		bool KeepRendering = true;

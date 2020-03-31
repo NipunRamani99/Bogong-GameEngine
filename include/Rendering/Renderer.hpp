@@ -18,7 +18,7 @@ namespace bogong {
 		glm::mat4 m_Model = glm::mat4(1.0);
 		GLenum m_DrawMode;
 		Shader m_Shader;
-		using DrawCall = std::function<void(GLenum, int)>;
+		using DrawCall = std::function<void(GLenum, unsigned int)>;
 		DrawCall  m_DrawCall = [](GLenum, int)-> void {};
 	public:
 
@@ -30,61 +30,56 @@ namespace bogong {
 		template<typename T>
 		void RenderMesh(const std::shared_ptr<T> & mesh)
 		{
-			assert(!error(), __LINE__);
+			
 
 			m_VAO.Bind();
-			assert(!error(), __LINE__);
 
 			m_Shader.Bind();
-			assert(!error(), __LINE__);
 
 			if (mesh->GetIndexBuffer())
 			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
+				m_DrawCall = [](GLenum DrawMode, unsigned int count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
 			}
 			else
 			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, count);  };
+				m_DrawCall = [](GLenum DrawMode, unsigned int count) { glDrawArrays(DrawMode, 0, count);  };
 			}
 
 			size_t count = mesh->GetCount();
-			assert(!error(), __LINE__);
+	
 			mesh->bind_uniforms(m_Shader);
 			glm::mat4 model = mesh->GetModel();
 			m_Shader.setMat4("model", model);
-			assert(!error(), __LINE__);
 
-			m_DrawCall(m_DrawMode, count);
-			assert(!error(), __LINE__);
+
+			m_DrawCall(m_DrawMode, (unsigned int) count);
+		
 		}
 		template<typename T>
 		void RenderMesh(const std::shared_ptr<T> & mesh,glm::mat4 model)
 		{
-			assert(!error(), __LINE__);
+
 
 			m_VAO.Bind();
-			assert(!error(), __LINE__);
+	
 
 			m_Shader.Bind();
-			assert(!error(), __LINE__);
+
 
 			if (mesh->GetIndexBuffer())
 			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
+				m_DrawCall = [](GLenum DrawMode, unsigned int count) { glDrawElements(DrawMode, count, GL_UNSIGNED_INT, 0); };
 			}
 			else
 			{
-				m_DrawCall = [](GLenum DrawMode, size_t count) { glDrawArrays(DrawMode, 0, count);  };
+				m_DrawCall = [](GLenum DrawMode, unsigned int count) { glDrawArrays(DrawMode, 0, count);  };
 			}
 
 			size_t count = mesh->GetCount();
-			assert(!error(), __LINE__);
 			mesh->bind_uniforms(m_Shader);
 			m_Shader.setMat4("model", model);
-			assert(!error(), __LINE__);
 
 			m_DrawCall(m_DrawMode, count);
-			assert(!error(), __LINE__);
 		}
 		template<typename T>
 		void BindBuffer(const std::shared_ptr<T> & mesh)
