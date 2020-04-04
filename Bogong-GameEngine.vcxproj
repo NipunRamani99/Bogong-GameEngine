@@ -128,8 +128,11 @@
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Models\TextureFactory.hpp" />
     <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Rendering\Header.h" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightNodeBase.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\MaterialData.hpp" />
     <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />

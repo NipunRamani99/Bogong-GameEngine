@@ -31,7 +31,7 @@
 		 {
 			 //Get type of light
 			 /*
-				std::shared_ptr<LightNodeBase> light = std::dynamic_pointer_cast<Material>(node);
+				std::shared_ptr<LightNodeBase> light = std::dynamic_pointer_cast<LightNodeBase>(node);
 				auto type = light.GetType();
 				switch( type )
 				{
@@ -81,7 +81,7 @@
 		 {
 			 //Bind mesh data
 			 /*
-			     std::shared_ptr<
+			     std::shared_ptr<ShapeNode> shnode = std::dynamic_pointer_cast<ShapeNode>(node);
 			     renderer->bindData( );
 			 
 			 */
