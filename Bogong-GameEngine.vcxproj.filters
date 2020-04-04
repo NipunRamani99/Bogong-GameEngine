@@ -178,5 +178,7 @@
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
+    <None Include="Shaders\MultipleLightVertex.glsl" />
+    <None Include="Shaders\MultipleLightFragment.glsl" />
   </ItemGroup>
 </Project>

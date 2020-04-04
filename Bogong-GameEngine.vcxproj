@@ -170,6 +170,8 @@
     <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
+    <None Include="Shaders\MultipleLightFragment.glsl" />
+    <None Include="Shaders\MultipleLightVertex.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\SimpleFragmentShader.glsl" />

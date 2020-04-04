@@ -20,7 +20,7 @@ namespace bogong {
 		Shader phong_shader;
 		std::shared_ptr<FPCamera> camera;
 		std::shared_ptr<Plane> plane;
-		std::shared_ptr<Cube> cube;
+		std::vector<std::shared_ptr<Cube>> cubes;
 		std::shared_ptr<Cube> light_cube;
 		float currentTime = 0.0f;
 		float totalTime = 3.0f;

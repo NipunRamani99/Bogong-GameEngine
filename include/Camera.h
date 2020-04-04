@@ -42,7 +42,7 @@ namespace bogong
 		glm::vec3 GetPos() { 
 			return cameraPos; };
 		inline void ToggleDebug() { debug = !debug; }
-		
+		glm::vec3 GetFront() { return cameraFront; }
 		void ClearMouse(const std::shared_ptr<Mouse>& mouse);
 	};
 
