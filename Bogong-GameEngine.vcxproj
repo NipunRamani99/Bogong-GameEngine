@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -128,7 +128,6 @@
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Models\TextureFactory.hpp" />
     <ClInclude Include="include\Mouse.h" />
-    <ClInclude Include="include\Rendering\Header.h" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightNodeBase.hpp" />
@@ -189,8 +188,8 @@
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
-    <None Include="Shaders\SimpleFragmentShader.glsl" />
-    <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\ColourFragmentShader.glsl" />
+    <None Include="Shaders\ColourVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

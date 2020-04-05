@@ -1,12 +1,16 @@
 #include "PointLightNode.hpp"
 
-bogong::node::PointLightNode::PointLightNode(std::string name)
+ bogong::node::PointLightNode::PointLightNode(PointLight pl, std::string name)
 	:
-	LightNodeBase(name)
+	NodeBase(name)
 {
+	this->pl = pl;
 }
 
-glm::vec3 bogong::node::PointLightNode::GetPos()
-{
-	return pos;
+ bogong::node::PointLight & bogong::node::PointLightNode::getData() {
+	return pl;
+}
+
+ glm::vec3 bogong::node::PointLightNode::GetPos() {
+	return pl.pos;
 }

@@ -138,9 +138,6 @@
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -223,11 +220,11 @@
     <None Include="include\LightFragmentShader.glsl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Shaders\SimpleFragmentShader.glsl" />
-    <None Include="Shaders\SimpleVertexShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
+    <None Include="Shaders\ColourVertexShader.glsl" />
+    <None Include="Shaders\ColourFragmentShader.glsl" />
   </ItemGroup>
 </Project>

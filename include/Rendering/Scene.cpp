@@ -6,7 +6,18 @@
 	root_node = node;
 }
 
-
+ /*
+ 
+ class Renderer{
+	private:
+	   Shader sh;
+    public:
+	void Render();
+	void SetLight();
+	void SetMaterial();
+	void SetMesh();
+ }
+ */
  void bogong::Scene::Draw(Shader & shader) {
 	 std::stack<std::shared_ptr<node::NodeBase>> st;
 	 st.push(root_node);
@@ -39,8 +50,8 @@
 					case Point:
 					{
 						//Set Shader Data.
-
-						
+						auto pl = light->getData();
+						renderer->SetLight( pl );
 						break;
 					}
 					case Spotlight:
