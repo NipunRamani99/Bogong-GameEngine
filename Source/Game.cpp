@@ -38,15 +38,14 @@ glm::vec3 end_val = glm::vec3(-4.0f,4.0f,0.0f);
 static float amt = 0.0f;
 bogong::Game::Game()
 {
-	m_Shader.LoadShader("Shaders/SimpleFragmentShader.glsl", ShaderType::FRAGMENT);
-	m_Shader.LoadShader("Shaders/SimpleVertexShader.glsl", ShaderType::VERTEX);
+	m_Shader.LoadShader("Shaders/ColourFragmentShader.glsl", ShaderType::FRAGMENT);
+	m_Shader.LoadShader("Shaders/ColourVertexShader.glsl", ShaderType::VERTEX);
 	m_Shader.LoadProgram();
 	phong_shader.LoadShader("shaders/LightMapVertexShader.glsl", ShaderType::VERTEX);
 	phong_shader.LoadShader("shaders/LightMapFragmentShader.glsl", ShaderType::FRAGMENT);
 	phong_shader.LoadProgram();
 	phong_shader.Bind();
-	phong_shader.setVec3("light_pos", light_pos);	
-	
+	phong_shader.setVec3("light_pos", light_pos);
 	light.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 	light.diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
 	light.specular = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -62,12 +61,12 @@ bogong::Game::Game()
 	phong_shader.setVec3("material.specular", material.specular);
 	phong_shader.setFloat("material.shininess", material.shininess);
 	phong_shader.setVec3("light_colour", light_colour);
-	assert(!error());
 	cube = std::make_shared<Cube>(object_colour);
 	cube->SetShader(phong_shader);
 	light_cube = std::make_shared<Cube>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), light_pos, glm::vec3(0.2f,0.2f,0.2f));
 	light_cube->SetShader(m_Shader);
 	camera = std::make_shared<FPCamera>();
+
 }
 
 void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse> &mouse,
@@ -115,7 +114,6 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2(400.0f, 500.0f));
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
 	ImGui::Text("Cube 1:");
 	cube->Update("1");
 	ImGui::InputFloat("Total Time: ", (float*)&totalTime, 4);
@@ -168,8 +166,8 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 
 void bogong::Game::Draw() const
 {
-	
-	cube->Draw();
+
 	light_cube->Draw();
+	cube->Draw();
 	assert(!error());
 }

@@ -1,5 +1,6 @@
 #include "Scene.hpp"
-
+#include <vector>
+#include "Nodes/ShapeNode.hpp"
  bogong::Scene::Scene() {}
 
  void bogong::Scene::SetRootNode(std::shared_ptr<node::NodeBase> node) {
@@ -7,23 +8,96 @@
 }
 
  /*
- 
+   
+   //Singleton this
+   class MeshDataCache{
+       public:
+	   
+	   static std::unordered_map<std::string,ptrBuffer> MeshDataMap;
+	   static ptrBuffer getBuffer(std::string name);
+	   static void AddBuffer(std::string name, ptrBuffer buffer)
+	   {
+	      MeshDataMap[name] = buffer;
+	   }
+   }
+
+
+
+*/
+
+ /*
+
+
+
  class Renderer{
 	private:
 	   Shader sh;
+	   VAO vao;
+	   std::vector<ptrBuffer> shapes;
     public:
-	void Render();
-	void SetLight();
-	void SetMaterial();
-	void SetMesh();
+	void initial_traversal( Node * node){
+		//Bind vao
+	    //Buffer data
+		for( buffer in shapes ) bindBuffer(buffer);
+	}
+	void RenderMesh( Meshptr mesh ){
+	   //bind vao
+		vao->Bind();
+	   //bind shader
+		sh->Bind();
+	   //bind buffers
+	    mesh->BindData();
+	   //call glDrawCall
+	    glDrawArrays(,,); 
+	}
+	void SetLightData(PointLight pl){
+	   sh.setInt("enablePointLight",1);
+	   //set uniforms
+	   sh.setVec3("pointlight.ambient",pl.ambient);
+	   sh.setVec3("pointlight.diffuse",pl.diffuse);
+	   sh.setVec3("pointlight.specular",pl.specular);
+	   sh.setVec3("pointlight.pos",pl.pos);
+	   sh.setFloat("pointlight.constant",pl.constant);
+	   sh.setFloat("pointlight.constant",pl.linear);
+	   sh.setFloat("pointlight.constant",pl.quadratic);
+	}
+	void SetLightData(SpotLight spl){
+	   sh.setInt("enableSpotLight",1);
+	   //set uniforms
+	   sh.setVec3("spotlight.ambient",spl.ambient);
+	   sh.setVec3("spotlight.diffuse",spl.diffuse);
+	   sh.setVec3("spotlight.specular",spl.specular);
+	   sh.setVec3("spotlight.pos",spl.pos);
+	   sh.setFloat("spotlight.innercutoff",spl.innercutoff);
+	   sh.setFloat("spotlight.outercutoff",spl.outercutoff);
+	}
+	void SetLightData(DirectionalLight dl){
+	   sh.setInt("enable
+	   sh.setVec3("directionallight.ambient",spl.ambient);
+	   sh.setVec3("directionallight.diffuse",spl.diffuse);
+	   sh.setVec3("directionallight.specular",spl.specular);
+	   sh.setVec3("directionallight.direction",spl.dir);
+	  
+
+	}
+	void SetMaterial(MaterialData mtl){
+	   sh.setVec3("material.ambient"   ,mtl.ambient);
+	   sh.setVec3("material.diffuse"   ,mtl.diffuse);
+	   sh.setVec3("material.specular"  ,mtl.specular);
+	   sh.setFloat("material.shininess",mtl.shininess);
+	 }
+
  }
  */
+ 
  void bogong::Scene::Draw(Shader & shader) {
-	 std::stack<std::shared_ptr<node::NodeBase>> st;
-	 st.push(root_node);
-	 while (!st.empty())
+	 std::vector<std::shared_ptr<node::NodeBase>> st;
+	 st.push_back(root_node);
+	 auto it = st.begin();
+	 auto end = st.end();
+	 while (it!=end)
 	 {
-		 auto node = st.top();
+		 auto node = *it;
 
 		 auto type = node->GetType();
 		 switch (type)
@@ -31,10 +105,8 @@
 		 case node::NodeType::Group:
 		 {
 			 auto vn = node->GetChilds();
-			 if (vn.size() != 0) {
-				 for (int i = vn.size() - 1; i >= 0; i--) {
-					 st.push(vn[i]);
-				 }
+			 for (auto n : vn) {
+				 st.push_back(n);
 			 }
 			 break;
 		 }
@@ -63,7 +135,6 @@
 					case Directional:
 					{
 					    //Set Shader Data.
-
 						break;
 					}
 					default:
@@ -90,13 +161,9 @@
 		 }
 		 case node::NodeType::Shape:
 		 {
-			 //Bind mesh data
-			 /*
-			     std::shared_ptr<ShapeNode> shnode = std::dynamic_pointer_cast<ShapeNode>(node);
-			     renderer->bindData( );
+
+			 auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(*it);
 			 
-			 */
-			 //Make draw call
 			 break;
 		 }
 		 default:
@@ -105,6 +172,7 @@
 			 std::system("pause");
 			 break;
 		 }
+		   it++;
 		 }
 	 }
  }

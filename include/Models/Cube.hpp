@@ -148,6 +148,7 @@ namespace bogong {
 		void Draw()
 		{
 			glPointSize(5.0f);
+			assert(!error());
 			renderer->RenderMesh(mesh,model);
 			assert(!error());
 		}

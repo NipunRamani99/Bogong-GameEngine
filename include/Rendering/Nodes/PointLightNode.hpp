@@ -8,7 +8,7 @@ namespace bogong {
 		public:
 			PointLightNode() = delete;
 			PointLightNode(PointLight pl, std::string name = "PointLight");
-			PointLight & getPointLight();
+			PointLight & getData();
 			glm::vec3 GetPos();
 		};
 	}

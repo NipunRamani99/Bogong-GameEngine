@@ -26,6 +26,7 @@ void bogong::Engine::Start()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	assert((bool)!error());
 	game = std::make_shared<Game>();
+	assert(!error());
 	int display_w, display_h;
 	glfwMakeContextCurrent(window);
 	glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -44,6 +45,7 @@ void bogong::Engine::Update(float deltime)
 {
 
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
+	assert(!error());
 }
 
 void bogong::Engine::DrawCalls() const
