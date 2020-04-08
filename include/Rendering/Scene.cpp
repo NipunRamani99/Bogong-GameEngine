@@ -1,7 +1,7 @@
 #include "Scene.hpp"
 #include <vector>
 #include "Nodes/ShapeNode.hpp"
- bogong::Scene::Scene() {}
+bogong::Scene::Scene() {}
 
  void bogong::Scene::SetRootNode(std::shared_ptr<node::NodeBase> node) {
 	root_node = node;
@@ -100,12 +100,15 @@
 		 auto node = *it;
 
 		 auto type = node->GetType();
+		 glm::mat4 model = node->GetModel();
 		 switch (type)
 		 {
 		 case node::NodeType::Group:
 		 {
 			 auto vn = node->GetChilds();
+			 
 			 for (auto n : vn) {
+				 n->applyTransform(model);
 				 st.push_back(n);
 			 }
 			 break;
@@ -162,8 +165,8 @@
 		 case node::NodeType::Shape:
 		 {
 
-			 auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(*it);
-			 
+			 auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
+			// auto parent = std::dynamic_pointer_cast<node::GroupNode>( shape_node->GetParent() );
 			 break;
 		 }
 		 default:

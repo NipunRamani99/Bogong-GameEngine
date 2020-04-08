@@ -1,18 +1,57 @@
 #include "ShapeNode.hpp"
 
- bogong::node::ShapeNode::ShapeNode(std::string name)
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, glm::vec3 colour, glm::vec3 pos, std::string name)
 	:
-	NodeBase(name)
+	NodeBase(name),
+	mesh(mesh),
+	colour(colour),
+	pos(pos)
 {
-
+	isColored = true;
 }
 
-bogong::node::ShapeNode::ShapeNode(const ShapeNode & shnode)
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, std::shared_ptr<Texture> tex, MaterialData mtl, glm::vec3 pos, std::string name)
 	:
-	NodeBase(shnode)
+	NodeBase(name),
+	mesh(mesh),
+	mtl(mtl),
+	tex(tex),
+	pos(pos)
 {
+	hasMaterial = true;
+	isTextured = true;
 }
 
- bogong::node::ShapeNode::~ShapeNode() {}
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, std::shared_ptr<Texture> tex, glm::vec3 pos, std::string name)
+	:
+	NodeBase(name),
+	mesh(mesh),
+	tex(tex),
+	pos(pos)
+{
+	isTextured = true;
+}
 
- void bogong::node::ShapeNode::Draw() {}
+void bogong::node::ShapeNode::setMaterial(MaterialData mtl) {
+	this->mtl = mtl;
+}
+
+void bogong::node::ShapeNode::setPos(glm::vec3 pos) {
+	this->pos = pos;
+}
+
+void bogong::node::ShapeNode::setModel(glm::mat4 model) {
+	this->model = model;
+}
+
+glm::vec3 bogong::node::ShapeNode::getPos() const {
+	return pos;
+}
+
+glm::mat4 bogong::node::ShapeNode::getModel() const {
+	return model;
+}
+
+std::shared_ptr<bogong::Mesh> bogong::node::ShapeNode::getMesh() const {
+	return mesh;
+}

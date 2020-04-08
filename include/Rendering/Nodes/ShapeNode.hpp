@@ -27,37 +27,39 @@ namespace bogong {
 			
 		*/
 
-		MaterialData basic_mtl = { {1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f},{1.0f,1.0f,1.0f} };
 		class ShapeNode : public NodeBase {
+			
 			bool isColored = false;
 			bool isTextured = false;
 			bool hasMaterial = false;
 			std::shared_ptr<Mesh> mesh;
 			std::shared_ptr<Texture> tex;
-			MaterialData mtl;
+			node::MaterialData mtl;
 			glm::mat4 model;
 			glm::vec3 pos;
 			glm::vec3 colour;
 		public:
-			ShapeNode(std::string name);
+			ShapeNode(std::string name) 
+				:
+				NodeBase(name)
+			{
+				type = NodeType::Shape;
+			}
 			ShapeNode() = delete;
-			ShapeNode(const ShapeNode & shnode);
+			ShapeNode(const ShapeNode & shnode) 
+				:
+				NodeBase(shnode)
+			{
+				type = NodeType::Shape;
+			}
 			ShapeNode(std::shared_ptr<Mesh> & mesh,
 				      glm::vec3 colour = glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3 pos = glm::vec3(0.0f),
-					  std::string name = "ShapeNode")
-				:
-				NodeBase(name),
-				mesh(mesh),
-				colour(colour),
-				pos(pos)
-			{
-				isColored = true;
-			}
+				std::string name = "ShapeNode");
 			ShapeNode(std::shared_ptr<Mesh> & mesh,
-					  glm::vec3 colour = glm::vec3(1.0f,0.0f,0.0f),
-				      MaterialData mtl = basic_mtl,
+					  node::MaterialData mtl,
+				      glm::vec3 colour = glm::vec3(1.0f,0.0f,0.0f),
 				      glm::vec3 pos = glm::vec3(0.0f),
-					  std::string name = "ShapeNode")
+				std::string name = "ShapeNode")
 				:
 				NodeBase(name),
 				mesh(mesh),
@@ -70,51 +72,22 @@ namespace bogong {
 			}
 			ShapeNode(std::shared_ptr<Mesh> & mesh,
 				std::shared_ptr<Texture> tex,
-				MaterialData mtl = basic_mtl,
+				node::MaterialData mtl,
 				glm::vec3 pos = glm::vec3(0.0f),
-				std::string name = "ShapeNode")
-				:
-				NodeBase(name),
-				mesh(mesh),
-				mtl(mtl),
-				tex(tex),
-				pos(pos)
-			{
-				hasMaterial = true;
-				isTextured = true;
-			}
+				std::string name = "ShapeNode");
 			ShapeNode(std::shared_ptr<Mesh> & mesh,
 				std::shared_ptr<Texture> tex,
 				glm::vec3 pos = glm::vec3(0.0f),
-				std::string name = "ShapeNode")
-				:
-				NodeBase(name),
-				mesh(mesh),
-				tex(tex),
-				pos(pos)
+				std::string name = "ShapeNode");
+			~ShapeNode()
 			{
-				isTextured = true;
 			}
-			~ShapeNode();
-			void setMaterial(MaterialData mtl) {
-				this->mtl = mtl;
-			}
-			void setPos(glm::vec3 pos) {
-				this->pos = pos;
-			}
-			void setModel(glm::mat4 model) {
-				this->model = model;
-			}
-			glm::vec3 getPos() const{
-				return pos;
-			}
-			glm::mat4 getModel() const{
-				return model;
-			}
-			std::shared_ptr<Mesh> getMesh() const{
-				return mesh;
-			}
-			void Draw();//I guess
+			void setMaterial(MaterialData mtl);
+			void setPos(glm::vec3 pos);
+			void setModel(glm::mat4 model);
+			glm::vec3 getPos() const;
+			glm::mat4 getModel() const;
+			std::shared_ptr<Mesh> getMesh() const;
 
 		};
 	}

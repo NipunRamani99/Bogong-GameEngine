@@ -135,6 +135,7 @@
     <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
+    <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
     <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />

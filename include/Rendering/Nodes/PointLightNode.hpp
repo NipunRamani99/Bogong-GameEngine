@@ -10,6 +10,7 @@ namespace bogong {
 			PointLightNode(PointLight pl, std::string name = "PointLight");
 			PointLight & getData();
 			glm::vec3 GetPos();
+
 		};
 	}
 }

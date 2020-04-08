@@ -1,6 +1,10 @@
 #include "NodeBase.hpp"
 
- bogong::node::NodeBase::NodeBase(const NodeBase & node) {}
+ bogong::node::NodeBase::NodeBase(const NodeBase & node) 
+	 :
+	 name(node.name)
+ {
+ }
 
  bogong::node::NodeBase::NodeBase(const std::string & name) {
 	this->name = name;
