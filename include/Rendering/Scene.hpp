@@ -12,7 +12,6 @@ namespace bogong {
 		Scene();
 		void SetRootNode(std::shared_ptr<node::NodeBase> node);
 		void SetCamera() {}
-		void Update() {}
-		void Draw(Shader & shader);
+		void Update(){}
 	};
 }

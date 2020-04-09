@@ -89,95 +89,29 @@ bogong::Scene::Scene() {}
 
  }
  */
+ /*
+	class RenderGPUStateCache{
+	   private:
+	     glm::mat4 model;
+		 glm::mat4 view;
+	
+	   public:
+	     getModel();
+		 getView();
+		 applyTransform();
+
+	}
  
- void bogong::Scene::Draw(Shader & shader) {
-	 std::vector<std::shared_ptr<node::NodeBase>> st;
-	 st.push_back(root_node);
-	 auto it = st.begin();
-	 auto end = st.end();
-	 while (it!=end)
-	 {
-		 auto node = *it;
+ 
+ */
 
-		 auto type = node->GetType();
-		 glm::mat4 model = node->GetModel();
-		 switch (type)
-		 {
-		 case node::NodeType::Group:
-		 {
-			 auto vn = node->GetChilds();
-			 
-			 for (auto n : vn) {
-				 n->applyTransform(model);
-				 st.push_back(n);
-			 }
-			 break;
-		 }
-		 case node::NodeType::Light:
-		 {
-			 //Get type of light
-			 /*
-				std::shared_ptr<LightNodeBase> light = std::dynamic_pointer_cast<LightNodeBase>(node);
-				auto type = light.GetType();
-				switch( type )
-				{
-				//Process them
-					case Point:
-					{
-						//Set Shader Data.
-						auto pl = light->getData();
-						renderer->SetLight( pl );
-						break;
-					}
-					case Spotlight:
-					{
-						//Set Shader Data.
+ //         
+ //         
+ //         R              R->S1->S3
+ //       /   \            R->S1->S4
+ //      S1   S2           R->S1
+ //      /\   /\           R->S2->S5
+ //    S3 S4 S5 S6         R->S2->S6
 
-						break;
-					}
-					case Directional:
-					{
-					    //Set Shader Data.
-						break;
-					}
-					default:
-					{
-						std::cout<<"Invalid light type.\n";
-						break;
-					}
-				}
-			 */
-			 //Set the parameters
-			 break;
-		 }
-		 case node::NodeType::Material:
-		 {
-			 //Set the parameters
-			 /*
-			      std::shared_ptr<Material> material= std::dynamic_pointer_cast<Material>(node);
-				  auto mtl = material.GetMaterial();
-				  shader.setVec3( "material.ambient", mtl.ambient );
-				  shader.setVec3( "material.diffuse", mtl.diffuse);
-				  shader.setVec3( "material.specular", mtl.specular );
-			 */
-			 break;
-		 }
-		 case node::NodeType::Shape:
-		 {
-
-			 auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
-			// auto parent = std::dynamic_pointer_cast<node::GroupNode>( shape_node->GetParent() );
-			 break;
-		 }
-		 default:
-		 {
-			 std::cout << "Unknown node type.\n";
-			 std::system("pause");
-			 break;
-		 }
-		   it++;
-		 }
-	 }
- }
-
+//
 

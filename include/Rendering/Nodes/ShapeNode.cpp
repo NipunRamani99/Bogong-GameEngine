@@ -38,6 +38,7 @@ void bogong::node::ShapeNode::setMaterial(MaterialData mtl) {
 
 void bogong::node::ShapeNode::setPos(glm::vec3 pos) {
 	this->pos = pos;
+	glm::translate(glm::mat4(1.0f), pos);
 }
 
 void bogong::node::ShapeNode::setModel(glm::mat4 model) {
@@ -45,6 +46,7 @@ void bogong::node::ShapeNode::setModel(glm::mat4 model) {
 }
 
 glm::vec3 bogong::node::ShapeNode::getPos() const {
+	
 	return pos;
 }
 

@@ -52,6 +52,13 @@ namespace bogong {
 			{
 				type = NodeType::Shape;
 			}
+			/*
+				ShapeNode(std::string mesh_name){
+				   
+				}
+			*/
+
+
 			ShapeNode(std::shared_ptr<Mesh> & mesh,
 				      glm::vec3 colour = glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3 pos = glm::vec3(0.0f),
 				std::string name = "ShapeNode");

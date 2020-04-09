@@ -6,6 +6,7 @@ class SampleScene{
 public:
   Buffer cube_buffer;
   Scene scene;
+  SceneRenderer renderer;
   std::shared_ptr<NodeBase> root;
 SampleScene(){
   root = std::make_shared<NodeBase>();
@@ -17,7 +18,9 @@ SampleScene(){
   root->addChild(snode);
   root->addChild(snode2);
   scene->setRoot(root);
-
+  renderer->setScene(scene
+  renderer->init();
+  );
 
 }
 void Draw(){
