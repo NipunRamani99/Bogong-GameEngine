@@ -227,6 +227,9 @@
     <ClCompile Include="include\Rendering\Nodes\PointLightNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\ShaderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl">

@@ -10,7 +10,7 @@ namespace bogong {
 			bool on = true;
 		public:
 			LightNodeBase() = delete;
-			LightNodeBase(std::string name);
+			LightNodeBase(std::string name,glm::vec3 pos);
 			float GetIntensity();
 			glm::vec3 GetColour();
 			bool isOn();

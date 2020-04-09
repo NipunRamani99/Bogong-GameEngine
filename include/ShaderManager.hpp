@@ -2,8 +2,12 @@
 #include "Shaders.hpp"
 #include <unordered_map>
 #include <algorithm>
+#include "Globals.h"
 namespace bogong {
+	
 	/*
+
+
 		shader_source.open(PS,"shaders/ObjectFragmentShader.glsl");
 		shader_source.addMacro("HAS_UV");
 		vertex_source.open(VS,"shaders/ObjectVertexShader.glsl");
@@ -16,18 +20,8 @@ namespace bogong {
      	...
 		renderer.addShaderProgram(program);
 	*/
-	class Program{
-	  /*
-		 int id;
-		 public:
-		 int getId(){ return id;};
-	  */
-	};
-	enum ShaderType {
-		VERTEX,
-		FRAGMENT,
-		GEOMETRY
-	};
+	
+	
 	struct Configuration {
 		std::vector<std::string> macros;
 		bool hasGeometryShader = false;
@@ -58,35 +52,36 @@ namespace bogong {
 		}
 		void LoadProgram()
 		{
+			
 			std::cout << "Linking the program.\n";
-			m_ProgID = glCreateProgram();
+			CHECK_GL_ERROR(m_ProgID = glCreateProgram());
 			if (m_VertID != 0)
-				glAttachShader(m_ProgID, m_VertID);
+				CHECK_GL_ERROR(glAttachShader(m_ProgID, m_VertID));
 			if (m_FragID != 0)
-				glAttachShader(m_ProgID, m_FragID);
+				CHECK_GL_ERROR(glAttachShader(m_ProgID, m_FragID));
 			if (m_GeomID != 0)
-				glAttachShader(m_ProgID, m_GeomID);
+				CHECK_GL_ERROR(glAttachShader(m_ProgID, m_GeomID));
 
-			glLinkProgram(m_ProgID);
+			CHECK_GL_ERROR(glLinkProgram(m_ProgID));
 
 			GLint l_Result = 0;
 			GLint l_LogLength = 0;
-			glGetProgramiv(m_ProgID, GL_LINK_STATUS, &l_Result);
-			glGetProgramiv(m_ProgID, GL_INFO_LOG_LENGTH, &l_LogLength);
+			CHECK_GL_ERROR(glGetProgramiv(m_ProgID, GL_LINK_STATUS, &l_Result));
+			CHECK_GL_ERROR(glGetProgramiv(m_ProgID, GL_INFO_LOG_LENGTH, &l_LogLength));
 
 			if (l_LogLength > 0)
 			{
 				std::vector<char> error(l_LogLength + 1);
-				glGetProgramInfoLog(m_ProgID, l_LogLength, NULL, &error[0]);
+			CHECK_GL_ERROR(	glGetProgramInfoLog(m_ProgID, l_LogLength, NULL, &error[0]) );
 				std::cout << (std::string(&error[0]));
 			}
 
 			if (m_VertID != 0)
-				glDetachShader(m_ProgID, m_VertID);
+			CHECK_GL_ERROR(	glDetachShader(m_ProgID, m_VertID) );
 			if (m_FragID != 0)
-				glDetachShader(m_ProgID, m_FragID);
+			CHECK_GL_ERROR(	glDetachShader(m_ProgID, m_FragID) );
 			if (m_GeomID != 0)
-				glDetachShader(m_ProgID, m_GeomID);
+            CHECK_GL_ERROR( glDetachShader(m_ProgID, m_GeomID) );
 		}
 		void LoadShader(const char * p_Path, ShaderType p_Type,std::vector<std::string> & macros)
 		{
@@ -154,59 +149,59 @@ namespace bogong {
 		}
 		void Bind()
 		{
-			glUseProgram(m_ProgID);
+			CHECK_GL_ERROR(glUseProgram(m_ProgID));
 		}
 		inline unsigned int GetLocation(std::string p_Variable)
 		{
-			glGetUniformLocation(m_ProgID, p_Variable.c_str());
+			CHECK_GL_ERROR(glGetUniformLocation(m_ProgID, p_Variable.c_str()));
 		}
 		inline void setBool(const std::string &name, bool value) const
 		{
-			glUniform1i(glGetUniformLocation(m_ProgID, name.c_str()), (int)value);
+			CHECK_GL_ERROR(glUniform1i(glGetUniformLocation(m_ProgID, name.c_str()), (int)value));
 		}
 		void setInt(const std::string &name, int value) const
 		{
-			glUniform1i(glGetUniformLocation(m_ProgID, name.c_str()), value);
+			CHECK_GL_ERROR(glUniform1i(glGetUniformLocation(m_ProgID, name.c_str()), value));
 		}
 		void setFloat(const std::string &name, float value) const
 		{
-			glUniform1f(glGetUniformLocation(m_ProgID, name.c_str()), value);
+			CHECK_GL_ERROR(glUniform1f(glGetUniformLocation(m_ProgID, name.c_str()), value));
 		}
 		void setVec2(const std::string &name, const glm::vec2 &value) const
 		{
-			glUniform2fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]);
+			CHECK_GL_ERROR(glUniform2fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]));
 		}
 		inline void setVec2(const std::string &name, float x, float y) const
 		{
-			glUniform2f(glGetUniformLocation(m_ProgID, name.c_str()), x, y);
+			CHECK_GL_ERROR(glUniform2f(glGetUniformLocation(m_ProgID, name.c_str()), x, y));
 		}
 		inline void setVec3(const std::string &name, const glm::vec3 &value) const
 		{
-			glUniform3fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]);
+			CHECK_GL_ERROR(glUniform3fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]));
 		}
 		inline void setVec3(const std::string &name, float x, float y, float z) const
 		{
-			glUniform3f(glGetUniformLocation(m_ProgID, name.c_str()), x, y, z);
+			CHECK_GL_ERROR(glUniform3f(glGetUniformLocation(m_ProgID, name.c_str()), x, y, z));
 		}
 		inline void setVec4(const std::string &name, const glm::vec4 &value) const
 		{
-			glUniform4fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]);
+			CHECK_GL_ERROR(glUniform4fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, &value[0]));
 		}
 		void setVec4(const std::string &name, float x, float y, float z, float w)
 		{
-			glUniform4f(glGetUniformLocation(m_ProgID, name.c_str()), x, y, z, w);
+			CHECK_GL_ERROR(glUniform4f(glGetUniformLocation(m_ProgID, name.c_str()), x, y, z, w));
 		}
 		void setMat2(const std::string &name, const glm::mat2 &mat) const
 		{
-			glUniformMatrix2fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+		    CHECK_GL_ERROR(glUniformMatrix2fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 		}
 		void setMat3(const std::string &name, const glm::mat3 &mat) const
 		{
-			glUniformMatrix3fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+			CHECK_GL_ERROR(glUniformMatrix3fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 		}
 		void setMat4(const std::string &name, const glm::mat4 &mat) const
 		{
-			glUniformMatrix4fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+			CHECK_GL_ERROR(glUniformMatrix4fv(glGetUniformLocation(m_ProgID, name.c_str()), 1, GL_FALSE, &mat[0][0]));
 		}
 		unsigned int GetShader(ShaderType p_Type) const
 		{
@@ -246,12 +241,12 @@ namespace bogong {
 			static void LoadProgram(std::string name, Configuration configuration) {
 				Program program;
 				std::string file_name = name;
-				std::string path_vs = "shader/" + name + "VertexShader.glsl";
-				std::string path_fs = "shader/" + name + "FragmentShader.glsl";
+				std::string path_vs = "shaders/" + name + "VertexShader.glsl";
+				std::string path_fs = "shaders/" + name + "FragmentShader.glsl";
 				program.LoadShader(path_vs.c_str(), ShaderType::VERTEX,configuration.macros);
 				program.LoadShader(path_fs.c_str(), ShaderType::FRAGMENT,configuration.macros);
 				if (configuration.hasGeometryShader) {
-					std::string path_gs = "shader/" + name + "GeometryShader.glsl";
+					std::string path_gs = "shaders/" + name + "GeometryShader.glsl";
 					program.LoadShader(path_gs.c_str(), ShaderType::GEOMETRY,configuration.macros);
 				}
 				program.LoadProgram();
@@ -267,6 +262,7 @@ namespace bogong {
 			   else
 			   {
 				   LoadProgram(name,configuration);
+				   return shaders[h];
 			   }
 			}
 		

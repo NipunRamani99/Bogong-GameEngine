@@ -2,7 +2,7 @@
 
  bogong::node::PointLightNode::PointLightNode(PointLight pl, std::string name)
 	:
-	NodeBase(name)
+	NodeBase(name,pl.pos)
 {
 	this->pl = pl;
 }

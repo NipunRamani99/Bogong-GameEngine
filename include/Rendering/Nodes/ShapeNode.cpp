@@ -1,34 +1,40 @@
 #include "ShapeNode.hpp"
 
-bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, glm::vec3 colour, glm::vec3 pos, std::string name)
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, glm::vec3 colour, glm::vec3 pos, std::string name)
 	:
-	NodeBase(name),
+	NodeBase(name,pos),
 	mesh(mesh),
 	colour(colour),
 	pos(pos)
 {
+	type = node::Shape;
+	this->pos = pos;
 	isColored = true;
 }
 
-bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, std::shared_ptr<Texture> tex, MaterialData mtl, glm::vec3 pos, std::string name)
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, std::shared_ptr<Texture> tex, MaterialData mtl, glm::vec3 pos, std::string name)
 	:
-	NodeBase(name),
+	NodeBase(name,pos),
 	mesh(mesh),
 	mtl(mtl),
 	tex(tex),
 	pos(pos)
 {
+	type = node::Shape;
+	this->pos = pos;
 	hasMaterial = true;
 	isTextured = true;
 }
 
-bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh>& mesh, std::shared_ptr<Texture> tex, glm::vec3 pos, std::string name)
+bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, std::shared_ptr<Texture> tex, glm::vec3 pos, std::string name)
 	:
-	NodeBase(name),
+	NodeBase(name,pos),
 	mesh(mesh),
 	tex(tex),
 	pos(pos)
 {
+	type = node::Shape;
+	this->pos = pos;
 	isTextured = true;
 }
 

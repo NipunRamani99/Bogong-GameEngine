@@ -1,6 +1,7 @@
 #pragma once
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
+#include "Globals.h"
 namespace bogong {
 	class VertexArray
 	{
@@ -14,12 +15,12 @@ namespace bogong {
 			if (!m_IsBound)
 			{
 				m_IsBound = true;
-				glGenVertexArrays(1, &m_ID);
+				CHECK_GL_ERROR(glGenVertexArrays(1, &m_ID));
 			}
-			glBindVertexArray(m_ID);
+			CHECK_GL_ERROR(glBindVertexArray(m_ID));
 		}
 		void Unbind() {
-			glBindVertexArray(0);
+			CHECK_GL_ERROR(glBindVertexArray(0));
 		}
 		GLuint GetID() const
 		{

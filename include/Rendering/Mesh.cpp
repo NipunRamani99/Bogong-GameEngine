@@ -55,7 +55,6 @@
 			i++;
 		}
 	}
-	assert(!error());
 	if (m_IBO)
 		m_IBO->Bind();
 	int id = 0;

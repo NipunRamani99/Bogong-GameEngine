@@ -19,13 +19,14 @@ namespace bogong {
 		protected:
 			vNode child;
 			std::string name = "";
-			NodeType type;
+			NodeType type = Root;
 			std::shared_ptr<NodeBase> parent;
 			glm::mat4 model;
 		public:
 			NodeBase() = delete;
 			NodeBase(const NodeBase & node);
 			NodeBase(const std::string & name);
+			NodeBase(const std::string name, const glm::vec3 pos = glm::vec3(1.0f));
 			virtual ~NodeBase();
 			void AddChild(const std::shared_ptr<NodeBase> node);
 			vNode & GetChilds();

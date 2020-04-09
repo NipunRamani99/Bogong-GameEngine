@@ -10,6 +10,12 @@
 	this->name = name;
 }
 
+ bogong::node::NodeBase::NodeBase(const std::string name, const glm::vec3 pos)
+ {
+	 this->name = name;
+	 model = glm::translate(glm::mat4(1.0f),pos);
+ }
+
  bogong::node::NodeBase::~NodeBase() {  }
 
  void bogong::node::NodeBase::AddChild(const std::shared_ptr<NodeBase> node) {

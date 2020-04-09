@@ -1,8 +1,8 @@
 #include"LightNodeBase.hpp"
 
-bogong::node::LightNodeBase::LightNodeBase(std::string name) 
+bogong::node::LightNodeBase::LightNodeBase(std::string name,glm::vec3 pos) 
 	:
-	NodeBase(name)
+	NodeBase(name,pos)
 {
 
 }
