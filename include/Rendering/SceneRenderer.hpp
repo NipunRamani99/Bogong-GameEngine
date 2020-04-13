@@ -39,13 +39,15 @@ namespace bogong {
 			auto mesh = sn->getMesh();
 			auto buffer = mesh->GetBuffer();
 			buffer[0].first->Bind();
+			bool isindexed = sn->isIndexed();
+			if (isindexed) {
+				mesh->GetIndexBuffer()->Bind();
+			}
 			int stride = tex ? sizeof(float) * 8 : sizeof(float) * 6;
 			CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
 			CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
 			if (tex) {
-
 				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float)*6)));
-
 			}
 			if (!tex) {
 				prog.setVec4("object_colour", glm::vec4(sn->getColour(),1.0f));
@@ -55,14 +57,19 @@ namespace bogong {
 				sn->getTexture()->Bind();
 				prog.setInt("s", 0);
 			}
-			
 			auto model = cach.model * sn->GetModel();
 			prog.setMat4("model", model);
 			prog.setMat4("view", view);
 			prog.setMat4("projection", projection);
 			unsigned int count = mesh->GetCount();
-
-			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
+			if (!isindexed) {
+				CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
+			}
+			else
+			{
+				CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT,0));
+				mesh->GetIndexBuffer()->Unbind();
+			}
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			StateCache cache = state.top();

@@ -7,7 +7,10 @@ bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, glm::vec3 colour,
 	colour(colour),
 	pos(pos)
 {
-	type = node::Shape;
+	if (mesh->GetIndexBuffer()) {
+		indexed = true;
+	}
+	type      = node::Shape;
 	this->pos = pos;
 	isColored = true;
 }
@@ -20,6 +23,9 @@ bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, std::shared_ptr<T
 	tex(tex),
 	pos(pos)
 {
+	if (mesh->GetIndexBuffer()) {
+		indexed = true;
+	}
 	type = node::Shape;
 	this->pos = pos;
 	hasMaterial = true;
@@ -33,8 +39,11 @@ bogong::node::ShapeNode::ShapeNode(std::shared_ptr<Mesh> mesh, std::shared_ptr<T
 	tex(tex),
 	pos(pos)
 {
-	type = node::Shape;
-	this->pos = pos;
+	if (mesh->GetIndexBuffer()) {
+		indexed = true;
+	}
+	type       = node::Shape;
+	this->pos  = pos;
 	isTextured = true;
 }
 

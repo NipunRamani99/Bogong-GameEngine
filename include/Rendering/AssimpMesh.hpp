@@ -16,8 +16,8 @@ namespace bogong {
 				VertexBufferLayout vbl;
 				auto buff = std::make_pair(vbuff, vbl);
 				m_BufferVector.push_back(buff);
-				count = vertices.size();
 				m_IBO = std::make_shared<unsigned int>(indices.data(),indices.size()*sizeof(unsigned int));
+				count = indices.size();
 			}
 	};
 }
