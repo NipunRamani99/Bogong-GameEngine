@@ -128,6 +128,8 @@
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Models\TextureFactory.hpp" />
     <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
+    <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />

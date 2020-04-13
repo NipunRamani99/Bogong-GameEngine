@@ -13,6 +13,7 @@ namespace bogong {
 	//      R
 	//    /   \
 	//   S1   S2
+	//   /\   /\
 
 	class SceneRenderer {
 
@@ -22,6 +23,8 @@ namespace bogong {
 		std::shared_ptr<FPCamera> cam;
 		glm::mat4 view;
 		glm::mat4 projection;
+
+		bool attribEnabled = false;
 	public:
 	
 		void DrawMesh(std::shared_ptr<node::ShapeNode> sn,StateCache cach) {
@@ -32,20 +35,14 @@ namespace bogong {
 			}
 			std::string name = "Colour";
 			Program prog = ShaderManager::GetShader(name, configuration);
-			vao.Bind();
 			prog.Bind();
 			auto mesh = sn->getMesh();
 			auto buffer = mesh->GetBuffer();
-            CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
-			if (tex) {
-				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
-			}
 			buffer[0].first->Bind();
 			int stride = tex ? sizeof(float) * 8 : sizeof(float) * 6;
 			CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
 			CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-			if (!tex) {
+			if (tex) {
 
 				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float)*6)));
 
@@ -55,9 +52,11 @@ namespace bogong {
 			}
 			else
 			{
-
+				sn->getTexture()->Bind();
+				prog.setInt("s", 0);
 			}
-			auto model = cach.model;
+			
+			auto model = cach.model * sn->GetModel();
 			prog.setMat4("model", model);
 			prog.setMat4("view", view);
 			prog.setMat4("projection", projection);
@@ -66,8 +65,8 @@ namespace bogong {
 			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
-			StateCache cache = state.top();
-			cache.model = node->GetModel()*cache.model;
+ 			StateCache cache = state.top();
+			cache.model = cache.model * node->GetModel();
 			state.push(cache);
 			auto vn = node->GetChilds();
 			for (auto & n : vn) {
@@ -105,6 +104,11 @@ namespace bogong {
 			view = cam->GetView();
 			cache.model = glm::mat4(1.0f);
 			state.push(cache);
+			vao.Bind();
+			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
+			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
+			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
+
 			ProcessNode(root);
 		}
 	};

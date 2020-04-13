@@ -102,6 +102,7 @@ namespace bogong {
 				defs += "#define " + macro +"\r\n";
 			}
 			std::string l_Src = l_SS.str();
+			defs = "#version 330 core\r\n" + defs;
 			l_Src = defs + l_Src;
 			const char * l_ShaderSrc = l_Src.c_str();
 			unsigned int * l_ID = nullptr;

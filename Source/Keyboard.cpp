@@ -36,17 +36,26 @@ namespace bogong {
 
 	void Keyboard::Callback(GLFWwindow* p_Window, int p_Key, int p_Scancode, int p_Action, int mods)
 	{
+		STATUS stat;
+		if (p_Action == GLFW_PRESS)
+			stat = IS_PRESSED;
+		if (p_Action == GLFW_RELEASE)
+			stat = IS_RELEASED;
+		if (p_Action == GLFW_REPEAT)
+			stat = IS_REPEATING;
+
 		if (p_Key >= 65 && p_Key <= 90)
 		{
 			p_Key = p_Key - 65;
-			STATUS stat;
-			if (p_Action == GLFW_PRESS)
-				stat = IS_PRESSED;
-			if (p_Action == GLFW_RELEASE)
-				stat = IS_RELEASED;
-			if (p_Action == GLFW_REPEAT)
-				stat = IS_REPEATING;
-
+			
+			Keyboard::KeyMap.find(p_Key)->second = stat;
+		}
+		if (p_Key == GLFW_KEY_LEFT_SHIFT) {
+			p_Key = KEY::KEY_SHIFT;
+			Keyboard::KeyMap.find(p_Key)->second = stat;
+		}
+		if (p_Key == GLFW_KEY_LEFT_CONTROL) {
+			p_Key = KEY::KEY_CTRL;
 			Keyboard::KeyMap.find(p_Key)->second = stat;
 		}
 	}

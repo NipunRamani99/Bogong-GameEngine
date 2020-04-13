@@ -6,6 +6,7 @@ namespace bogong {
 		std::shared_ptr<VertexBuffer> vbo;
 	public:
 		PlaneMesh() {
+			
 			Vertex<float> a;
 			a.x = -1.0f;
 			a.y = 1.0f;
@@ -27,13 +28,9 @@ namespace bogong {
 			d.y = -1.0f;
 			d.r = 1.0f;
 			d.a = 1.0f;
-			std::vector<Vertex<float>> vertices;
-			vertices.push_back(a);
-			vertices.push_back(d);
-			vertices.push_back(c);
-			vertices.push_back(b);
+			
 
-			vbo = std::make_shared<VertexBuffer>(vertices.data(), sizeof(Vertex<float>)*vertices.size());
+		//	vbo = std::make_shared<VertexBuffer>(vertices.data(), sizeof(Vertex<float>)*vertices.size());
 			VertexBufferLayout vbl;
 			vbl.AddElement<float>(3);
 			vbl.AddElement<float>(4);

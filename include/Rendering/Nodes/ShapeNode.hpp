@@ -52,6 +52,7 @@ namespace bogong {
 				model  = shnode.model;
 				pos    = shnode.pos;
 				colour = shnode.colour;
+				model = glm::translate(pos);
 				type = node::NodeType::Shape;
 			}
 			/*
@@ -101,6 +102,7 @@ namespace bogong {
 			glm::mat4 getModel() const;
 			glm::vec3 getColour() { return colour; }
 			std::shared_ptr<Mesh> getMesh() const;
+			std::shared_ptr<Texture> getTexture(){ return tex; }
 			bool hasTexture() { return isTextured; }
 		};
 	}

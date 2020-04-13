@@ -15,6 +15,7 @@ namespace bogong {
 	{
 		
 	protected:
+	
 		std::vector<Buffer> m_BufferVector;
 		std::shared_ptr<IndexBuffer> m_IBO;
 		std::vector<std::shared_ptr<Texture>> m_TexVector;
@@ -22,6 +23,7 @@ namespace bogong {
 		glm::mat4 model = glm::mat4(1.0f);
 	public:
 		Mesh();
+		
 		std::vector<Buffer> & GetBuffer();
 		std::shared_ptr<IndexBuffer> GetIndexBuffer();
 		std::vector<std::shared_ptr<Texture>> & GetTexVector();

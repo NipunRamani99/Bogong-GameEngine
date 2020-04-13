@@ -24,6 +24,7 @@ std::stringstream ss; \
 std::string func_call(#glFunc); \
 ss << "OpenGL error "<<errorString<<" while calling "<<func_call<<" in function "<< __FUNCTION__<<" at line "<< __LINE__ <<"\n";\
 std::cout << ss.str(); \
+std::system("pause"); \
 } \
 }\
 
