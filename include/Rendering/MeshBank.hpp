@@ -10,6 +10,7 @@ namespace bogong {
 	//Singleton this
 	class MeshBank {
 		
+	public:
 		static std::shared_ptr<Mesh> CreateFromAssimpMesh(aiMesh * mesh)
 		{
 			auto v = mesh->mVertices;
@@ -18,12 +19,24 @@ namespace bogong {
 			std::vector<MeshVertex> vertices;
 			vertices.resize(mesh->mNumVertices);
 			for (int i = 0; i < mesh->mNumVertices; i++) {
-				vertices[i].pos = glm::vec3(v[i].x, v[i].y, v[i].z);
-				vertices[i].norms = glm::vec3(normals[i].x, normals[i].y, normals[i].z);
-				if(mesh->mTextureCoords[0])
-				vertices[i].uv = glm::vec2(uv[0][i].x, uv[0][1].y);
+				vertices[i].x = v[i].x;
+				vertices[i].y = v[i].y;
+				vertices[i].z = v[i].z;
+
+				vertices[i].nx = normals[i].x;
+				vertices[i].ny = normals[i].y;
+				vertices[i].nz = normals[i].z;
+
+				if (mesh->mTextureCoords[0])
+				{
+					vertices[i].u = uv[0][i].x;
+					vertices[i].v = uv[0][i].y;
+				}
 				else
-				vertices[i].uv = glm::vec2(0.0f, 0.0f);
+				{
+					vertices[i].u = uv[0][i].x;
+					vertices[i].v = uv[0][i].y;
+				}
 			}
 			int nfaces = mesh->mNumFaces;
 			std::vector<unsigned int> indices;

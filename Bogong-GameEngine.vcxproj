@@ -124,6 +124,7 @@
     <ClInclude Include="include\IndexBuffer.h" />
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />
+    <ClInclude Include="include\Material.hpp" />
     <ClInclude Include="include\Models\Cube.hpp" />
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Models\TextureFactory.hpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
+    <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
     <ClInclude Include="include\Rendering\SceneRenderer.hpp" />
@@ -173,6 +175,7 @@
     <ClCompile Include="include\Rendering\Nodes\ShapeNode.cpp" />
     <ClCompile Include="include\Rendering\Renderer.cpp" />
     <ClCompile Include="include\Rendering\Scene.cpp" />
+    <ClCompile Include="include\Rendering\Framebuffer.hpp" />
     <ClCompile Include="include\ShaderManager.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Engine.cpp" />

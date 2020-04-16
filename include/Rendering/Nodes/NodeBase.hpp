@@ -32,7 +32,9 @@ namespace bogong {
 			vNode & GetChilds();
 			NodeType GetType();
 			
-			glm::mat4 GetModel() { return model; }
+			glm::mat4 GetModel() { 
+				return model; 
+			}
 			std::string GetName();
 		};
 	}

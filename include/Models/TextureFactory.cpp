@@ -8,18 +8,16 @@ namespace bogong {
 	std::shared_ptr<bogong::Texture> TextureManager::make_texture(std::string path)
 	{
 		size_t h = HashPath(path);
-
 		if (texmap.find(h) != texmap.end()) {
 			return texmap[h];
 		}
-		else 
+		else
 		{
 			int width = 0;
 			int height = 0;
 			int chnls = 0;
 			unsigned char * data = stbi_load(path.c_str(), &width, &height, &chnls, 0);
 			auto tex = std::make_shared<bogong::Texture>(width, height, data, chnls);
-
 			delete data;
 			texmap[h] = tex;
 			return tex;

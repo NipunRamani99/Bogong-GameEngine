@@ -2,9 +2,7 @@
 #include "Mesh.hpp"
 namespace bogong {
 	struct MeshVertex {
-		glm::vec3 pos;
-		glm::vec3 norms;
-		glm::vec2 uv;
+		float x=0, y=0, z=0, nx=0, ny=0, nz=0,u=0,v = 0;
 	};
 	class AssimpMesh : public Mesh {
 		
@@ -16,7 +14,9 @@ namespace bogong {
 				VertexBufferLayout vbl;
 				auto buff = std::make_pair(vbuff, vbl);
 				m_BufferVector.push_back(buff);
-				m_IBO = std::make_shared<unsigned int>(indices.data(),indices.size()*sizeof(unsigned int));
+				unsigned int * d = (unsigned int *)indices.data();
+				m_IBO = std::make_shared<IndexBuffer>(d,indices.size()*sizeof(unsigned int));
+				
 				count = indices.size();
 			}
 	};

@@ -7,7 +7,10 @@
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;
-
+		glm::vec3 light_pos      = glm::vec3(4.0f, 5.0f, 6.0f);
+		glm::vec3 light_ambient  = glm::vec3(0.1f,0.1f,0.1f);
+		glm::vec3 light_diffuse  = glm::vec3(0.8f, 0.8f, 0.8f);
+		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 	};
 
 	//      R
@@ -29,46 +32,62 @@ namespace bogong {
 	
 		void DrawMesh(std::shared_ptr<node::ShapeNode> sn,StateCache cach) {
 			Configuration configuration;
-			bool tex = sn->hasTexture();
-			if (tex) {
-				configuration.macros.push_back("HAS_UV");
-			}
-			std::string name = "Colour";
-			Program prog = ShaderManager::GetShader(name, configuration);
-			prog.Bind();
-			auto mesh = sn->getMesh();
-			auto buffer = mesh->GetBuffer();
-			buffer[0].first->Bind();
-			bool isindexed = sn->isIndexed();
-			if (isindexed) {
-				mesh->GetIndexBuffer()->Bind();
-			}
-			int stride = tex ? sizeof(float) * 8 : sizeof(float) * 6;
-			CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
-			CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-			if (tex) {
-				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float)*6)));
-			}
-			if (!tex) {
-				prog.setVec4("object_colour", glm::vec4(sn->getColour(),1.0f));
-			}
-			else
+			auto meshes = sn->getMesh();
+			std::string nodename = sn->GetName();
+			for(auto mesh : meshes)
 			{
-				sn->getTexture()->Bind();
-				prog.setInt("s", 0);
-			}
-			auto model = cach.model * sn->GetModel();
-			prog.setMat4("model", model);
-			prog.setMat4("view", view);
-			prog.setMat4("projection", projection);
-			unsigned int count = mesh->GetCount();
-			if (!isindexed) {
-				CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
-			}
-			else
-			{
-				CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT,0));
-				mesh->GetIndexBuffer()->Unbind();
+				bool tex = mesh->isTextured();
+
+				if (tex) {
+					configuration.macros.push_back("HAS_UV");
+					configuration.macros.push_back("MATERIAL_WITH_TEX");
+				}
+				std::string name = "Phong";
+				Program prog = ShaderManager::GetShader(name, configuration);
+				prog.Bind();
+
+				auto buffer = mesh->GetBuffer();
+				buffer[0].first->Bind();
+				bool isindexed = sn->isIndexed();
+				if (isindexed) {
+					mesh->GetIndexBuffer()->Bind();
+				}
+				int stride =  sizeof(float) * 8;
+				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
+				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
+				if (tex) {
+					CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
+				}
+				/*if (!tex) {
+					prog.setVec4("object_colour", glm::vec4(sn->getColour(), 1.0f));
+				}
+				else
+				{
+					sn->getTexture()->Bind();
+					prog.setInt("s", 0);
+				}*/
+				auto model = cach.model * sn->GetModel();
+				if (tex)
+					mesh->getTexMaterial()->Bind(prog);
+				else
+					mesh->getColourMaterial()->Bind(prog);
+
+				prog.setVec3("light.ambient" , cach.light_ambient);
+				prog.setVec3("light.diffuse" , cach.light_diffuse);
+				prog.setVec3("light.specular", cach.light_specular);
+				prog.setVec3("light.pos"     , cach.light_pos);
+				prog.setMat4("model", model);
+				prog.setMat4("view", view);
+				prog.setMat4("projection", projection);
+				unsigned int count = mesh->GetCount();
+				if (!isindexed) {
+					CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
+				}
+				else
+				{
+					CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
+					mesh->GetIndexBuffer()->Unbind();
+				}
 			}
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
