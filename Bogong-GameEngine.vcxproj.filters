@@ -168,6 +168,9 @@
     <ClInclude Include="include\Material.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Screen.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -256,48 +259,7 @@
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\ColourVertexShader.glsl" />
     <None Include="Shaders\ColourFragmentShader.glsl" />
-    <None Include="assets\models\nanosuit\nanosuit.mtl" />
-    <None Include="assets\models\nanosuit\scene.fbx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\models\nanosuit\arm_dif.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\arm_showroom_spec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\body_dif.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\body_showroom_spec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\glass_dif.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\hand_dif.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\hand_showroom_spec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\helmet_diff.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\helmet_showroom_spec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\leg_dif.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\models\nanosuit\leg_showroom_spec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\models\nanosuit\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="assets\models\nanosuit\nanosuit.obj" />
+    <None Include="Shaders\ScreenVertexShader.glsl" />
+    <None Include="Shaders\ScreenFragmentShader.glsl" />
   </ItemGroup>
 </Project>

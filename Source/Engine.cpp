@@ -36,10 +36,11 @@ void bogong::Engine::Start()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);  
+	glDepthFunc(GL_LESS);
 	glEnable(GL_BLEND);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-
+	
 }
 
 void bogong::Engine::Update(float deltime)
@@ -49,14 +50,14 @@ void bogong::Engine::Update(float deltime)
 	assert(!error());
 }
 
-void bogong::Engine::DrawCalls() const
+void bogong::Engine::DrawCalls(float deltatime) const
 {
-	game->Draw();
+	game->Draw(deltatime);
 }
 
-void bogong::Engine::RenderEverything()
+void bogong::Engine::RenderEverything(float deltatime)
 {
-	DrawCalls();
+	DrawCalls(deltatime);
 	Init::Render();
 	Init::EndImguiFrame();
 	glfwSwapBuffers(window);
@@ -75,7 +76,7 @@ void bogong::Engine::Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 	Update(currentTime - prevTime);
-	RenderEverything();
+	RenderEverything(currentTime-prevTime);
 
 }
 

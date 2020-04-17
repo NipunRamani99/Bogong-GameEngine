@@ -44,7 +44,7 @@ namespace bogong {
 		{
 
 		}
-		void operator=(Program & program) {
+		void operator=(Program program) {
 			m_ProgID = program.m_ProgID;
 			m_FragID = program.m_FragID;
 			m_VertID = program.m_VertID;

@@ -143,6 +143,7 @@
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
     <ClInclude Include="include\Rendering\SceneRenderer.hpp" />
+    <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />
@@ -193,8 +194,6 @@
     <ClCompile Include="Source\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\models\nanosuit\nanosuit.mtl" />
-    <None Include="assets\models\nanosuit\scene.fbx" />
     <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
@@ -202,25 +201,8 @@
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\ColourFragmentShader.glsl" />
     <None Include="Shaders\ColourVertexShader.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\models\nanosuit\arm_dif.png" />
-    <Image Include="assets\models\nanosuit\arm_showroom_spec.png" />
-    <Image Include="assets\models\nanosuit\body_dif.png" />
-    <Image Include="assets\models\nanosuit\body_showroom_spec.png" />
-    <Image Include="assets\models\nanosuit\glass_dif.png" />
-    <Image Include="assets\models\nanosuit\hand_dif.png" />
-    <Image Include="assets\models\nanosuit\hand_showroom_spec.png" />
-    <Image Include="assets\models\nanosuit\helmet_diff.png" />
-    <Image Include="assets\models\nanosuit\helmet_showroom_spec.png" />
-    <Image Include="assets\models\nanosuit\leg_dif.png" />
-    <Image Include="assets\models\nanosuit\leg_showroom_spec.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\models\nanosuit\LICENSE.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="assets\models\nanosuit\nanosuit.obj" />
+    <None Include="Shaders\ScreenFragmentShader.glsl" />
+    <None Include="Shaders\ScreenVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,17 +11,18 @@
 #include "Models/Plane.hpp"
 #include <GLFW/glfw3.h>
 #include "Rendering/SampleScene.hpp"
+#include "Screen.hpp"
 namespace bogong {
 	class Game
 	{
 	private:
-		
-
+		std::shared_ptr<Screen> scr;
 		std::shared_ptr<SampleScene> scene;
+		std::shared_ptr<FPCamera> camera;
 		bool isMouseEnabled = false;
 		public:
 		Game();
 		void Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse>& mouse, float delta,GLFWwindow * window);
-		void Draw() const;
+		void Draw(float delta) const;
 	};
 }

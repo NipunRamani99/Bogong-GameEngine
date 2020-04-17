@@ -25,7 +25,7 @@ namespace bogong {
 			texcube = std::make_shared<TexturedCubeMesh>();
 			auto tex1 = TextureManager::make_texture("assets/models/crate/container2.png");
 			root = std::make_shared<node::NodeBase>("Root",glm::vec3(0.0f,0.0f,0.0f));
-			
+			auto model3 = AssimpFactory::LoadModel("assets/models/BMD-3/sprut.obj");
 			auto model1 = AssimpFactory::LoadModel("assets/models/sponza/sponza.obj");
 		/*	auto model2 = AssimpFactory::LoadModel("assets/models/t-90.obj");
 			auto model3 = AssimpFactory::LoadModel("assets/models/BMD-3/sprut.obj");
@@ -34,7 +34,10 @@ namespace bogong {
 			model2->Scale(glm::vec3(0.5, 0.5, 0.5));
 			model1->Translate(glm::vec3(3.0f, 0.f, 0.f));
 			model2->Translate(glm::vec3(-3.0f, 0.f,10.5f));*/
+			//model3->Scale(glm::vec3(0.01, 0.01,0.01));
+			//model3->Rotate(glm::vec3(0.0f, 90.f, 0.0f));
 			model1->Scale(glm::vec3(0.01, 0.01, 0.01));
+			//model1->AddChild(model3);
 			root->AddChild(model1);
 			//root->AddChild(model2);
 			//std::shared_ptr<node::ShapeNode> snode = std::make_shared<node::ShapeNode>(std::dynamic_pointer_cast<Mesh>(cube), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(-1.50f, 0.0f, 0.0f), "Cube1");
