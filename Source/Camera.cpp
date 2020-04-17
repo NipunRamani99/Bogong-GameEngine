@@ -28,8 +28,14 @@ void bogong::FPCamera::ClearMouse(const std::shared_ptr<Mouse>& mouse)
 }
 void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::shared_ptr<Mouse>& mouse, float delta)
 {
+	float camSpeed =0.0f;
+	if (kbd->isKeyPressed(KEY::KEY_SHIFT)) {
+		camSpeed = 2.0f*delta;
+	}
+	else {
+		camSpeed = cameraSpeed * delta;
+	}
 
-	float camSpeed = cameraSpeed * delta;
 	if (kbd->isKeyPressed(KEY_W) || kbd->isKeyRepeating(KEY_W))
 	{
 		cameraPos += camSpeed * cameraFront;

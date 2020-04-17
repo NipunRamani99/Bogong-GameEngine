@@ -1,0 +1,142 @@
+#define MAX_STEPS 100
+#define MAX_DISTANCE 100.0
+#define SURFACE_DIST 0.01
+#define THRESHOLD 0.01
+in vec2 pos;
+out vec4 FragColour;
+uniform float iTime = 50.0f;
+vec2 iResolution = vec2(1280, 640);
+uniform vec3 cam_dir;
+uniform vec3 cam_pos;
+uniform mat4 view;
+const vec3 Csky = vec3(0.902, 0.902, 0.980);
+float sdPlane(vec3 p, vec4 n)
+{
+	// n must be normalized
+	return dot(p, n.xyz) + n.w;
+}
+float GetDist(vec3 p, out int id)
+{
+
+
+	vec4 c = vec4(0.0, 1.90, 6.0, 1.0);
+	float circ = length(p - c.xyz) - c.w;
+	float plane = sdPlane(p,vec4(0,1.0f,0.0,0.0f));
+	float plane2 = sdPlane(p, vec4(-1, 0, 0, 7));
+	float plane3 = sdPlane(p, vec4(0, 0, -1, 15));
+	float minval = plane;
+
+	if (minval <= SURFACE_DIST)
+	{
+		if (minval == plane) id = 2;
+
+
+	}
+	return minval;
+}
+float RayMarch(vec3 ro, vec3 rd, out int id) {
+	float d = 0.0;
+	vec3 p = ro;
+	for (int i = 0; i < MAX_STEPS; i++)
+	{
+		p = ro + rd * d;
+		float dS = GetDist(p, id);
+		d += dS;
+		if (dS < SURFACE_DIST || d > MAX_DISTANCE) break;
+	}
+	return d;
+}
+vec3 GetNormal(vec3 p) {
+	vec3 norm = vec3(0);
+	vec2 e = vec2(0.01, 0.0);
+	int id = 0;
+	float d = GetDist(p, id);
+	norm = vec3(d) - vec3(GetDist(p - e.xyy, id), GetDist(p - e.yxy, id), GetDist(p - e.yyx, id));
+	return normalize(norm);
+}
+void calcCamera(out vec3 ro, out vec3 ta)
+{
+	float an = sin(0.1*iTime);
+	ro = vec3(6.0*cos(an), 1., 6.0 + 5.0*sin(an));
+	ta = vec3(0.0, 1.0, 6.0);
+}
+void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
+{
+	vec2 p = (2.0*pix - iResolution.xy)/iResolution.y;
+	
+	vec3 ww = normalize(cam_dir); //from ray origin to target
+	vec3 uu = normalize(cross(ww, vec3(0.0, 1.0, 0.0)));// y-up boiz
+	vec3 vv = normalize(cross(uu, ww));
+	Ro = cam_pos;
+	Rd = normalize(p.x * uu + p.y * vv + 2.0*ww);	
+	
+}
+float Light(vec3 p)
+{
+	vec3 lightSource = vec3(2.*sin(iTime), 5., 6. + 2.*cos(iTime));
+	vec3 l = normalize(lightSource - p);
+	vec3 n = GetNormal(p);
+	float diff = max(dot(n, l), 0.0);
+	int id = 0;
+	float d = RayMarch(p + n * SURFACE_DIST*2., l, id);
+	if (d < length(p - lightSource)) diff = 0.01;
+	return diff;
+}
+vec2 texCoords(vec3 p, int id)
+{
+	vec2 m;
+	if (id == 2)
+	{
+		m = p.xz;
+	}
+	return 2.0*m;
+}
+// triangular signal
+vec2 tri(in vec2 x)
+{
+	vec2 h = fract(x*.5) - .5;
+	return 1. - 2.*abs(h);
+}
+float checkersTexture(in vec2 p)
+{
+	vec2 s = sign(fract(p*0.5) - 0.5);
+	return 0.5 - 0.5*s.x*s.y;
+}
+float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
+{
+	// filter kernel
+	vec2 w = max(abs(ddx), abs(ddy)) + 0.01;
+	// analytical integral (box filter)
+	vec2 i = 2.0*(abs(fract((p - 0.5*w) / 2.0) - 0.5) - abs(fract((p + 0.5*w) / 2.0) - 0.5)) / w;
+	// xor pattern
+	return 0.5 - 0.5*i.x*i.y;
+
+
+}
+void main() {
+	vec2 newpos= vec2(0.0f,0.0f);
+	newpos.x    = pos.x;
+	newpos.y	= pos.y;
+	vec3 ro, rd;
+	vec3 ddx_ro, ddx_rd, ddy_ro, ddy_rd;
+	vec2 fragCoord = (newpos + vec2(1,1))*vec2(640, 310);
+	calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
+
+
+	int id = 0;
+	float d = RayMarch(ro, rd, id);
+	const float maxd = 85000.;
+	d = min(maxd, d);
+	vec3 p = ro + rd * d;
+	float dif = Light(p);
+	vec3 color = vec3(0.0f);
+	if (id == 2) {
+		vec2 uv = texCoords(p, id);
+		color = vec3(0.20f);
+
+	}
+	
+	float fog = 1.0f - exp(-0.1*d);
+	color.rgb = mix(color.rgb, Csky, fog);
+	FragColour = vec4(color, 1.0);
+}

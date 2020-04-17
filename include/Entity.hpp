@@ -1,3 +1,4 @@
+#pragma once
 #include<glm/gtx/transform.hpp>
 namespace bogong {
 	class Entity {

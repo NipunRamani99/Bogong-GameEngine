@@ -26,6 +26,7 @@ void bogong::Engine::Start()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	assert((bool)!error());
 	game = std::make_shared<Game>();
+	assert(!error());
 	int display_w, display_h;
 	glfwMakeContextCurrent(window);
 	glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -34,26 +35,29 @@ void bogong::Engine::Start()
 	mouse = std::make_shared<Mouse>();
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);  	
+	glEnable(GL_CULL_FACE);  
+	glDepthFunc(GL_LESS);
+	glEnable(GL_BLEND);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-
+	
 }
 
 void bogong::Engine::Update(float deltime)
 {
 
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
+	assert(!error());
 }
 
-void bogong::Engine::DrawCalls() const
+void bogong::Engine::DrawCalls(float deltatime) const
 {
-	game->Draw();
+	game->Draw(deltatime);
 }
 
-void bogong::Engine::RenderEverything()
+void bogong::Engine::RenderEverything(float deltatime)
 {
-	DrawCalls();
+	DrawCalls(deltatime);
 	Init::Render();
 	Init::EndImguiFrame();
 	glfwSwapBuffers(window);
@@ -72,7 +76,7 @@ void bogong::Engine::Loop()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 	Update(currentTime - prevTime);
-	RenderEverything();
+	RenderEverything(currentTime-prevTime);
 
 }
 

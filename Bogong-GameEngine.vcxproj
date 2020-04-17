@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -124,10 +124,27 @@
     <ClInclude Include="include\IndexBuffer.h" />
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />
+    <ClInclude Include="include\Material.hpp" />
     <ClInclude Include="include\Models\Cube.hpp" />
     <ClInclude Include="include\Models\Plane.hpp" />
     <ClInclude Include="include\Models\TextureFactory.hpp" />
     <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
+    <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
+    <ClInclude Include="include\Rendering\MeshBank.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\LightNodeBase.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\MaterialData.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
+    <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
+    <ClInclude Include="include\Rendering\SampleScene.hpp" />
+    <ClInclude Include="include\Rendering\Scene.hpp" />
+    <ClInclude Include="include\Rendering\SceneRenderer.hpp" />
+    <ClInclude Include="include\Screen.hpp" />
+    <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Surface.hpp" />
     <ClInclude Include="include\Rendering\Mesh.hpp" />
     <ClInclude Include="include\Rendering\Renderer.hpp" />
@@ -151,6 +168,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Models\TextureFactory.cpp" />
+    <ClCompile Include="include\Rendering\Mesh.cpp" />
+    <ClCompile Include="include\Rendering\Nodes\CameraNode.cpp" />
+    <ClCompile Include="include\Rendering\Nodes\LightNodeBase.cpp" />
+    <ClCompile Include="include\Rendering\Nodes\NodeBase.cpp" />
+    <ClCompile Include="include\Rendering\Nodes\PointLightNode.cpp" />
+    <ClCompile Include="include\Rendering\Nodes\ShapeNode.cpp" />
+    <ClCompile Include="include\Rendering\Renderer.cpp" />
+    <ClCompile Include="include\Rendering\Scene.cpp" />
+    <ClCompile Include="include\Rendering\Framebuffer.hpp" />
+    <ClCompile Include="include\ShaderManager.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Globals.cpp" />
@@ -174,8 +201,10 @@
     <None Include="Shaders\MultipleLightVertex.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
-    <None Include="Shaders\SimpleFragmentShader.glsl" />
-    <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\ColourFragmentShader.glsl" />
+    <None Include="Shaders\ColourVertexShader.glsl" />
+    <None Include="Shaders\ScreenFragmentShader.glsl" />
+    <None Include="Shaders\ScreenVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

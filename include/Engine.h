@@ -31,8 +31,8 @@ namespace bogong
 		Engine();
 		void Start();
 		void Update(float deltime);
-		void DrawCalls() const;
-		void RenderEverything();
+		void DrawCalls(float  deltatime) const;
+		void RenderEverything(float deltatime);
 		void Loop();
 		void End();
 	};
