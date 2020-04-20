@@ -9,6 +9,8 @@ namespace bogong {
 		std::shared_ptr<VertexBuffer> buff;
 		std::shared_ptr<VertexArray> vao;
 		float iTime =0.0f; 
+		float nearVal = 1.0f;
+		float thetaD = 45.0f;
 	public:
 		Screen() {
 			Configuration config;
@@ -24,6 +26,12 @@ namespace bogong {
 			prog.setVec3("cam_pos", cam_pos);
 			prog.setVec3("cam_dir", cam_dir);
 			prog.setMat4("view", view);
+			if (ImGui::InputFloat("Near Val", &nearVal, 0.001f, 0.01f)) {
+				prog.setFloat("nearVal", nearVal);
+			}
+			if (ImGui::InputFloat("ThetaD", &thetaD, 0.001f, 0.01f)) {
+				prog.setFloat("thetaD", thetaD);
+			}
 		}
 		void Draw(float delta) {
 			vao->Bind();

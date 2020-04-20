@@ -29,13 +29,14 @@ struct Light {
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	vec3 pos;
 };
 uniform Light light;
 uniform Material material;
 void main() {
 	vec4 colour = vec4(1.0f,0.0f,1.0,1.0f);
 	vec3 norm = normalize(Normal);
-	vec3 lightDir = normalize(light_pos - FragPos);
+	vec3 lightDir = normalize(light.pos - FragPos);
 	float diff = max(dot(norm, lightDir), 0.0);
 	vec3 reflectDir = reflect(-lightDir, norm);
 	vec3 viewDir = normalize(viewPos - FragPos);

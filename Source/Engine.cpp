@@ -2,6 +2,7 @@
 #include "../include/Engine.h"
 #include "../include/Init.hpp"
 #include "../include/Globals.h"
+#include "IL/il.h"
 bogong::Engine::Engine()
 {
 	int gpuDevice = 0;
@@ -30,6 +31,10 @@ void bogong::Engine::Start()
 	int display_w, display_h;
 	glfwMakeContextCurrent(window);
 	glfwGetFramebufferSize(window, &display_w, &display_h);
+	ilInit();
+	if (ilGetError()) {
+		std::system("pause");
+	}
 	glViewport(0, 0, display_w, display_h);
 	kbd = std::make_shared<Keyboard>();
 	mouse = std::make_shared<Mouse>();

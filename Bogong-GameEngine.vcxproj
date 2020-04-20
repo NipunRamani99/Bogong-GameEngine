@@ -139,6 +139,7 @@
     <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
+    <ClInclude Include="include\Rendering\Rendering.hpp" />
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
@@ -195,6 +196,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl" />
+    <None Include="Shaders\GouradFragmentShader.glsl" />
+    <None Include="Shaders\GouradVertexShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\MultipleLightFragment.glsl" />

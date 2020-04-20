@@ -15,6 +15,7 @@ namespace bogong {
 		{
 			auto v = mesh->mVertices;
 			auto uv = mesh->mTextureCoords;
+			
 			auto normals = mesh->mNormals;
 			std::vector<MeshVertex> vertices;
 			vertices.resize(mesh->mNumVertices);
@@ -23,20 +24,20 @@ namespace bogong {
 				vertices[i].y = v[i].y;
 				vertices[i].z = v[i].z;
 
-				vertices[i].nx = normals[i].x;
-				vertices[i].ny = normals[i].y;
-				vertices[i].nz = normals[i].z;
-
-				if (mesh->mTextureCoords[0])
-				{
-					vertices[i].u = uv[0][i].x;
-					vertices[i].v = uv[0][i].y;
+				if (normals) {
+					vertices[i].nx = normals[i].x;
+					vertices[i].ny = normals[i].y;
+					vertices[i].nz = normals[i].z;
 				}
 				else
 				{
-					vertices[i].u = uv[0][i].x;
-					vertices[i].v = uv[0][i].y;
+					vertices[i].nx = 0.0f;
+					vertices[i].ny = 0.0f;
+					vertices[i].nz = 0.0f;
 				}
+			
+				vertices[i].u = uv[0][i].x;
+				vertices[i].v = uv[0][i].y;
 			}
 			int nfaces = mesh->mNumFaces;
 			std::vector<unsigned int> indices;

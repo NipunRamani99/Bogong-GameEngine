@@ -25,7 +25,7 @@ namespace bogong {
 				auto meshptr = MeshBank::CreateFromAssimpMesh(mesh);
 				auto matidx = mesh->mMaterialIndex;
 				
-				if (matidx >=0) {
+				if (matidx>=0) {
 					aiMaterial * mat = scene->mMaterials[matidx];
 					std::string name;
 					aiString str;
@@ -33,7 +33,7 @@ namespace bogong {
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 					name = str.C_Str();
 					if (name != "") {
-						name = path + "/" + str.C_Str();
+						name = path + "\\" + str.C_Str();
 						mtl->diffuse = TextureManager::make_texture(name);
 					
 						
@@ -43,7 +43,7 @@ namespace bogong {
 					
 					name = str.C_Str();
 					if (name != "") {
-						name = path + "/" + str.C_Str();
+						name = path + "\\" + str.C_Str();
 						mtl->specular = TextureManager::make_texture(name);
 					}
 					mtl->shininess = 16.0f;
@@ -92,7 +92,7 @@ namespace bogong {
 			return mesh;
 		}
 		static std::string GetDirectory(std::string path) {
-			size_t l = path.rfind('/');
+			size_t l = path.rfind('\\');
 			std::string dir = "";
 			dir.resize(l);
 			std::copy(path.begin(), path.begin()+l, dir.begin());
@@ -102,10 +102,8 @@ namespace bogong {
 		static std::shared_ptr<node::ShapeNode> LoadModel(std::string path) {
 			Assimp::Importer importer;
 			
-			const aiScene * scene = importer.ReadFile(path.c_str(), aiProcess_CalcTangentSpace |
-				aiProcess_Triangulate |
-				aiProcess_JoinIdenticalVertices |
-				aiProcess_SortByPType);
+			const aiScene * scene = importer.ReadFile(path.c_str(), 
+				aiProcess_GenNormals | aiProcess_Triangulate | aiProcess_FlipUVs);
 			
 			if (!scene) {
 				std::cout << "error couldn't load scene from assimp.\n";

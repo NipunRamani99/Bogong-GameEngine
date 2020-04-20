@@ -10,6 +10,8 @@ uniform vec3 cam_dir;
 uniform vec3 cam_pos;
 uniform mat4 view;
 const vec3 Csky = vec3(0.902, 0.902, 0.980);
+uniform float nearVal = 1.0f;
+uniform float thetaD = 45.0f;
 float sdPlane(vec3 p, vec4 n)
 {
 	// n must be normalized
@@ -62,14 +64,25 @@ void calcCamera(out vec3 ro, out vec3 ta)
 }
 void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
 {
-	vec2 p = (2.0*pix - iResolution.xy)/iResolution.y;
-	
-	vec3 ww = normalize(cam_dir); //from ray origin to target
-	vec3 uu = normalize(cross(ww, vec3(0.0, 1.0, 0.0)));// y-up boiz
-	vec3 vv = normalize(cross(uu, ww));
+	//pix -> (0,0),(1280,640)
+	//vec2 p = (2.0f*pix - iResolution.xy) / iResolution.y;
+	vec2 p = pix;
+	p /= iResolution.xy;
+	//p -> ((-640,-320), (640,320))/iResolution.y
+	vec3 u, v, w;
+	float theta = radians(thetaD);
+	float half_height =tan(theta / 2.0f);
+	float half_width = 1280.0f/640.0f * half_height;
+	vec3 origin = cam_pos;
+	w = normalize(cam_dir);
+	u = normalize(cross(w,vec3(0.,1.,0.)));
+	v = normalize(cross(u,w ));
+ 	vec3 lower_left_corner = cam_pos - half_width * u - half_height * v +w;
+	vec3 horizontal        = 2.0f*half_width  *u;
+	vec3 vertical          = 2.0f*half_height *v;
 	Ro = cam_pos;
-	Rd = normalize(p.x * uu + p.y * vv + 2.0*ww);	
-	
+	Rd = normalize(lower_left_corner + p.x * horizontal + p.y * vertical-cam_pos);
+	//Rd = normalize(p.x * u + p.y * v + 2.0*w);
 }
 float Light(vec3 p)
 {
@@ -119,20 +132,32 @@ void main() {
 	newpos.y	= pos.y;
 	vec3 ro, rd;
 	vec3 ddx_ro, ddx_rd, ddy_ro, ddy_rd;
-	vec2 fragCoord = (newpos + vec2(1,1))*vec2(640, 310);
-	calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
+	vec2 fragCoord = (newpos + vec2(1.0f,1.0f))*vec2(640.0f, 320.0f);
 
+	calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
+	calcRayForPixel(fragCoord + vec2(1.0, 0.0), ddx_ro, ddx_rd);
+	calcRayForPixel(fragCoord + vec2(0.0, 1.0), ddy_ro, ddy_rd);
 
 	int id = 0;
 	float d = RayMarch(ro, rd, id);
-	const float maxd = 85000.;
-	d = min(maxd, d);
+	float ddx = RayMarch(ddx_ro, ddx_rd, id);
+	float ddy = RayMarch(ddy_ro, ddy_rd, id);
+
 	vec3 p = ro + rd * d;
+	vec3 px = ddx_ro + ddx_rd * ddx;
+	vec3 py = ddy_ro + ddy_rd * ddy;
 	float dif = Light(p);
+
+	
 	vec3 color = vec3(0.0f);
 	if (id == 2) {
 		vec2 uv = texCoords(p, id);
-		color = vec3(0.20f);
+		vec2 uvx = texCoords(px, id) - uv;
+		vec2 uvy = texCoords(py, id) - uv;
+		color = vec3(1.0)*checkersTextureGradBox(uv, uvx, uvy);
+		// color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
+		dif += 0.06;
+		color *= dif;
 
 	}
 	

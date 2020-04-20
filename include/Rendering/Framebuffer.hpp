@@ -12,8 +12,15 @@ namespace bogong {
 	public:
 		void Bind();
 		void Unbind();
-		Framebuffer(unsigned int width, unsigned int height);
+		Framebuffer(unsigned int width, unsigned int height) {
 
+		}
+		std::shared_ptr<Texture> GetColourTexture() {
+			return colour_tex;
+		}
+		std::shared_ptr<Texture> GetDepthTexture() {
+			return depth_tex;
+		}
 
 	};
 }

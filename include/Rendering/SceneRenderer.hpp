@@ -7,10 +7,7 @@
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;
-		glm::vec3 light_pos      = glm::vec3(4.0f, 5.0f, 6.0f);
-		glm::vec3 light_ambient  = glm::vec3(0.1f,0.1f,0.1f);
-		glm::vec3 light_diffuse  = glm::vec3(0.8f, 0.8f, 0.8f);
-		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
+		
 	};
 
 	//      R
@@ -26,7 +23,10 @@ namespace bogong {
 		std::shared_ptr<FPCamera> cam;
 		glm::mat4 view;
 		glm::mat4 projection;
-
+		glm::vec3 light_pos = glm::vec3(4.0f, 5.0f, 6.0f);
+		glm::vec3 light_ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+		glm::vec3 light_diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		bool attribEnabled = false;
 	public:
 	
@@ -72,10 +72,10 @@ namespace bogong {
 				else
 					mesh->getColourMaterial()->Bind(prog);
 
-				prog.setVec3("light.ambient" , cach.light_ambient);
-				prog.setVec3("light.diffuse" , cach.light_diffuse);
-				prog.setVec3("light.specular", cach.light_specular);
-				prog.setVec3("light.pos"     , cach.light_pos);
+				prog.setVec3("light.ambient" , light_ambient);
+				prog.setVec3("light.diffuse" , light_diffuse);
+				prog.setVec3("light.specular", light_specular);
+				prog.setVec3("light.pos"     , light_pos);
 				prog.setMat4("model", model);
 				prog.setMat4("view", view);
 				prog.setMat4("projection", projection);
@@ -89,6 +89,9 @@ namespace bogong {
 					mesh->GetIndexBuffer()->Unbind();
 				}
 			}
+		}
+		void Update() {
+			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			StateCache cache = state.top();
