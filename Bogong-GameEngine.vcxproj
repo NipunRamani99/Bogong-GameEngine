@@ -131,7 +131,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
-    <ClInclude Include="include\Rendering\Framebuffer2.hpp" />
+    <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
@@ -179,7 +179,6 @@
     <ClCompile Include="include\Rendering\Nodes\ShapeNode.cpp" />
     <ClCompile Include="include\Rendering\Renderer.cpp" />
     <ClCompile Include="include\Rendering\Scene.cpp" />
-    <ClCompile Include="include\Rendering\Framebuffer.hpp" />
     <ClCompile Include="include\ShaderManager.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Engine.cpp" />

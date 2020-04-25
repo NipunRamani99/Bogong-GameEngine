@@ -4,7 +4,7 @@
 #include "Nodes/NodeBase.hpp"
 #include "Nodes/MaterialData.hpp"
 #include "../ShaderManager.hpp"
-#include "Framebuffer2.hpp"
+#include "Framebuffer.hpp"
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;

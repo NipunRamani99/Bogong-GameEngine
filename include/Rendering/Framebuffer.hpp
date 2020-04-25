@@ -35,13 +35,14 @@ namespace bogong {
 		}
 		void InitDepthStencilAttachment() {
 			TextureParameters tp;
-			tp.format                           = GL_DEPTH_STENCIL;
-			tp.internal_format                  = GL_DEPTH24_STENCIL8;
-			tp.TextureMagnificationFilterMode   = GL_NONE;
-			tp.TextureMagnificationFilterMode   = GL_NONE;
-			tp.TextureWrapSMode                 = GL_NONE;
-			tp.TextureWrapTMode                 = GL_NONE;
-
+			tp.format = GL_DEPTH_STENCIL;
+			tp.internal_format = GL_DEPTH24_STENCIL8;
+			tp.type = GL_UNSIGNED_INT_24_8;
+			tp.TextureMinificationFilterMode = GL_NONE;
+			tp.TextureMagnificationFilterMode = GL_NONE;
+			tp.TextureWrapSMode = GL_NONE;
+			tp.TextureWrapTMode = GL_NONE;
+			tp.Target = GL_TEXTURE_2D;
 			tp.generateMipMap = false;
 			depth_tex = std::make_shared<Texture>(width, height, nullptr, tp);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depth_tex->m_TexID, 0);
@@ -50,6 +51,7 @@ namespace bogong {
 			TextureParameters tp;
 			tp.generateMipMap = false;
 			tp.format = GL_RGBA;
+			tp.Target = GL_TEXTURE_2D;
 			tp.internal_format = GL_RGBA;
 			tp.TextureWrapSMode = GL_NONE;
 			tp.TextureWrapTMode = GL_NONE;

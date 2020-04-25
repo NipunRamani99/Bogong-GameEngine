@@ -177,7 +177,7 @@
     <ClInclude Include="include\Rendering\Nodes\SpotLightNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Framebuffer2.hpp">
+    <ClInclude Include="include\Rendering\Framebuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -252,9 +252,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="include\ShaderManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="include\Rendering\Framebuffer.hpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
