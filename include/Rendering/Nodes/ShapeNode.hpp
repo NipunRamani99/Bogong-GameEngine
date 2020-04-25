@@ -29,11 +29,6 @@ namespace bogong {
 				model  = glm::translate(pos);
 				type   = node::NodeType::Shape;
 			}
-			/*
-				ShapeNode(std::string mesh_name){
-				   
-				}
-			*/
 
 
 			ShapeNode(std::vector<std::shared_ptr<Mesh> >& mesh,

@@ -19,21 +19,14 @@ namespace bogong {
 	public:
 		SampleScene() {
 			renderer = std::make_shared<SceneRenderer>();
-			cam = std::make_shared<FPCamera>();
-			scene = std::make_shared<Scene>();
-			cube = std::make_shared<CubeMesh>(glm::vec4(1.0f));
-			texcube = std::make_shared<TexturedCubeMesh>();
-			//auto tex1 = TextureManager::make_texture("assets/models/crate/container2.png");
-			root = std::make_shared<node::NodeBase>("Root",glm::vec3(0.0f,0.0f,0.0f));
-		//	auto model3 = AssimpFactory::LoadModel("C:\\Users\\Laptop.000\\Downloads\\Aircraft 3D Models with Textures\\mikoyan-mig-35-foxhound_p3dm.ru\\Mikoyan MIG-35 Foxhound\\mig35.obj");
-			auto model1 = AssimpFactory::LoadModel("assets\\models\\sponza\\sponza.obj");
-			//model1->Scale(glm::vec3(0.1, 0.1, 0.1));
-			model1->Scale(glm::vec3(0.01, 0.01, 0.01));
-			model1->Translate(glm::vec3(0.0f, 10.0f, 0.0f));
-			
-			//model1->AddChild(model3);
-			root->AddChild(model1);
-			
+			cam      = std::make_shared<FPCamera>();
+			scene    = std::make_shared<Scene>();
+			root     = std::make_shared<node::NodeBase>("Root",glm::vec3(0.0f,0.0f,0.0f));	
+			auto model1 = AssimpFactory::LoadModel("C:\\Users\\Laptop.000\\Downloads\\Aircraft 3D Models with Textures\\mikoyan-mig-35-foxhound_p3dm.ru\\Mikoyan MIG-35 Foxhound\\mig35.obj");
+
+			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
+			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
+			root->AddChild(model1);		
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
 		}

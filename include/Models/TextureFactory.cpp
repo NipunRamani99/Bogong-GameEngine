@@ -1,8 +1,6 @@
 #include "TextureFactory.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "../stb_image.h"
-#include "IL/il.h"
 #include<iostream>
 #include <gli/gli.hpp>
 #include<string>

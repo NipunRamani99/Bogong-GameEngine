@@ -1,5 +1,5 @@
 #define MAX_STEPS 100
-#define MAX_DISTANCE 100.0
+#define MAX_DISTANCE 35.0
 #define SURFACE_DIST 0.01
 #define THRESHOLD 0.01
 in vec2 pos;
@@ -9,7 +9,8 @@ vec2 iResolution = vec2(1280, 640);
 uniform vec3 cam_dir;
 uniform vec3 cam_pos;
 uniform mat4 view;
-const vec3 Csky = vec3(0.902, 0.902, 0.980);
+//const vec3 Csky = vec3(0.902, 0.902, 0.980);
+const vec3 Csky = vec3(0., 0., 0.);
 uniform float nearVal = 1.0f;
 uniform float thetaD = 45.0f;
 float sdPlane(vec3 p, vec4 n)

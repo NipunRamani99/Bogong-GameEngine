@@ -171,6 +171,15 @@
     <ClInclude Include="include\Screen.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Rendering\Rendering.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\Nodes\SpotLightNode.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\Framebuffer2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -265,5 +274,7 @@
     <None Include="Shaders\MultipleLightVertex.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
+    <None Include="Shaders\FrameVertexShader.glsl" />
+    <None Include="Shaders\FrameFragmentShader.glsl" />
   </ItemGroup>
 </Project>

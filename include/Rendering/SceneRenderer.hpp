@@ -4,17 +4,12 @@
 #include "Nodes/NodeBase.hpp"
 #include "Nodes/MaterialData.hpp"
 #include "../ShaderManager.hpp"
+#include "Framebuffer2.hpp"
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;
 		
 	};
-
-	//      R
-	//    /   \
-	//   S1   S2
-	//   /\   /\
-
 	class SceneRenderer {
 
 	private:
@@ -23,13 +18,19 @@ namespace bogong {
 		std::shared_ptr<FPCamera> cam;
 		glm::mat4 view;
 		glm::mat4 projection;
-		glm::vec3 light_pos = glm::vec3(4.0f, 5.0f, 6.0f);
-		glm::vec3 light_ambient = glm::vec3(0.1f, 0.1f, 0.1f);
-		glm::vec3 light_diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+		glm::vec3 light_pos      = glm::vec3(4.0f, 5.0f, 6.0f);
+		glm::vec3 light_ambient  = glm::vec3(0.1f, 0.1f, 0.1f);
+		glm::vec3 light_diffuse  = glm::vec3(0.8f, 0.8f, 0.8f);
 		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
+		Program output;
+		std::shared_ptr<Framebuffer> frame;
 		bool attribEnabled = false;
 	public:
-	
+		SceneRenderer() {
+			frame = std::make_shared<Framebuffer>(1280,640);
+			Configuration config;
+			output = ShaderManager::GetShader("Frame", config);
+		}
 		void DrawMesh(std::shared_ptr<node::ShapeNode> sn,StateCache cach) {
 			Configuration configuration;
 			auto meshes = sn->getMesh();
@@ -124,6 +125,9 @@ namespace bogong {
 			}
 			}
 		}
+		void DrawFrame() {
+
+		}
 		void Draw(std::shared_ptr<Scene> scene) {
 			auto root = scene->getRootNode();
 			glm::mat4 model = root->GetModel();
@@ -137,8 +141,9 @@ namespace bogong {
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
-
 			ProcessNode(root);
+		
+
 		}
 	};
 

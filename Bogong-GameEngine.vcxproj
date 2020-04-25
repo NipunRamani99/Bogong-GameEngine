@@ -131,6 +131,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
+    <ClInclude Include="include\Rendering\Framebuffer2.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="include\Rendering\Nodes\NodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\PointLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\SpotLightNode.hpp" />
     <ClInclude Include="include\Rendering\Rendering.hpp" />
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
@@ -196,6 +198,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl" />
+    <None Include="Shaders\FrameFragmentShader.glsl" />
+    <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
