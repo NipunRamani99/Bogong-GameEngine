@@ -39,9 +39,9 @@ namespace bogong {
 			ImGui::Begin("Sample Scene");
 			renderer->Update();
 			ImGui::End();
-			if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
+		/*	if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
 				root->Translate(pos);
-			}
+			}*/
 		}
 	};
 }

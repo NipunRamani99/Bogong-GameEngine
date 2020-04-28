@@ -61,8 +61,8 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 void bogong::Game::Draw(float delta) const
 {
 
-	scr->Draw(delta);
-	glClear(GL_DEPTH_BUFFER_BIT);
+	//scr->Draw(delta);
+	//glClear(GL_DEPTH_BUFFER_BIT);
 	scene->Draw();
 	
 	

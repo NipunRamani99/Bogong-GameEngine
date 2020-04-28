@@ -14,6 +14,8 @@ namespace bogong {
 
 	private:
 		VertexArray vao;
+		VertexArray vao2;
+		std::shared_ptr<VertexBuffer> vbo;
 		std::stack<StateCache> state;
 		std::shared_ptr<FPCamera> cam;
 		glm::mat4 view;
@@ -24,9 +26,17 @@ namespace bogong {
 		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		Program output;
 		std::shared_ptr<Framebuffer> frame;
+		float quadVertices[24] = {  -1.0f,  1.0f,  0.0f, 1.0f,
+									-1.0f, -1.0f,  0.0f, 0.0f,
+									 1.0f, -1.0f,  1.0f, 0.0f,
+									-1.0f,  1.0f,  0.0f, 1.0f,
+									 1.0f, -1.0f,  1.0f, 0.0f,
+									 1.0f,  1.0f,  1.0f, 1.0f};
 		bool attribEnabled = false;
 	public:
-		SceneRenderer() {
+		SceneRenderer()
+		{
+			vbo = std::make_shared<VertexBuffer>(quadVertices, sizeof(float) * 24);
 			frame = std::make_shared<Framebuffer>(1280,640);
 			Configuration config;
 			output = ShaderManager::GetShader("Frame", config);
@@ -126,7 +136,20 @@ namespace bogong {
 			}
 		}
 		void DrawFrame() {
+			vao2.Bind();
+			vbo->Bind();
 
+			output.Bind();
+			frame->GetColourTexture()->Bind();
+			output.setInt("s", 0);
+			int stride = sizeof(float) * 4;
+
+			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao2.GetID(), 0));
+			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao2.GetID(), 1));
+			CHECK_GL_ERROR(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, 0));
+			CHECK_GL_ERROR(glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 2)));
+
+			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, 6));
 		}
 		void Draw(std::shared_ptr<Scene> scene) {
 			auto root = scene->getRootNode();
@@ -141,9 +164,18 @@ namespace bogong {
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
-			ProcessNode(root);
-		
+			frame->Bind();
 
+			glEnable(GL_CULL_FACE);
+			glClearColor(0.30f, 0.30f, 0.30f, 1.0f);
+			frame->clear();
+			
+			ProcessNode(root);
+			frame->Unbind();
+			
+			glClear(GL_COLOR_BUFFER_BIT);
+			glDisable(GL_CULL_FACE);
+			DrawFrame();
 		}
 	};
 

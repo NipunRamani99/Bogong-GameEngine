@@ -66,7 +66,7 @@ namespace bogong {
 			//create a ShapeNode
 			auto transformation = node->mTransformation;
 			auto name = node->mName;
-			aiVector3D pos,scale,rotation;
+			aiVector3D pos,scale,rotation;	 
 			glm::vec3 p, s, r;
 			transformation.Decompose(scale, rotation, pos);
 			p.x = pos.x;
@@ -80,8 +80,9 @@ namespace bogong {
 			r.z = rotation.z;
 			
 			std::shared_ptr<node::ShapeNode> mesh = std::make_shared<node::ShapeNode>(meshvec,glm::vec3(1.0f,0.0f,0.0f),p,name.C_Str());
-		/*	mesh->Rotate(r);
-			mesh->Scale(s);*/
+			mesh->Rotate(r);
+			mesh->Scale(s);
+			mesh->setPos(p);
 			//then process and append child
 			int nchild = node->mNumChildren;
 			for (int i = 0; i < nchild; i++) {
