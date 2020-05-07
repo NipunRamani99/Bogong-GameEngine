@@ -5,6 +5,8 @@
 #include "SceneRenderer.hpp"
 #include "../Models/TextureFactory.hpp"
 #include "AssimpLoader.hpp"
+#include <future>
+#include "../Screen.hpp"
 namespace bogong {
 	class SampleScene {
 		std::shared_ptr<CubeMesh> cube;
@@ -17,18 +19,20 @@ namespace bogong {
 		glm::vec3 alpha = glm::vec3(2.0f,5.0f,0.0f);
 		glm::vec3 pos = glm::vec3(0.0f, 1.0f, 0.f);
 	public:
+	
 		SampleScene() {
 			renderer = std::make_shared<SceneRenderer>();
 			cam      = std::make_shared<FPCamera>();
 			scene    = std::make_shared<Scene>();
-			root     = std::make_shared<node::NodeBase>("Root",glm::vec3(0.0f,0.0f,0.0f));	
+			root     = std::make_shared<node::NodeBase>
+				("Root",glm::vec3(0.0f,0.0f,0.0f));
 			auto model1 = AssimpFactory::LoadModel("C:\\Users\\Laptop.000\\Downloads\\Aircraft 3D Models with Textures\\mikoyan-mig-35-foxhound_p3dm.ru\\Mikoyan MIG-35 Foxhound\\mig35.obj");
-
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
-			root->AddChild(model1);		
+			root->AddChild(model1);
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
+			renderer->SetCamera(cam);
 		}
 		void Draw() {
  			renderer->Draw(scene);
@@ -39,9 +43,9 @@ namespace bogong {
 			ImGui::Begin("Sample Scene");
 			renderer->Update();
 			ImGui::End();
-		/*	if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
+			if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
 				root->Translate(pos);
-			}*/
+			}
 		}
 	};
 }

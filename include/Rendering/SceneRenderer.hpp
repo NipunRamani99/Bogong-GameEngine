@@ -5,6 +5,7 @@
 #include "Nodes/MaterialData.hpp"
 #include "../ShaderManager.hpp"
 #include "Framebuffer.hpp"
+#include "../Screen.hpp"
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;
@@ -18,6 +19,7 @@ namespace bogong {
 		std::shared_ptr<VertexBuffer> vbo;
 		std::stack<StateCache> state;
 		std::shared_ptr<FPCamera> cam;
+		std::shared_ptr<Screen> scr;
 		glm::mat4 view;
 		glm::mat4 projection;
 		glm::vec3 light_pos      = glm::vec3(4.0f, 5.0f, 6.0f);
@@ -36,6 +38,7 @@ namespace bogong {
 	public:
 		SceneRenderer()
 		{
+			scr = std::make_shared<Screen>();
 			vbo = std::make_shared<VertexBuffer>(quadVertices, sizeof(float) * 24);
 			frame = std::make_shared<Framebuffer>(1280,640);
 			Configuration config;
@@ -103,36 +106,39 @@ namespace bogong {
 		}
 		void Update() {
 			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
+			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView());
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
- 			StateCache cache = state.top();
-			cache.model = cache.model * node->GetModel();
-			state.push(cache);
-			auto vn = node->GetChilds();
-			for (auto & n : vn) {
-				ProcessNode(n);
-			}
-			state.pop();
-			cache = state.top();
-			auto type = node->GetType();
-			switch (type) {
-			case node::NodeType::Shape:
-			{
+ 			
+			if (node) {
+				StateCache cache = state.top();
+				cache.model = cache.model * node->GetModel();
+				state.push(cache);
+				auto vn = node->GetChilds();
+				for (auto & n : vn) {
+					ProcessNode(n);
+				}
+				state.pop();
+				cache = state.top();
+				auto type = node->GetType();
+				switch (type) {
+				case node::NodeType::Shape:
+				{
 
-				auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
-				DrawMesh(shape_node,cache);
-				break;
-			}
-			case node::NodeType::Root:
-			{
-				break;
-			}
-			default:
-			{
-				std::cout << "Unknown node type.\n";
-				std::system("pause");
-				break;
-			}
+					auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
+					DrawMesh(shape_node, cache);
+					break;
+				}
+				case node::NodeType::Root:
+				{
+					break;
+				}
+				default:
+				{
+
+					break;
+				}
+				}
 			}
 		}
 		void DrawFrame() {
@@ -151,28 +157,38 @@ namespace bogong {
 
 			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, 6));
 		}
+		void SetCamera(std::shared_ptr<FPCamera>  cam) {
+			this->cam = cam;
+		}
 		void Draw(std::shared_ptr<Scene> scene) {
 			auto root = scene->getRootNode();
-			glm::mat4 model = root->GetModel();
-			StateCache cache;
-			auto cam = scene->getCamera();
-			projection = cam->GetProjection();
-			view = cam->GetView();
-			cache.model = glm::mat4(1.0f);
-			state.push(cache);
-			vao.Bind();
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
 			frame->Bind();
-
-			glEnable(GL_CULL_FACE);
-			glClearColor(0.30f, 0.30f, 0.30f, 1.0f);
 			frame->clear();
 			
-			ProcessNode(root);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			scr->Draw(0.00002f);
+			glEnable(GL_CULL_FACE);
+
+			//glClear(GL_DEPTH_BUFFER_BIT);
+			if (root) {
+				glm::mat4 model = root->GetModel();
+				StateCache cache;
+				projection = cam->GetProjection();
+				view = cam->GetView();
+				cache.model = glm::mat4(1.0f);
+				state.push(cache);
+				vao.Bind();
+				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
+				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
+				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
+				
+				
+				
+				
+				ProcessNode(root);
+				
+			}
 			frame->Unbind();
-			
 			glClear(GL_COLOR_BUFFER_BIT);
 			glDisable(GL_CULL_FACE);
 			DrawFrame();

@@ -161,7 +161,7 @@ void main() {
 		color *= dif;
 
 	}
-	
+	gl_FragDepth = d/MAX_DISTANCE;
 	float fog = 1.0f - exp(-0.1*d);
 	color.rgb = mix(color.rgb, Csky, fog);
 	FragColour = vec4(color, 1.0);

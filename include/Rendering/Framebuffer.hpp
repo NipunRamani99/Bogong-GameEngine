@@ -28,10 +28,22 @@ namespace bogong {
 			isMultiSampled(isMultiSampled)
 		{
 			glGenFramebuffers(1, &id);
+			
+		}
+		void InitDepthStencilAndColour() {
 			Bind();
 			InitColourAttachment();
 			InitDepthStencilAttachment();
 			Unbind();
+		}
+		void AttachDepthStencil(std::shared_ptr<Texture> tex) {
+			Bind();
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, tex->m_TexID, 0);
+			Unbind();
+		}
+		void AttachColour(std::shared_ptr<Texture> tex) {
+			Bind();
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex->m_TexID, 0);
 		}
 		void InitDepthStencilAttachment() {
 			TextureParameters tp;
