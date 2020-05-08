@@ -9,6 +9,8 @@ vec2 iResolution = vec2(1280, 640);
 uniform vec3 cam_dir;
 uniform vec3 cam_pos;
 uniform mat4 view;
+uniform mat4 model;
+uniform mat4 proj;
 //const vec3 Csky = vec3(0.902, 0.902, 0.980);
 const vec3 Csky = vec3(0., 0., 0.);
 uniform float nearVal = 1.0f;
@@ -127,6 +129,15 @@ float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
 
 
 }
+float CalculateDepth(vec3 p) {
+	vec4 clip_space = proj*view*model*vec4(p,1.0f);
+	float clip_space_depth = clip_space.z / clip_space.w;
+	float far = gl_DepthRange.far;
+	float near = gl_DepthRange.near;
+	float depth = (((far-near)*(clip_space_depth))+near+far)/2.0f;
+	return depth;
+
+}
 void main() {
 	vec2 newpos= vec2(0.0f,0.0f);
 	newpos.x    = pos.x;
@@ -161,7 +172,7 @@ void main() {
 		color *= dif;
 
 	}
-	gl_FragDepth = d/MAX_DISTANCE;
+	gl_FragDepth = CalculateDepth(p);
 	float fog = 1.0f - exp(-0.1*d);
 	color.rgb = mix(color.rgb, Csky, fog);
 	FragColour = vec4(color, 1.0);

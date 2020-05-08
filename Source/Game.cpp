@@ -45,7 +45,7 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 			timer = 0.0f;
 		}
 	}
-	scr->Update(camera->GetPos(), camera->GetDir(), camera->GetView());
+	//scr->Update(camera->GetPos(), camera->GetDir(), camera->GetView());
 	scene->Update(kbd, mouse, delta,window);
 	ImGui::Begin("Test");
 	ImGui::End();

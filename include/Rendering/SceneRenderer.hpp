@@ -41,6 +41,7 @@ namespace bogong {
 			scr = std::make_shared<Screen>();
 			vbo = std::make_shared<VertexBuffer>(quadVertices, sizeof(float) * 24);
 			frame = std::make_shared<Framebuffer>(1280,640);
+			frame->InitDepthStencilAndColour();
 			Configuration config;
 			output = ShaderManager::GetShader("Frame", config);
 		}
@@ -106,7 +107,7 @@ namespace bogong {
 		}
 		void Update() {
 			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
-			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView());
+			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView(),cam->GetProjection());
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			
@@ -166,10 +167,9 @@ namespace bogong {
 			frame->clear();
 			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 			scr->Draw(0.00002f);
 			glEnable(GL_CULL_FACE);
-
-			//glClear(GL_DEPTH_BUFFER_BIT);
 			if (root) {
 				glm::mat4 model = root->GetModel();
 				StateCache cache;

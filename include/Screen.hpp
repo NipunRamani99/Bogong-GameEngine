@@ -21,8 +21,10 @@ namespace bogong {
 			};
 			buff = std::make_shared<VertexBuffer>(vertices, sizeof(vertices) * sizeof(float));
 		}
-		void Update(glm::vec3 cam_pos, glm::vec3 cam_dir , glm::mat4 view) {
+		void Update(glm::vec3 cam_pos, glm::vec3 cam_dir , glm::mat4 view,glm::mat4 projection) {
 			prog.Bind();
+			prog.setMat4("proj", projection);
+			prog.setMat4("model", glm::mat4(1.0f));
 			prog.setVec3("cam_pos", cam_pos);
 			prog.setVec3("cam_dir", cam_dir);
 			prog.setMat4("view", view);
