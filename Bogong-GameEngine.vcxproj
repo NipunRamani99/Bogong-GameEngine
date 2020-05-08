@@ -125,6 +125,7 @@
     <ClInclude Include="include\ErrorLog.h" />
     <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\Imgui.h" />
+    <ClInclude Include="include\ImGuiPane.hpp" />
     <ClInclude Include="include\IndexBuffer.h" />
     <ClInclude Include="include\Init.hpp" />
     <ClInclude Include="include\Keyboard.h" />

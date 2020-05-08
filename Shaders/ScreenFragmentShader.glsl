@@ -115,8 +115,8 @@ vec2 tri(in vec2 x)
 }
 float checkersTexture(in vec2 p)
 {
-	vec2 s = sign(fract(p*0.5) - 0.5);
-	return 0.5 - 0.5*s.x*s.y;
+	vec2 s = sign(fract(p*0.05) - 0.05);
+	return 0.05 - 0.05*s.x*s.y;
 }
 float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
 {
