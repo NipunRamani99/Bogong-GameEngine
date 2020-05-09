@@ -1,7 +1,40 @@
-#include "../include/Imgui.h"
 #include "../include/Engine.h"
 #include "../include/Init.hpp"
 #include "../include/Globals.h"
+#include "../include/Imgui.h"
+namespace bogong {
+	namespace Init {
+
+		void InitImgui(GLFWwindow & window)
+		{
+			IMGUI_CHECKVERSION();
+			ImGui::CreateContext();
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
+			ImGui::StyleColorsDark();
+			//ImGui::StyleColorsClassic();
+			const char* glsl_version = "#version 330";
+			// Setup Platform/Rendeer bindings
+			ImGui_ImplGlfw_InitForOpenGL(&window, true);
+			ImGui_ImplOpenGL3_Init(glsl_version);
+		}
+		void StartImguiFrame()
+		{
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+		}
+		void Render()
+		{
+			ImGui::Render();
+		}
+		void EndImguiFrame()
+		{
+
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		}
+	}
+}
 bogong::Engine::Engine()
 {
 	int gpuDevice = 0;
@@ -18,7 +51,7 @@ bogong::Engine::Engine()
 	kbd->SetCallback(window);
 	mouse->SetCallback(window);
 	Init::InitImgui(*window);
-
+	pane = std::make_shared<ImGuiPane>("Test Pane", glm::vec2(0, 0), glm::vec2(300, 300));
 }
 
 void bogong::Engine::Start()
@@ -49,6 +82,7 @@ void bogong::Engine::Update(float deltime)
 
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
 	assert(!error());
+	pane->UpdatePane();
 }
 
 void bogong::Engine::DrawCalls(float deltatime) const
@@ -59,6 +93,8 @@ void bogong::Engine::DrawCalls(float deltatime) const
 void bogong::Engine::RenderEverything(float deltatime)
 {
 	DrawCalls(deltatime);
+	Timer::LogTimeElapsed("After rendering");
+	pane->Render();
 	Init::Render();
 	Init::EndImguiFrame();
 	glfwSwapBuffers(window);
@@ -66,19 +102,21 @@ void bogong::Engine::RenderEverything(float deltatime)
 	{
 		KeepRendering = false;
 	}
+	
 }
 
 void bogong::Engine::Loop()
 {
-
+	Timer::Start();
 	prevTime = currentTime;
 	currentTime = (float)glfwGetTime();
 	Init::StartImguiFrame();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 	Update(currentTime - prevTime);
+	Timer::LogTimeElapsed("Update");
 	RenderEverything(currentTime-prevTime);
-
+	Timer::Clear();
 }
 
 void bogong::Engine::End()

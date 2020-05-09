@@ -8,7 +8,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Game.h"
-
+#include "ImGuiPane.hpp"
+#include "Timer.hpp"
 namespace bogong
 {
 
@@ -18,10 +19,11 @@ namespace bogong
 	private:
 		GLFWwindow* window;
 		GLuint programID;
-
+		std::shared_ptr<ImGuiPane> pane;
 		std::shared_ptr<Game> game;
 		std::shared_ptr<Keyboard> kbd;
 		std::shared_ptr<Mouse> mouse;
+		
 		int camID = 0;
 		float prevTime = 0.0;
 		float currentTime = 0.0;

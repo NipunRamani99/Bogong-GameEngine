@@ -12,7 +12,7 @@ uniform mat4 view;
 uniform mat4 model;
 uniform mat4 proj;
 //const vec3 Csky = vec3(0.902, 0.902, 0.980);
-const vec3 Csky = vec3(0., 0., 0.);
+const vec3 Csky = vec3(0.75, 0.75, 0.75);
 uniform float nearVal = 1.0f;
 uniform float thetaD = 45.0f;
 float sdPlane(vec3 p, vec4 n)
@@ -126,7 +126,7 @@ float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
 	vec2 i = 2.0*(abs(fract((p - 0.5*w) / 2.0) - 0.5) - abs(fract((p + 0.5*w) / 2.0) - 0.5)) / w;
 	// xor pattern
 	return 0.5 - 0.5*i.x*i.y;
-
+	
 
 }
 float CalculateDepth(vec3 p) {
@@ -169,8 +169,10 @@ void main() {
 		color = vec3(1.0)*checkersTextureGradBox(uv, uvx, uvy);
 		// color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
 		dif += 0.06;
-		color *= dif;
-
+		//color *= dif;
+	}
+	else {
+		color = vec3(0.53f, 0.81f, 0.920f);
 	}
 	gl_FragDepth = CalculateDepth(p);
 	float fog = 1.0f - exp(-0.1*d);
