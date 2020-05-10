@@ -30,6 +30,7 @@ namespace bogong {
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
 			root->AddChild(model1);
+			root->UpdateTree();
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
 			renderer->SetCamera(cam);

@@ -8,6 +8,6 @@ namespace bogong {
 		static void Start();
 		static void LogTimeElapsed(std::string name);
 		static void Clear();
-		static std::vector<std::pair<std::string,std::chrono::duration<float,std::milli>>> durations;
+		static std::vector<std::pair<std::string,std::chrono::duration<float,std::nano>>> durations;
 	};
 }

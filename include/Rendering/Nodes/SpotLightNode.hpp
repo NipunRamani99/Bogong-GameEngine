@@ -13,7 +13,7 @@ namespace bogong {
 				LightNodeBase(name, pos),
 				sl(sl)
 			{
-
+				type = Spot;
 			}
 			
 			void Bind(Program p, int i) override {
@@ -21,11 +21,14 @@ namespace bogong {
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].ambient").c_str(), sl.specular);
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].diffuse").c_str(), sl.diffuse);
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].specular").c_str(), sl.specular);
-				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].specular").c_str(), sl.specular);
-				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].specular").c_str(), sl.specular);
+				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].direction").c_str(), sl.dir);
+				p.setFloat(std::string("spot_light[" + std::to_string(i) + "].innercutoff").c_str(), sl.innercutoff);
+				p.setFloat(std::string("spot_light[" + std::to_string(i) + "].outercutoff").c_str(), sl.innercutoff);
 
 			}
-			glm::vec3 GetPos();
+			glm::vec3 GetPos() {
+				return pos;
+			}
 
 		};
 	}

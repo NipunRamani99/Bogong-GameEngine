@@ -21,8 +21,12 @@ namespace bogong {
 			vNode child;
 			std::string name = "";
 			NodeType type = Root;
-			std::shared_ptr<NodeBase> parent;
+			NodeBase * parent = nullptr;
+			
 		public:
+			glm::mat4 relTrans;
+			glm::mat4 absTrans;
+
 			NodeBase() = delete;
 			NodeBase(const NodeBase & node);
 			NodeBase(const std::string & name);
@@ -31,7 +35,7 @@ namespace bogong {
 			void AddChild(const std::shared_ptr<NodeBase> node);
 			vNode & GetChilds();
 			NodeType GetType();
-			
+			void UpdateTree();
 			glm::mat4 GetModel() { 
 				return model; 
 			}

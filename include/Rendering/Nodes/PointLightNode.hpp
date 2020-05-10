@@ -13,7 +13,7 @@ namespace bogong {
 				LightNodeBase(name, pos),
 				pl(pl)
 			{
-
+				type = Point;
 			}
 			PointLightNode(PointLight pl, std::string name = "PointLight");
 			void Bind(Program p,int i) override{
@@ -23,7 +23,6 @@ namespace bogong {
 				p.setVec3(std::string("point_light[" + std::to_string(i) + "].specular").c_str(), pl.specular);
 				
 			}
-			glm::vec3 GetPos();
 
 		};
 	}

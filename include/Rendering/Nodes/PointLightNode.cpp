@@ -8,6 +8,4 @@
 }
 
 
- glm::vec3 bogong::node::PointLightNode::GetPos() {
-	return pl.pos;
-}
+ 

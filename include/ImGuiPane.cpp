@@ -23,7 +23,7 @@ void  bogong::ImGuiPane::Render() {
 	ImGui::Text(str.c_str());
 	
 	for (auto & p : Timer::durations) {
-		std::string str = p.first + ": %.2f";
+		std::string str = p.first + ": %.4f";
 		auto val = double(p.second.count())/ 1000000.0f;
 		ImGui::Text(str.c_str(),val);
 	}

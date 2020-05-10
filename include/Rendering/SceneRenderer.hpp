@@ -81,7 +81,7 @@ namespace bogong {
 					sn->getTexture()->Bind();
 					prog.setInt("s", 0);
 				}*/
-				auto model = cach.model * sn->GetModel();
+				auto model = sn->relTrans;
 				if (tex)
 					mesh->getTexMaterial()->Bind(prog);
 				else
