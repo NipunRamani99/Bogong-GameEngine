@@ -30,13 +30,13 @@ namespace bogong {
 			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
 			auto pl      = node::PointLight();
 			pl.pos       = glm::vec3(0.0, 20.0f, 0.0f);
-			pl.ambient   = glm::vec3(0.1f, 0.1f, 0.1f);
+			pl.ambient   = glm::vec3(0.6f, 0.6f, 0.6f);
 			pl.diffuse   = glm::vec3(0.8f, 0.8f, 0.8f);
 			pl.specular  = glm::vec3(1.0f, 1.0f, 1.0f);
 			pl.linear    = 1.0f;
 			pl.constant  = 0.0f;
 			pl.quadratic = 0.0f;
-			auto light = std::make_shared<node::PointLightNode>(pl, glm::vec3(5.0f, 5.0f, 5.0f));
+			auto light = std::make_shared<node::PointLightNode>(pl, glm::vec3(0, 10.0f, 4.0f));
 			root->AddChild(light);
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));

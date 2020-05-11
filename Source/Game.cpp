@@ -18,34 +18,7 @@ void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const st
 	float delta,GLFWwindow * window)
 {
 	
-	if (kbd->isKeyPressed(KEY::KEY_K))
-	{
-		if (canToggle) {
-			isMouseEnabled = !isMouseEnabled;
-			canToggle = false;
-			if (!isMouseEnabled) {
-				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-				glfwSetCursorPos(window, 400, 300);
-				mouse->x = 400;
-				mouse->y = 300;
-				camera->ClearMouse(mouse);
-			}
-			else {
-				glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			}
-		}
-
-	}
-	if (!isMouseEnabled)
-		camera->Update(kbd, mouse, delta);
-	if (!canToggle) {
-		timer += delta;
-		if (timer >= 0.1f) {
-			canToggle = true;
-			timer = 0.0f;
-		}
-	}
-	//scr->Update(camera->GetPos(), camera->GetDir(), camera->GetView());
+	
 	scene->Update(kbd, mouse, delta,window);
 	ImGui::Begin("Test");
 	ImGui::End();
