@@ -20,12 +20,12 @@ namespace bogong {
 		protected:
 			vNode child;
 			std::string name = "";
-			NodeType type = Root;
 			NodeBase * parent = nullptr;
 			
 		public:
 			glm::mat4 relTrans;
 			glm::mat4 absTrans;
+			NodeType type = Root;
 
 			NodeBase() = delete;
 			NodeBase(const NodeBase & node);

@@ -30,7 +30,7 @@ struct PointLight {
 	vec3 pos;
 	float constant;
 	float linear;
-	float quadratic ;
+	float quadratic;
 	
 };
 struct DirectionLight {
@@ -71,12 +71,12 @@ vec4 GetPointLightResult() {
 		vec3 eyer  = normalize(cam_pos - FragCoord);
 		vec3 refl  = reflect(-lr,norm);
 
-		float dif  = dot(lr, norm);
-		float spec = pow(max(dot(refl, eyer),0.0), material.shininess);
+		float dif  = max(dot(lr, norm),0.0);
+		float spec = pow(max(dot(refl, eyer),0.0),64.0f);
 		vec4 ambient = vec4(point_light[i].ambient,1.0) * texture(material.diffuse, UV).rgba;
 		vec4 diffuse = dif * vec4(point_light[i].diffuse,1.0) * texture(material.diffuse,UV).rgba;
-		vec4 specular = spec * vec4(point_light[i].specular, 1.0)*texture(material.specular, UV).rgba;
-		result += ambient + diffuse + specular;
+		vec4 specular = vec4(spec * point_light[i].specular*texture(material.specular, UV).rgb,1.0f);
+		result += ambient + diffuse + specular;//+ diffuse + specular;
 	}
 	return result;
 }
@@ -87,7 +87,7 @@ vec4 GetSpotLightResult() {
 		vec3 normal     = normalize(Normal);
 		vec3 viewDir    = normalize(cam_pos - FragCoord);
 		vec3 reflectDir = reflect(-lightDir, normal);
-		float dif       = max(dot(normal, lightDir), 0.0);
+		float diff       = max(dot(normal, lightDir), 0.0);
 		float spec      = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
 		float distance  = length(spot_light[i].position - FragCoord);
@@ -97,9 +97,9 @@ vec4 GetSpotLightResult() {
 		float intensity = clamp((theta - spot_light[i].outerCutOff) / epsilon, 0.0, 1.0);
 		
 		
-		vec4 ambient    = vec4(light.ambient,1.0)  * texture(material.diffuse, TexCoords);
-		vec4 diffuse    = vec4(light.diffuse,1.0)  * diff * texture(material.diffuse, TexCoords);
-		vec4 specular   = vec4(light.specular,1.0) * spec * texture(material.specular, TexCoords);
+		vec4 ambient    = vec4(spot_light[i].ambient,1.0)  * texture(material.diffuse, TexCoords);
+		vec4 diffuse    = vec4(spot_light[i].diffuse,1.0)  * diff * texture(material.diffuse, TexCoords);
+		vec4 specular   = vec4(spot_light[i].specular,1.0) * spec * texture(material.specular, TexCoords);
 		ambient        *= attenuation * intensity;
 		diffuse        *= attenuation * intensity;
 		specular       *= attenuation * intensity;
@@ -113,8 +113,8 @@ vec4 GetDirectionLightResult() {
 		vec3 lr = normalize(-direction_light[i].direction);
 		vec3 normal = normalize(Normal);
 		vec3 eyer = normalize(cam_pos - FragCoord);
-		vec3 reflectDir = reflect(-lightDir, normal);
-		float dif     = max(dot(normal, lr), 0.0);
+		vec3 reflectDir = reflect(-lr, normal);
+		float diff     = max(dot(normal, lr), 0.0);
 		float spec    = pow(max(dot(eyer, reflectDir), 0.0), material.shininess);
 		vec4 ambient  = texture(material.diffuse, UV).rgba * vec4(direction_light[i].ambient, 1.0);
 		vec4 diffuse  = diff * texture(material.diffuse, UV).rgba  * vec4(direction_light[i].diffuse, 1.0);
@@ -192,5 +192,6 @@ vec4 GetDirectionLightResult() {
 
 void main() {
 	vec4 colour = GetPointLightResult();
+	colour.a = 1.0;
 	FragColour = colour;
 }

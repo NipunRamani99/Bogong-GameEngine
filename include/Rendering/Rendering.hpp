@@ -33,13 +33,13 @@ namespace bogong {
 			vao = std::make_shared<VertexArray>();
 		}
 		void AddLight(std::shared_ptr<node::LightNodeBase> & light){
-			if (light->type == node::Point) {
+			if (light->light_type == node::Point) {
 				num_point_lights++;
 			}
-			if (light->type == node::Spot) {
+			if (light->light_type == node::Spot) {
 				num_spot_lights++;
 			}
-			if (light->type == node::Directional) {
+			if (light->light_type == node::Directional) {
 				num_dir_lights++;
 			}
 			lights.push_back(light);
@@ -57,7 +57,7 @@ namespace bogong {
 			idx_point = 0;
 			idx_spot  = 0;
 			for (auto & light : lights) {
-				switch (light->type) {
+				switch (light->light_type) {
 				case node::Point: {
 					light->Bind(p, idx_point);
 					idx_point++;
@@ -78,9 +78,11 @@ namespace bogong {
 				}
 			}
 		}
-		void Render(Program p,glm::mat4 projection, glm::mat4 view) {
+		void Render(Program p,glm::vec3 cam_pos,glm::mat4 projection, glm::mat4 view) {
 			
+			p.Bind();
 			vao->Bind();
+			p.setVec3("cam_pos", cam_pos);
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 0));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 1));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 2));

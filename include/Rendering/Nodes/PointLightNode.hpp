@@ -13,12 +13,13 @@ namespace bogong {
 				LightNodeBase(name, pos),
 				pl(pl)
 			{
-				type = Point;
+				light_type = Point;
+				type = Light;
 			}
 			PointLightNode(PointLight pl, std::string name = "PointLight");
 			void Bind(Program p,int i) override{
 				p.setVec3(std::string("point_light[" + std::to_string(i) + "].pos").c_str(), pl.pos);
-				p.setVec3(std::string("point_light[" + std::to_string(i) + "].ambient").c_str(), pl.specular);
+				p.setVec3(std::string("point_light[" + std::to_string(i) + "].ambient").c_str(), pl.ambient);
 				p.setVec3(std::string("point_light[" + std::to_string(i) + "].diffuse").c_str(),  pl.diffuse);
 				p.setVec3(std::string("point_light[" + std::to_string(i) + "].specular").c_str(), pl.specular);
 				p.setFloat(std::string("point_light[" + std::to_string(i) + "].linear").c_str(), pl.linear);

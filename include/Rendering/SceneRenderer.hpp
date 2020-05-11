@@ -6,6 +6,7 @@
 #include "../ShaderManager.hpp"
 #include "Framebuffer.hpp"
 #include "../Screen.hpp"
+#include "Rendering.hpp"
 namespace bogong {
 	struct StateCache {
 		glm::mat4 model;
@@ -28,6 +29,7 @@ namespace bogong {
 		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		Program output;
 		Program test;
+		
 		std::shared_ptr<Framebuffer> frame;
 		float quadVertices[24] = {  -1.0f,  1.0f,  0.0f, 1.0f,
 									-1.0f, -1.0f,  0.0f, 0.0f,
@@ -36,17 +38,22 @@ namespace bogong {
 									 1.0f, -1.0f,  1.0f, 0.0f,
 									 1.0f,  1.0f,  1.0f, 1.0f};
 		bool attribEnabled = false;
+		std::shared_ptr<RendererDude> dude;
 	public:
 		SceneRenderer()
 		{
 			scr = std::make_shared<Screen>();
 			vbo = std::make_shared<VertexBuffer>(quadVertices, sizeof(float) * 24);
-			frame = std::make_shared<Framebuffer>(1280,640);
-			frame->InitDepthStencilAndColour();
+			//frame = std::make_shared<Framebuffer>(1280,640);
+			//frame->InitDepthStencilAndColour();
 			Configuration config;
 			output = ShaderManager::GetShader("Frame", config);
+			config.macros.push_back("HAS_UV");
+			config.macros.push_back("MATERIAL_WITH_TEX");
 			test = ShaderManager::GetShader("MultipleLight", config);
+			dude = std::make_shared<RendererDude>();
 		}
+		
 		void DrawMesh(std::shared_ptr<node::ShapeNode> sn) {
 			Configuration configuration;
 			auto meshes = sn->getMesh();
@@ -73,14 +80,7 @@ namespace bogong {
 				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
 				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
 				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
-				/*if (!tex) {
-					prog.setVec4("object_colour", glm::vec4(sn->getColour(), 1.0f));
-				}
-				else
-				{
-					sn->getTexture()->Bind();
-					prog.setInt("s", 0);
-				}*/
+				
 				auto model = sn->relTrans;
 				if (tex)
 					mesh->getTexMaterial()->Bind(prog);
@@ -108,6 +108,11 @@ namespace bogong {
 			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
 			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView(),cam->GetProjection());
 		}
+		void init(std::shared_ptr<node::NodeBase> node) {
+			ProcessNode(node);
+			dude->BindLights(test);
+			
+		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			
 			if (node) {
@@ -121,7 +126,15 @@ namespace bogong {
 				{
 
 					auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
-					DrawMesh(shape_node);
+					RenderQueueItem item;
+					item.node = shape_node;
+					dude->AddShapeNode(item);
+					break;
+				}
+				case node::NodeType::Light:
+				{
+					auto light_node = std::dynamic_pointer_cast<node::LightNodeBase>(node);
+					dude->AddLight(light_node);
 					break;
 				}
 				case node::NodeType::Root:
@@ -130,7 +143,6 @@ namespace bogong {
 				}
 				default:
 				{
-
 					break;
 				}
 				}
@@ -155,29 +167,8 @@ namespace bogong {
 			this->cam = cam;
 		}
 		void Draw(std::shared_ptr<Scene> scene) {
-			auto root = scene->getRootNode();
-			frame->Bind();
-			frame->clear();
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			scr->Draw(0.00002f);
-			glEnable(GL_CULL_FACE);
-			if (root) {
-				glm::mat4 model = root->GetModel();
-				StateCache cache;
-				projection = cam->GetProjection();
-				view = cam->GetView();
-				cache.model = glm::mat4(1.0f);
-				state.push(cache);
-				vao.Bind();
-				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
-				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
-				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
-				ProcessNode(root);
-			}
-			frame->Unbind();
-			glClear(GL_COLOR_BUFFER_BIT);
-			glDisable(GL_CULL_FACE);
-			DrawFrame();
+			scr->Draw(0.2f);
+			dude->Render(test,cam->GetPos() ,cam->GetProjection(), cam->GetView());
 		}
 	};
 

@@ -2,6 +2,7 @@
 #include "Scene.hpp"
 #include "../Models/Cube.hpp"
 #include "Nodes/ShapeNode.hpp"
+#include "Nodes/PointLightNode.hpp"
 #include "SceneRenderer.hpp"
 #include "../Models/TextureFactory.hpp"
 #include "AssimpLoader.hpp"
@@ -27,6 +28,16 @@ namespace bogong {
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
 			auto model1 = AssimpFactory::LoadModel("C:\\Users\\Laptop.000\\Downloads\\Aircraft 3D Models with Textures\\mikoyan-mig-35-foxhound_p3dm.ru\\Mikoyan MIG-35 Foxhound\\mig35.obj");
+			auto pl      = node::PointLight();
+			pl.pos       = glm::vec3(0.0, 20.0f, 0.0f);
+			pl.ambient   = glm::vec3(0.1f, 0.1f, 0.1f);
+			pl.diffuse   = glm::vec3(0.8f, 0.8f, 0.8f);
+			pl.specular  = glm::vec3(1.0f, 1.0f, 1.0f);
+			pl.linear    = 1.0f;
+			pl.constant  = 0.0f;
+			pl.quadratic = 0.0f;
+			auto light = std::make_shared<node::PointLightNode>(pl, glm::vec3(5.0f, 5.0f, 5.0f));
+			root->AddChild(light);
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
 			root->AddChild(model1);
@@ -34,6 +45,7 @@ namespace bogong {
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
 			renderer->SetCamera(cam);
+			renderer->init(root);
 		}
 		void Draw() {
  			renderer->Draw(scene);

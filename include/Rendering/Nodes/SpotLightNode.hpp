@@ -13,7 +13,8 @@ namespace bogong {
 				LightNodeBase(name, pos),
 				sl(sl)
 			{
-				type = Spot;
+				type = Light;
+				light_type = Spot;
 			}
 			
 			void Bind(Program p, int i) override {

@@ -12,7 +12,7 @@ namespace bogong {
 		private:
 			
 		public:
-			LightType type;
+			LightType light_type;
 			LightNodeBase() = delete;
 			LightNodeBase(std::string name,glm::vec3 pos);
 			virtual void Bind(Program p, int idx) {
