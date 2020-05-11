@@ -279,11 +279,11 @@
     <None Include="Shaders\ColourFragmentShader.glsl" />
     <None Include="Shaders\ScreenVertexShader.glsl" />
     <None Include="Shaders\ScreenFragmentShader.glsl" />
-    <None Include="Shaders\MultipleLightFragment.glsl" />
-    <None Include="Shaders\MultipleLightVertex.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\FrameFragmentShader.glsl" />
+    <None Include="Shaders\MultipleLightFragmentShader.glsl" />
+    <None Include="Shaders\MultipleLightVertexShader.glsl" />
   </ItemGroup>
 </Project>

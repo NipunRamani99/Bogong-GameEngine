@@ -27,6 +27,7 @@ namespace bogong {
 		glm::vec3 light_diffuse  = glm::vec3(0.8f, 0.8f, 0.8f);
 		glm::vec3 light_specular = glm::vec3(1.0f, 1.0f, 1.0f);
 		Program output;
+		Program test;
 		std::shared_ptr<Framebuffer> frame;
 		float quadVertices[24] = {  -1.0f,  1.0f,  0.0f, 1.0f,
 									-1.0f, -1.0f,  0.0f, 0.0f,
@@ -44,8 +45,9 @@ namespace bogong {
 			frame->InitDepthStencilAndColour();
 			Configuration config;
 			output = ShaderManager::GetShader("Frame", config);
+			test = ShaderManager::GetShader("MultipleLight", config);
 		}
-		void DrawMesh(std::shared_ptr<node::ShapeNode> sn,StateCache cach) {
+		void DrawMesh(std::shared_ptr<node::ShapeNode> sn) {
 			Configuration configuration;
 			auto meshes = sn->getMesh();
 			std::string nodename = sn->GetName();
@@ -67,12 +69,10 @@ namespace bogong {
 				if (isindexed) {
 					mesh->GetIndexBuffer()->Bind();
 				}
-				int stride =  sizeof(float) * 8;
+				int stride = sizeof(float) * 8;
 				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
 				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-				if (tex) {
-					CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
-				}
+				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
 				/*if (!tex) {
 					prog.setVec4("object_colour", glm::vec4(sn->getColour(), 1.0f));
 				}
@@ -86,7 +86,6 @@ namespace bogong {
 					mesh->getTexMaterial()->Bind(prog);
 				else
 					mesh->getColourMaterial()->Bind(prog);
-
 				prog.setVec3("light.ambient" , light_ambient);
 				prog.setVec3("light.diffuse" , light_diffuse);
 				prog.setVec3("light.specular", light_specular);
@@ -112,22 +111,17 @@ namespace bogong {
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			
 			if (node) {
-				StateCache cache = state.top();
-				cache.model = cache.model * node->GetModel();
-				state.push(cache);
 				auto vn = node->GetChilds();
 				for (auto & n : vn) {
 					ProcessNode(n);
 				}
-				state.pop();
-				cache = state.top();
 				auto type = node->GetType();
 				switch (type) {
 				case node::NodeType::Shape:
 				{
 
 					auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
-					DrawMesh(shape_node, cache);
+					DrawMesh(shape_node);
 					break;
 				}
 				case node::NodeType::Root:
@@ -145,7 +139,6 @@ namespace bogong {
 		void DrawFrame() {
 			vao2.Bind();
 			vbo->Bind();
-
 			output.Bind();
 			frame->GetColourTexture()->Bind();
 			output.setInt("s", 0);
@@ -165,9 +158,7 @@ namespace bogong {
 			auto root = scene->getRootNode();
 			frame->Bind();
 			frame->clear();
-			
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
 			scr->Draw(0.00002f);
 			glEnable(GL_CULL_FACE);
 			if (root) {
@@ -181,12 +172,7 @@ namespace bogong {
 				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 0));
 				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 1));
 				CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao.GetID(), 2));
-				
-				
-				
-				
 				ProcessNode(root);
-				
 			}
 			frame->Unbind();
 			glClear(GL_COLOR_BUFFER_BIT);

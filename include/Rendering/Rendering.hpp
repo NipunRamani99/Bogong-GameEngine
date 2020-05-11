@@ -15,10 +15,6 @@ namespace bogong {
 	class RendererDude {
 		
 	private:
-		/*
-			std::vector<RenderQueueItem> render_dudes;
-			
-		*/
 		//has a queue of renderable dudes with what to render using
 		std::vector<RenderQueueItem> render_queue;
 		std::vector<std::shared_ptr<node::LightNodeBase>> lights;
@@ -27,8 +23,8 @@ namespace bogong {
 		int num_spot_lights  = 0;
 		int num_point_lights = 0;
 		int num_dir_lights   = 0;
-		int idx_spot = 0;
-		int idx_dir = 0;
+		int idx_spot  = 0;
+		int idx_dir   = 0;
 		int idx_point = 0;
 	public:
 	
@@ -40,19 +36,23 @@ namespace bogong {
 			if (light->type == node::Point) {
 				num_point_lights++;
 			}
-			if (light->type == node::Point) {
+			if (light->type == node::Spot) {
 				num_spot_lights++;
 			}
-			if (light->type == node::Point) {
+			if (light->type == node::Directional) {
 				num_dir_lights++;
 			}
 			lights.push_back(light);
 		}
+		void Clear() {
+			render_queue.clear();
+			lights.clear();
+		}
 		void BindLights(Program p){
 			p.Bind();
-			p.setInt("num_point_lights", num_point_lights);
-			p.setInt("num_spot_lights", num_spot_lights);
-			p.setInt("num_dir_lights", num_dir_lights);
+			p.setInt("num_point_light", num_point_lights);
+			p.setInt("num_spot_light", num_spot_lights);
+			p.setInt("num_direction_light", num_dir_lights);
 			idx_dir   = 0;
 			idx_point = 0;
 			idx_spot  = 0;
@@ -84,10 +84,7 @@ namespace bogong {
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 0));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 1));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 2));
-			int stride = sizeof(float) * 8;
-			CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
-			CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-			CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
+			
 			for (auto&n : render_queue) {
 				auto meshes = n.node->getMesh();
 				for (auto mesh : meshes)
@@ -99,12 +96,15 @@ namespace bogong {
 					if (isindexed) {
 						mesh->GetIndexBuffer()->Bind();
 					}
-					auto model = n.node->GetModel();
+					auto model = n.node->relTrans;
 					if (tex)
 						mesh->getTexMaterial()->Bind(p);
 					else
 						mesh->getColourMaterial()->Bind(p);
-
+					int stride = sizeof(float) * 8;
+					CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
+					CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
+					CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
 					p.setMat4("model", model);
 					p.setMat4("view",  view);
 					p.setMat4("projection", projection);
