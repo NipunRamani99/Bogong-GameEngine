@@ -27,7 +27,7 @@ namespace bogong {
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = AssimpFactory::LoadModel("C:\\Users\\Laptop.000\\Downloads\\Aircraft 3D Models with Textures\\mikoyan-mig-35-foxhound_p3dm.ru\\Mikoyan MIG-35 Foxhound\\mig35.obj");
+			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
 			auto pl      = node::PointLight();
 			pl.pos       = glm::vec3(0.0, 20.0f, 0.0f);
 			pl.ambient   = glm::vec3(0.1f, 0.1f, 0.1f);
