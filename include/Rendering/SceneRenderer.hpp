@@ -126,9 +126,15 @@ namespace bogong {
 				{
 
 					auto shape_node = std::dynamic_pointer_cast<node::ShapeNode>(node);
-					RenderQueueItem item;
-					item.node = shape_node;
-					dude->AddShapeNode(item);
+					for (auto m : shape_node->getMesh()) {
+						RenderQueueItem item;
+						if (m->getTexMaterial()->diffuse)
+							item.priority = m->getTexMaterial()->diffuse->m_TexID;
+						item.node = m;
+						item.trans = shape_node->relTrans;
+						
+						dude->AddShapeNode(item);
+					}
 					break;
 				}
 				case node::NodeType::Light:

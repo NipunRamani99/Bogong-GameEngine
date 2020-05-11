@@ -2,11 +2,13 @@
 #include <iostream>
 #include "Nodes/ShapeNode.hpp"
 #include "Nodes/LightNodeBase.hpp"
+#include "Mesh.hpp"
 #include <queue>
 namespace bogong {
 
 	struct RenderQueueItem {
-		std::shared_ptr<node::ShapeNode> node;
+		std::shared_ptr<Mesh> node;
+		glm::mat4 trans = glm::mat4(1.0f);
 		int priority = 1;
 	};
 	struct Light {
@@ -26,11 +28,14 @@ namespace bogong {
 		int idx_spot  = 0;
 		int idx_dir   = 0;
 		int idx_point = 0;
+		int curr_priority = 0;
 	public:
-	
+		RendererDude() {
+			vao = std::make_shared<VertexArray>();
+		}
 		void AddShapeNode(RenderQueueItem & item){
 			render_queue.push_back(item);
-			vao = std::make_shared<VertexArray>();
+
 		}
 		void AddLight(std::shared_ptr<node::LightNodeBase> & light){
 			if (light->light_type == node::Point) {
@@ -86,42 +91,38 @@ namespace bogong {
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 0));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 1));
 			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 2));
-			
-			for (auto&n : render_queue) {
-				auto meshes = n.node->getMesh();
-				for (auto mesh : meshes)
+			for (auto& it : render_queue) {
+				auto mesh = it.node;
+				auto buffer = mesh->GetBuffer();
+				buffer[0].first->Bind();
+				bool isindexed = true;
+				if (isindexed) {
+					mesh->GetIndexBuffer()->Bind();
+				}
+				auto model = it.trans;
+				if (true)
 				{
-					bool tex = mesh->isTextured();
-					auto buffer = mesh->GetBuffer();
-					buffer[0].first->Bind();
-					bool isindexed = true;
-					if (isindexed) {
-						mesh->GetIndexBuffer()->Bind();
-					}
-					auto model = n.node->relTrans;
-					if (tex)
-						mesh->getTexMaterial()->Bind(p);
-					else
-						mesh->getColourMaterial()->Bind(p);
-					int stride = sizeof(float) * 8;
-					CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
-					CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-					CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
-					p.setMat4("model", model);
-					p.setMat4("view",  view);
-					p.setMat4("projection", projection);
-					unsigned int count = mesh->GetCount();
-					if (!isindexed) {
-						CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
-					}
-					else
-					{
-						CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
-						mesh->GetIndexBuffer()->Unbind();
-					}
+					mesh->getTexMaterial()->Bind(p);	
+				}
+				else
+					mesh->getColourMaterial()->Bind(p);
+				int stride = sizeof(float) * 8;
+				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
+				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) *3)));
+				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) *6)));
+				p.setMat4("model", model);
+				p.setMat4("view",  view);
+				p.setMat4("projection", projection);
+				unsigned int count = mesh->GetCount();
+				if (!isindexed) {
+					CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
+				}
+				else
+				{
+					CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
+					mesh->GetIndexBuffer()->Unbind();
 				}
 			}
-
 		}
 		void DrawItems() {
 
