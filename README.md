@@ -1,14 +1,6 @@
 ## Bogong-GameEngine
 
-Currently I use this setup to render simple scenes.
-
-## To Do 
-
-- Add Physics.
-- Organize namespace.
-- Add Quaternion rotation.
-- Add more scenes and examples.
-- Assimp integration.
+A WIP Graphics engine.
 
 ## Preview
-<img src="https://i.imgur.com/ZNYincp.png" width="400" height="315" />
+<img src="https://i.imgur.com/dZd9jj9.png" width="600" height="300" />
