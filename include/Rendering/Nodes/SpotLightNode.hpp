@@ -19,7 +19,7 @@ namespace bogong {
 			
 			void Bind(Program p, int i) override {
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].position").c_str(), sl.pos);
-				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].ambient").c_str(), sl.specular);
+				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].ambient").c_str(), sl.ambient);
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].diffuse").c_str(), sl.diffuse);
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].specular").c_str(), sl.specular);
 				p.setVec3(std::string("spot_light[" + std::to_string(i) + "].direction").c_str(), sl.dir);

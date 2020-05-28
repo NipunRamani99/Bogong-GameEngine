@@ -139,6 +139,7 @@
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
+    <ClInclude Include="include\Rendering\Nodes\DirectionalLightNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightData.hpp" />
     <ClInclude Include="include\Rendering\Nodes\LightNodeBase.hpp" />
     <ClInclude Include="include\Rendering\Nodes\MaterialData.hpp" />

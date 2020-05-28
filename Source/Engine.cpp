@@ -92,8 +92,8 @@ void bogong::Engine::DrawCalls(float deltatime) const
 
 void bogong::Engine::RenderEverything(float deltatime)
 {
+
 	DrawCalls(deltatime);
-	Timer::LogTimeElapsed("After rendering");
 	pane->Render();
 	Init::Render();
 	Init::EndImguiFrame();
@@ -107,16 +107,15 @@ void bogong::Engine::RenderEverything(float deltatime)
 
 void bogong::Engine::Loop()
 {
-	Timer::Start();
 	prevTime = currentTime;
 	currentTime = (float)glfwGetTime();
 	Init::StartImguiFrame();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glfwPollEvents();
 	Update(currentTime - prevTime);
-	Timer::LogTimeElapsed("Update");
+	//Timer::LogTimeElapsed("Update");
 	RenderEverything(currentTime-prevTime);
-	Timer::Clear();
+	
 }
 
 void bogong::Engine::End()

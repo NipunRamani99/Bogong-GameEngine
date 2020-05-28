@@ -3,6 +3,8 @@
 #include "../Models/Cube.hpp"
 #include "Nodes/ShapeNode.hpp"
 #include "Nodes/PointLightNode.hpp"
+#include "Nodes/SpotLightNode.hpp"
+#include "Nodes/DirectionalLightNode.hpp"
 #include "SceneRenderer.hpp"
 #include "../Models/TextureFactory.hpp"
 #include "AssimpLoader.hpp"
@@ -28,16 +30,26 @@ namespace bogong {
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
 			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
-			auto pl      = node::PointLight();
-			pl.pos       = glm::vec3(0.0, 20.0f, 0.0f);
-			pl.ambient   = glm::vec3(0.6f, 0.6f, 0.6f);
-			pl.diffuse   = glm::vec3(0.8f, 0.8f, 0.8f);
-			pl.specular  = glm::vec3(1.0f, 1.0f, 1.0f);
-			pl.linear    = 1.0f;
-			pl.constant  = 0.0f;
-			pl.quadratic = 0.0f;
-			auto light = std::make_shared<node::PointLightNode>(pl, glm::vec3(0, 10.0f, 4.0f));
-			root->AddChild(light);
+			auto sl = node::SpotLight();
+			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
+			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+			sl.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+			sl.dir = glm::vec3(0.0f, 0.0f, -1.0f);
+			sl.constant = 1.0f;
+			sl.pos = glm::vec3(0.0f, 1.50f, 1.00f);
+			sl.innercutoff = 0.91;
+			sl.outercutoff = 0.82;
+			sl.linear = 0.0f;
+			sl.quadratic = 0.0f;
+			auto dl = node::DirectionalLight();
+			dl.diffuse = glm::vec3(1.0f,0.0f,0.0f);
+			dl.ambient = glm::vec3(0.2, 0.2, 0.2);
+			dl.specular = glm::vec3(0.0, 0.5, 0.0);
+			dl.dir = glm::vec3(-1.0, 0.0, 0.0);
+			auto spotlight = std::make_shared<node::SpotLightNode>(sl, glm::vec3(0., 0., 0.));
+			auto dirlight = std::make_shared<node::DirectionalLightNode>(dl, glm::vec3(0.0,0.0, 0.));
+			model1->AddChild(spotlight);
+			model1->AddChild(dirlight);
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
 			root->AddChild(model1);

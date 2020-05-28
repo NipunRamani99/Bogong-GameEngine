@@ -166,7 +166,7 @@ void main() {
 		vec2 uv = texCoords(p, id);
 		vec2 uvx = texCoords(px, id) - uv;
 		vec2 uvy = texCoords(py, id) - uv;
-		color = vec3(1.0)*checkersTextureGradBox(uv, uvx, uvy);
+		color = mix(vec3(0.4),vec3(0.70f),checkersTextureGradBox(uv, uvx, uvy));
 		// color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
 		dif += 0.06;
 		//color *= dif;
