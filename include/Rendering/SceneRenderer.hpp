@@ -108,10 +108,13 @@ namespace bogong {
 			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
 			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView(),cam->GetProjection());
 		}
+		void clear() {
+			dude->clear();
+		}
 		void init(std::shared_ptr<node::NodeBase> node) {
 			ProcessNode(node);
 			dude->BindLights(test);
-			
+
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			
@@ -130,7 +133,7 @@ namespace bogong {
 						RenderQueueItem item;
 						if (m->getTexMaterial()->diffuse)
 							item.priority = m->getTexMaterial()->diffuse->m_TexID;
-						item.node = m;
+						item.node = &*m;
 						item.trans = shape_node->relTrans;
 						
 						dude->AddShapeNode(item);
@@ -140,7 +143,7 @@ namespace bogong {
 				case node::NodeType::Light:
 				{
 					auto light_node = std::dynamic_pointer_cast<node::LightNodeBase>(node);
-					dude->AddLight(light_node);
+					dude->AddLight(&*light_node);
 					break;
 				}
 				case node::NodeType::Root:
@@ -174,6 +177,7 @@ namespace bogong {
 		}
 		void Draw(std::shared_ptr<Scene> scene) {
 			scr->Draw(0.2f);
+		//	dude->prerender();
 			dude->Render(test,cam->GetPos() ,cam->GetProjection(), cam->GetView());
 		}
 	};

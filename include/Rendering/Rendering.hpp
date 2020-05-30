@@ -7,7 +7,7 @@
 namespace bogong {
 
 	struct RenderQueueItem {
-		std::shared_ptr<Mesh> node;
+		Mesh *node;
 		glm::mat4 trans = glm::mat4(1.0f);
 		int priority = 1;
 	};
@@ -19,7 +19,7 @@ namespace bogong {
 	private:
 		//has a queue of renderable dudes with what to render using
 		std::vector<RenderQueueItem> render_queue;
-		std::vector<std::shared_ptr<node::LightNodeBase>> lights;
+		std::vector<node::LightNodeBase*> lights;
 		std::shared_ptr<VertexArray> vao;
 		//keep count of # of lights per type
 		int num_spot_lights  = 0;
@@ -29,15 +29,18 @@ namespace bogong {
 		int idx_dir   = 0;
 		int idx_point = 0;
 		int curr_priority = 0;
+		bool  first = true;
 	public:
 		RendererDude() {
 			vao = std::make_shared<VertexArray>();
+			vao->Bind();
+			vao->Unbind();
 		}
 		void AddShapeNode(RenderQueueItem & item){
 			render_queue.push_back(item);
 
 		}
-		void AddLight(std::shared_ptr<node::LightNodeBase> & light){
+		void AddLight(node::LightNodeBase * light){
 			if (light->light_type == node::Point) {
 				num_point_lights++;
 			}
@@ -49,10 +52,7 @@ namespace bogong {
 			}
 			lights.push_back(light);
 		}
-		void Clear() {
-			render_queue.clear();
-			lights.clear();
-		}
+		
 		void BindLights(Program p){
 			p.Bind();
 			p.setInt("num_point_light", num_point_lights);
@@ -61,7 +61,7 @@ namespace bogong {
 			idx_dir   = 0;
 			idx_point = 0;
 			idx_spot  = 0;
-			for (auto & light : lights) {
+			for (auto  light : lights) {
 				switch (light->light_type) {
 				case node::Point: {
 					light->Bind(p, idx_point);
@@ -83,47 +83,62 @@ namespace bogong {
 				}
 			}
 		}
-		void Render(Program p,glm::vec3 cam_pos,glm::mat4 projection, glm::mat4 view) {
-			
-			p.Bind();
-			vao->Bind();
-			p.setVec3("cam_pos", cam_pos);
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 0));
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 1));
-			CHECK_GL_ERROR(glEnableVertexArrayAttrib(vao->GetID(), 2));
-			for (auto& it : render_queue) {
-				auto mesh = it.node;
-				auto buffer = mesh->GetBuffer();
-				buffer[0].first->Bind();
-				bool isindexed = true;
-				if (isindexed) {
-					mesh->GetIndexBuffer()->Bind();
-				}
-				auto model = it.trans;
-				if (true)
-				{
-					mesh->getTexMaterial()->Bind(p);	
-				}
-				else
-					mesh->getColourMaterial()->Bind(p);
-				int stride = sizeof(float) * 8;
-				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
-				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) *3)));
-				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) *6)));
-				p.setMat4("model", model);
-				p.setMat4("view",  view);
-				p.setMat4("projection", projection);
-				unsigned int count = mesh->GetCount();
-				if (!isindexed) {
-					CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
-				}
-				else
-				{
-					CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
-					mesh->GetIndexBuffer()->Unbind();
-				}
-			}
+
+		void clear() {
+			lights.resize(0);
+			render_queue.resize(0);
+			num_spot_lights = 0;
+			num_dir_lights = 0;
+			num_point_lights = 0;
 		}
+		void prerender() {
+			std::sort(render_queue.begin(), render_queue.end(), [](RenderQueueItem &a, RenderQueueItem&b) {
+				return a.priority > b.priority;
+			});
+		}
+void Render(Program p,glm::vec3 cam_pos,glm::mat4 projection, glm::mat4 view) {
+	
+	p.Bind();
+	vao->Bind();
+	p.setVec3("cam_pos", cam_pos);
+	
+	for (auto& it : render_queue) {
+		auto mesh = it.node;
+		auto buffer = mesh->GetBuffer();
+		buffer[0].first->Bind();
+		bool isindexed = true;
+		if (isindexed) {
+			mesh->GetIndexBuffer()->Bind();
+		}
+		auto model = it.trans;
+		if (true)
+		{
+			mesh->getTexMaterial()->Bind(p);	
+		}
+		else
+			mesh->getColourMaterial()->Bind(p);
+		int stride = sizeof(float) * 8;
+		CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
+		CHECK_GL_ERROR(glEnableVertexAttribArray(0));
+		CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
+		CHECK_GL_ERROR(glEnableVertexAttribArray(1));
+		CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
+		CHECK_GL_ERROR(glEnableVertexAttribArray(2));
+
+		p.setMat4("model", model);
+		p.setMat4("view",  view);
+		p.setMat4("projection", projection);
+		unsigned int count = mesh->GetCount();
+		if (!isindexed) {
+			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
+		}
+		else
+		{
+			CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
+			mesh->GetIndexBuffer()->Unbind();
+		}
+	}
+}
 		void DrawItems() {
 
 		}

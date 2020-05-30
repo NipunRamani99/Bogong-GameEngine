@@ -57,10 +57,13 @@ namespace bogong {
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
 			renderer->SetCamera(cam);
-			renderer->init(root);
+
+
 		}
 		void Draw() {
+			renderer->init(root);
  			renderer->Draw(scene);
+			renderer->clear();
 		}
 		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, float delta, GLFWwindow * window){
 			scene->Update(kbd, mouse, delta,window);
