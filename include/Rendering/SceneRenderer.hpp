@@ -8,17 +8,12 @@
 #include "../Screen.hpp"
 #include "Rendering.hpp"
 namespace bogong {
-	struct StateCache {
-		glm::mat4 model;
-		
-	};
+	
 	class SceneRenderer {
 
 	private:
-		VertexArray vao;
 		VertexArray vao2;
 		std::shared_ptr<VertexBuffer> vbo;
-		std::stack<StateCache> state;
 		std::shared_ptr<FPCamera> cam;
 		std::shared_ptr<Screen> scr;
 		glm::mat4 view;
@@ -39,6 +34,10 @@ namespace bogong {
 									 1.0f,  1.0f,  1.0f, 1.0f};
 		bool attribEnabled = false;
 		std::shared_ptr<RendererDude> dude;
+		std::vector<node::NodeBase*> vecNodes;
+		int node_idx = 0;
+		int selected_node = -1;
+		bool open = false;
 	public:
 		SceneRenderer()
 		{
@@ -53,76 +52,103 @@ namespace bogong {
 			test = ShaderManager::GetShader("MultipleLight", config);
 			dude = std::make_shared<RendererDude>();
 		}
-		
-		void DrawMesh(std::shared_ptr<node::ShapeNode> sn) {
-			Configuration configuration;
-			auto meshes = sn->getMesh();
-			std::string nodename = sn->GetName();
-			for(auto mesh : meshes)
-			{
-				bool tex = mesh->isTextured();
+		void UpdateLight(node::NodeBase * n) {
+			node::LightNodeBase* ln = (node::LightNodeBase*)(n);
+			switch (ln->light_type) {
+			case node::Point: {
+				node::PointLightNode * pn = (node::PointLightNode*)(ln);
+				ImGui::InputFloat3("Ambient: ", &pn->pl.ambient[0], 4);
+				ImGui::InputFloat3("Diffuse: ", &pn->pl.diffuse[0], 4);
+				ImGui::InputFloat3("Specular: ", &pn->pl.specular[0], 4);
+				ImGui::InputFloat3("Position: ", &pn->pl.pos[0], 4);
 
-				if (tex) {
-					configuration.macros.push_back("HAS_UV");
-					configuration.macros.push_back("MATERIAL_WITH_TEX");
-				}
-				std::string name = "Phong";
-				Program prog = ShaderManager::GetShader(name, configuration);
-				prog.Bind();
+				break;
+			}
+			case node::Directional: {
+				node::DirectionalLightNode * dn = (node::DirectionalLightNode*)(ln);
+				ImGui::InputFloat3("Ambient: ", &dn->dl.ambient[0], 4);
+				ImGui::InputFloat3("Diffuse: ", &dn->dl.diffuse[0], 4);
+				ImGui::InputFloat3("Specular: ", &dn->dl.specular[0], 4);
+				ImGui::InputFloat3("Direction: ", &dn->dl.dir[0], 4);
 
-				auto buffer = mesh->GetBuffer();
-				buffer[0].first->Bind();
-				bool isindexed = sn->isIndexed();
-				if (isindexed) {
-					mesh->GetIndexBuffer()->Bind();
-				}
-				int stride = sizeof(float) * 8;
-				CHECK_GL_ERROR(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0));
-				CHECK_GL_ERROR(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 3)));
-				CHECK_GL_ERROR(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const void *)(sizeof(float) * 6)));
-				
-				auto model = sn->relTrans;
-				if (tex)
-					mesh->getTexMaterial()->Bind(prog);
-				else
-					mesh->getColourMaterial()->Bind(prog);
-				prog.setVec3("light.ambient" , light_ambient);
-				prog.setVec3("light.diffuse" , light_diffuse);
-				prog.setVec3("light.specular", light_specular);
-				prog.setVec3("light.pos"     , light_pos);
-				prog.setMat4("model", model);
-				prog.setMat4("view", view);
-				prog.setMat4("projection", projection);
-				unsigned int count = mesh->GetCount();
-				if (!isindexed) {
-					CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, count));
-				}
-				else
-				{
-					CHECK_GL_ERROR(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0));
-					mesh->GetIndexBuffer()->Unbind();
-				}
+				break;
+			}
+			case node::Spot: {
+				node::SpotLightNode * sl  = (node::SpotLightNode*)(ln);
+				ImGui::InputFloat3("Ambient: ",   &sl->sl.ambient[0], 4);
+				ImGui::InputFloat3("Diffuse: ",   &sl->sl.diffuse[0], 4);
+				ImGui::InputFloat3("Specular: ",  &sl->sl.specular[0], 4);
+				ImGui::InputFloat3("Direction: ", &sl->sl.dir[0], 4);
+				ImGui::InputFloat3("Position: ",  &sl->sl.pos[0], 4);
+				break;
+			}
+
 			}
 		}
+		void UpdateModel(node::NodeBase * n) {
+			
+
+		}
 		void Update() {
-			ImGui::InputFloat3("Light Pos", &light_pos[0], 4);
+			
 			scr->Update(cam->GetPos(), cam->GetDir(), cam->GetView(),cam->GetProjection());
+			if (selected_node != -1) {
+				ImGui::Begin("Control");
+				{
+					node::NodeBase * n = vecNodes[selected_node];
+					ImGui::Text(n->GetName().c_str());
+					if (n->GetType() == node::Light) {
+						UpdateLight(n);
+					}
+					if (n->GetType() == node::Shape) {
+						UpdateModel(n);
+					}
+				}
+				ImGui::End();
+			}
 		}
 		void clear() {
 			dude->clear();
 		}
-		void init(std::shared_ptr<node::NodeBase> node) {
+		void init_scene(std::shared_ptr<node::NodeBase> node) {
+			node::NodeBase * n = &*node;
+			std::queue<node::NodeBase*> q;
+			q.push(n);
+			while (!q.empty()) {
+				n = q.front();
+				q.pop();
+				vecNodes.push_back(n);
+				for (auto ch : n->GetChilds()) {
+					q.push(&*ch);
+				}
+			}
+		}
+		void init_render(std::shared_ptr<node::NodeBase> node) {
+			node_idx = 0;
+			ImGui::Begin("Scene");
+			open = ImGui::TreeNode("Sample Scene");
 			ProcessNode(node);
+			if(open)  ImGui::TreePop();
+			ImGui::End();
 			dude->BindLights(test);
 
 		}
 		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
  			
 			if (node) {
+				if (open) {
+					const auto flag = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | (selected_node == node_idx ? ImGuiTreeNodeFlags_Selected : 0);
+					bool selected = ImGui::TreeNodeEx((void*)(intptr_t)node_idx, flag, node->GetName().c_str());
+					if (ImGui::IsItemClicked()) {
+						selected_node = node_idx;
+					}
+				}
 				auto vn = node->GetChilds();
 				for (auto & n : vn) {
+					node_idx++;
 					ProcessNode(n);
 				}
+				
 				auto type = node->GetType();
 				switch (type) {
 				case node::NodeType::Shape:

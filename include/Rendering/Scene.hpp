@@ -4,6 +4,7 @@
 #include <stack>
 #include "../Keyboard.h"
 #include "../Mouse.h"
+#include "../Imgui.h"
 namespace bogong {
 	class Scene {
 
@@ -39,13 +40,16 @@ namespace bogong {
 					canToggle = false;
 					if (!isMouseEnabled) {
 						glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-						glfwSetCursorPos(window, 400, 300);
-						mouse->x = 400;
-						mouse->y = 300;
+						glfwSetCursorPos(window, 640, 360);
+						mouse->x = 640;
+						mouse->y = 360;
 						cam->ClearMouse(mouse);
+						ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
 					}
 					else {
 						glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+						
+						ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 					}
 				}
 

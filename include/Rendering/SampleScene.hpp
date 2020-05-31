@@ -46,10 +46,10 @@ namespace bogong {
 			dl.ambient = glm::vec3(0.2, 0.2, 0.2);
 			dl.specular = glm::vec3(0.0, 0.5, 0.0);
 			dl.dir = glm::vec3(-1.0, 0.0, 0.0);
-			auto spotlight = std::make_shared<node::SpotLightNode>(sl, glm::vec3(0., 0., 0.));
-			auto dirlight = std::make_shared<node::DirectionalLightNode>(dl, glm::vec3(0.0,0.0, 0.));
-			model1->AddChild(spotlight);
-			model1->AddChild(dirlight);
+			auto spotlight = std::make_shared<node::SpotLightNode>(sl, glm::vec3(0., 0., 0.),"Spot Light");
+			auto dirlight = std::make_shared<node::DirectionalLightNode>(dl, glm::vec3(0.0,0.0, 0.),"Directional Light");
+			root->AddChild(spotlight);
+			root->AddChild(dirlight);
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
 			root->AddChild(model1);
@@ -58,19 +58,17 @@ namespace bogong {
 			scene->SetCamera(cam);
 			renderer->SetCamera(cam);
 
-
+			renderer->init_scene(root);
 		}
 		void Draw() {
-			renderer->init(root);
+			renderer->init_render(root);
  			renderer->Draw(scene);
 			renderer->clear();
 		}
 		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, float delta, GLFWwindow * window){
 			scene->Update(kbd, mouse, delta,window);
 			angle += delta * alpha*2.0f;
-			ImGui::Begin("Sample Scene");
 			renderer->Update();
-			ImGui::End();
 			if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
 				root->Translate(pos);
 			}

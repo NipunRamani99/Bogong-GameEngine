@@ -4,9 +4,10 @@
 namespace bogong {
 	namespace node{
 		class DirectionalLightNode : public LightNodeBase {
-			DirectionalLight dl;
 		public:
-			DirectionalLightNode(DirectionalLight dl, glm::vec3 pos, std::string name = "SpotLight1")
+			DirectionalLight dl;
+
+			DirectionalLightNode(DirectionalLight dl, glm::vec3 pos, std::string name = "DirLigh1")
 				:
 				LightNodeBase(name, pos),
 				dl(dl)

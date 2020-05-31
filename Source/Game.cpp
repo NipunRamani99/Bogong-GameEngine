@@ -17,23 +17,10 @@ bogong::Game::Game()
 void bogong::Game::Update(const std::shared_ptr<bogong::Keyboard> &kbd, const std::shared_ptr<bogong::Mouse> &mouse,
 	float delta,GLFWwindow * window)
 {
-	
-	
 	scene->Update(kbd, mouse, delta,window);
-	ImGui::Begin("Test");
-	ImGui::End();
-	if (ImGui::InputFloat3("Clear Color",&clearcolor[0],4)) {
-		glClearColor(clearcolor.r, clearcolor.g, clearcolor.b,1.0f);
-
-	}
 }
 
 void bogong::Game::Draw(float delta) const
 {
-
-	
 	scene->Draw();
-	
-	
-	
 }

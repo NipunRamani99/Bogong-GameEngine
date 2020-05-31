@@ -3,14 +3,14 @@
 namespace bogong {
 	class Entity {
 	protected:
+		
+	public:
 		glm::vec3 pos;
 		glm::vec3 scale;
 		glm::vec3 vel;
 		glm::vec3 accl;
 		glm::mat4 model;
 		glm::vec3 rotate;
-	public:
-		
 		Entity(glm::vec3 pos    = { 0,0,0 },
 			   glm::vec3 scale  = { 1,1,1 },
 			   glm::vec3 vel    = { 0,0,0 },

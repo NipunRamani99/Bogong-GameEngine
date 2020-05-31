@@ -22,7 +22,7 @@ namespace bogong {
 				NodeBase(shnode)
 			{
 				type   = NodeType::Shape;
-				meshes   = shnode.meshes;
+				meshes = shnode.meshes;
 				tex    = shnode.tex;
 				model  = shnode.model;
 				pos    = shnode.pos;

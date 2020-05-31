@@ -36,6 +36,9 @@ namespace bogong {
 			vNode & GetChilds();
 			NodeType GetType();
 			void UpdateTree();
+			void UpdateModel() {
+
+			}
 			glm::mat4 GetModel() { 
 				return model; 
 			}

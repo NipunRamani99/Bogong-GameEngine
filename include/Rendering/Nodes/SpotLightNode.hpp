@@ -6,8 +6,9 @@
 namespace bogong {
 	namespace node {
 		class SpotLightNode : public LightNodeBase {
-			SpotLight sl;
 		public:
+			SpotLight sl;
+
 			SpotLightNode(SpotLight sl, glm::vec3 pos, std::string name = "SpotLight1")
 				:
 				LightNodeBase(name, pos),
