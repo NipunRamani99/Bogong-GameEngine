@@ -30,17 +30,14 @@ namespace bogong {
 		}
 		void Scale(glm::vec3 scale_) {
 			scale = scale_;
-			UpdateModel();
 		}
 		void Translate(glm::vec3 translate) {
 			pos = translate;
-			UpdateModel();
 		}
 
 		/* rotate is in degrees */
 		void Rotate(glm::vec3 rotate_) {
 			rotate = rotate_;
-			UpdateModel();
 		}
 		
 		void UpdateModel() {

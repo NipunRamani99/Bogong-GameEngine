@@ -9,11 +9,23 @@
 #include "../Material.hpp"
 #include "../Models/TextureFactory.hpp"
 #include <optional>
-
+#include <Shlwapi.h>
 namespace bogong {
+	
 	class AssimpFactory {
 	
 	public:
+		static bool isPathFileSpec(std::string dir) {
+			if (dir == "")return false;
+			BOOL b = PathIsFileSpecA(dir.c_str());
+			
+			return b == FALSE?false:true;
+		}
+		static bool isPathValid(std::string path) {
+			if (path == "") return false;
+			BOOL b = PathFileExistsA(path.c_str());
+			return b == FALSE ? false : true;
+		}
 		static std::shared_ptr<node::ShapeNode> ProcessNode(const aiScene * scene,aiNode * node,std::string  path) {
 			//create mesh
 			auto meshes = node->mMeshes;
@@ -32,18 +44,23 @@ namespace bogong {
 					std::shared_ptr<MaterialData<true>> mtl = std::make_shared<MaterialData<true>>();
 					mat->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 					name = str.C_Str();
-					if (name != "") {
+					if (isPathFileSpec(name))
 						name = path + "\\" + str.C_Str();
-						mtl->diffuse = TextureManager::make_texture(name);
-					
+
+					if (isPathValid(name)) {
 						
+						mtl->diffuse = TextureManager::make_texture			(name);
+
 					}
+					
 					str.Clear();
 					mat->GetTexture(aiTextureType_SPECULAR, 0, &str);
 					
 					name = str.C_Str();
-					if (name != "") {
+					if (isPathFileSpec(name))
 						name = path + "\\" + str.C_Str();
+
+					if (isPathValid(name)) {
 						mtl->specular = TextureManager::make_texture(name);
 					}
 					mtl->shininess = 16.0f;
@@ -83,6 +100,7 @@ namespace bogong {
 			mesh->Rotate(r);
 			mesh->Scale(s);
 			mesh->setPos(p);
+			mesh->UpdateModel();
 			//then process and append child
 			int nchild = node->mNumChildren;
 			for (int i = 0; i < nchild; i++) {

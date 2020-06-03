@@ -87,6 +87,14 @@ namespace bogong {
 		}
 		void UpdateModel(node::NodeBase * n) {
 			
+			if (ImGui::InputFloat3("Position: ", &n->pos[0], 4)) {
+				n->markdirty();
+				n->UpdateModel();
+			}
+			if (ImGui::InputFloat3("Scale: ", &n->scale[0], 4)) {
+				n->markdirty();
+				n->UpdateModel();
+			}
 
 		}
 		void Update() {
@@ -103,9 +111,13 @@ namespace bogong {
 					if (n->GetType() == node::Shape) {
 						UpdateModel(n);
 					}
+					if (n->GetType() == node::Root) {
+						UpdateModel(n);
+					}
 				}
 				ImGui::End();
 			}
+			vecNodes[0]->UpdateTree();
 		}
 		void clear() {
 			dude->clear();

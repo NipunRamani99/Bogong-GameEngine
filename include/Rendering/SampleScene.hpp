@@ -29,7 +29,7 @@ namespace bogong {
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
+			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\test\\dude.fbx");
 			auto sl = node::SpotLight();
 			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
 			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
@@ -53,6 +53,7 @@ namespace bogong {
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
 			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
 			root->AddChild(model1);
+			root->markdirty();
 			root->UpdateTree();
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
@@ -69,9 +70,7 @@ namespace bogong {
 			scene->Update(kbd, mouse, delta,window);
 			angle += delta * alpha*2.0f;
 			renderer->Update();
-			if(ImGui::InputFloat3("Pos", &pos[0], 4)) {
-				root->Translate(pos);
-			}
+
 		}
 	};
 }

@@ -28,12 +28,7 @@ namespace bogong {
 			prog.setVec3("cam_pos", cam_pos);
 			prog.setVec3("cam_dir", cam_dir);
 			prog.setMat4("view", view);
-			if (ImGui::InputFloat("Near Val", &nearVal, 0.001f, 0.01f)) {
-				prog.setFloat("nearVal", nearVal);
-			}
-			if (ImGui::InputFloat("ThetaD", &thetaD, 0.001f, 0.01f)) {
-				prog.setFloat("thetaD", thetaD);
-			}
+		
 		}
 		void Draw(float delta) {
 			vao->Bind();

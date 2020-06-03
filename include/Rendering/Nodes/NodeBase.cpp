@@ -18,6 +18,8 @@
  
  bogong::node::NodeBase::~NodeBase() {  }
  void bogong::node::NodeBase::UpdateTree() {
+	 if (!dirty) { return; }
+	 dirty = false;
 	 absTrans = model;
 	 if (!parent) {
 		 relTrans = absTrans;
@@ -28,6 +30,19 @@
 	 }
 	 for (auto & n : child) {
 		 n->UpdateTree();
+	 }
+ }
+ void bogong::node::NodeBase::markdirty() {
+	 if (dirty)return;
+	 dirty = true;
+	 
+	 for (auto ch : child) {
+		 ch->markdirty();
+	 }
+	 auto p = parent;
+	 while (p) {
+		 p->markdirty();
+		 p = p->parent;
 	 }
  }
  void bogong::node::NodeBase::AddChild(const std::shared_ptr<NodeBase> node) {

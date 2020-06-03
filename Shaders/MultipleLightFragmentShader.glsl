@@ -75,7 +75,7 @@ vec4 GetPointLightResult() {
 
 		float distance = length(pos - FragCoord);
 		float attenuation = 1.0 / (point_light[i].constant + point_light[i].linear * distance + point_light[i].quadratic * (distance * distance));
-
+		
 		vec4 ambient = vec4(point_light[i].ambient,1.0) * texture(material.diffuse, UV).rgba;
 		vec4 diffuse = dif * vec4(point_light[i].diffuse,1.0) * texture(material.diffuse,UV).rgba;
 		vec4 specular = vec4(spec * point_light[i].specular*texture(material.specular, UV).rgb,1.0f);
