@@ -5,7 +5,7 @@
 #include "Nodes/PointLightNode.hpp"
 #include "Nodes/SpotLightNode.hpp"
 #include "Nodes/DirectionalLightNode.hpp"
-#include "SceneRenderer.hpp"
+#include "SceneManager.hpp"
 #include "../Models/TextureFactory.hpp"
 #include "AssimpLoader.hpp"
 #include <future>
@@ -15,7 +15,7 @@ namespace bogong {
 		std::shared_ptr<CubeMesh> cube;
 		std::shared_ptr<TexturedCubeMesh> texcube;
 		std::shared_ptr<Scene> scene;
-		std::shared_ptr<SceneRenderer> renderer;
+		std::shared_ptr<SceneManager> manager;
 		std::shared_ptr<FPCamera> cam;
 		std::shared_ptr<node::NodeBase> root;
 		glm::vec3 angle = glm::vec3(0.0f,0.0f,0.0f);
@@ -24,12 +24,12 @@ namespace bogong {
 	public:
 	
 		SampleScene() {
-			renderer = std::make_shared<SceneRenderer>();
+			manager = std::make_shared<SceneManager>();
 			cam      = std::make_shared<FPCamera>();
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\test\\dude.fbx");
+			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\test2\\test.fbx");
 			auto sl = node::SpotLight();
 			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
 			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
@@ -57,19 +57,19 @@ namespace bogong {
 			root->UpdateTree();
 			scene->SetRootNode(root);
 			scene->SetCamera(cam);
-			renderer->SetCamera(cam);
+			manager->SetCamera(cam);
 
-			renderer->init_scene(root);
+			manager->init_scene(root);
 		}
 		void Draw() {
-			renderer->init_render(root);
- 			renderer->Draw(scene);
-			renderer->clear();
+			manager->init_render(root);
+ 			manager->Draw(scene);
+			manager->clear();
 		}
 		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, float delta, GLFWwindow * window){
 			scene->Update(kbd, mouse, delta,window);
 			angle += delta * alpha*2.0f;
-			renderer->Update();
+			manager->Update();
 
 		}
 	};

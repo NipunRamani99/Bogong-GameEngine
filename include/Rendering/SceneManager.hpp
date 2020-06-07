@@ -3,13 +3,16 @@
 #include "Nodes/ShapeNode.hpp"
 #include "Nodes/NodeBase.hpp"
 #include "Nodes/MaterialData.hpp"
+#include "Nodes/DirectionalLightNode.hpp"
+#include "Nodes/PointLightNode.hpp"
+#include "Nodes/SpotLightNode.hpp"
 #include "../ShaderManager.hpp"
 #include "Framebuffer.hpp"
 #include "../Screen.hpp"
 #include "Rendering.hpp"
 namespace bogong {
 	
-	class SceneRenderer {
+	class SceneManager {
 
 	private:
 		VertexArray vao2;
@@ -39,7 +42,7 @@ namespace bogong {
 		int selected_node = -1;
 		bool open = false;
 	public:
-		SceneRenderer()
+		SceneManager()
 		{
 			scr = std::make_shared<Screen>();
 			vbo = std::make_shared<VertexBuffer>(quadVertices, sizeof(float) * 24);
@@ -55,7 +58,7 @@ namespace bogong {
 		void UpdateLight(node::NodeBase * n) {
 			node::LightNodeBase* ln = (node::LightNodeBase*)(n);
 			switch (ln->light_type) {
-			case node::Point: {
+			case node::Point: { 
 				node::PointLightNode * pn = (node::PointLightNode*)(ln);
 				ImGui::InputFloat3("Ambient: ", &pn->pl.ambient[0], 4);
 				ImGui::InputFloat3("Diffuse: ", &pn->pl.diffuse[0], 4);
@@ -139,18 +142,18 @@ namespace bogong {
 			node_idx = 0;
 			ImGui::Begin("Scene");
 			open = ImGui::TreeNode("Sample Scene");
-			ProcessNode(node);
+			ProcessNode(node,open);
 			if(open)  ImGui::TreePop();
 			ImGui::End();
 			dude->BindLights(test);
 
 		}
-		void ProcessNode(std::shared_ptr<node::NodeBase> node) {
- 			
+		void ProcessNode(std::shared_ptr<node::NodeBase> node, bool enabled) {
+			bool opened = false;
 			if (node) {
-				if (open) {
-					const auto flag = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | (selected_node == node_idx ? ImGuiTreeNodeFlags_Selected : 0);
-					bool selected = ImGui::TreeNodeEx((void*)(intptr_t)node_idx, flag, node->GetName().c_str());
+				if (enabled) {
+					const auto flag = (node->GetChilds().size()==0?ImGuiTreeNodeFlags_Leaf:0)| (selected_node == node_idx ? ImGuiTreeNodeFlags_Selected : 0);
+					 opened = ImGui::TreeNodeEx((void*)(intptr_t)node_idx, flag, node->GetName().c_str());
 					if (ImGui::IsItemClicked()) {
 						selected_node = node_idx;
 					}
@@ -158,9 +161,9 @@ namespace bogong {
 				auto vn = node->GetChilds();
 				for (auto & n : vn) {
 					node_idx++;
-					ProcessNode(n);
+					ProcessNode(n,opened);
 				}
-				
+				if (opened)ImGui::TreePop();
 				auto type = node->GetType();
 				switch (type) {
 				case node::NodeType::Shape:

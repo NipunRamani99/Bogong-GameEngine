@@ -30,6 +30,7 @@ namespace bogong {
 			//create mesh
 			auto meshes = node->mMeshes;
 			int n = node->mNumMeshes;
+			aiMatrix4x4 transform;
 			std::vector<std::shared_ptr<Mesh>> meshvec;
 			for (int i = 0; i < n; i++) {
 				int idx = meshes[i];
@@ -129,6 +130,7 @@ namespace bogong {
 				std::system("pause");
 				return nullptr;
 			}
+			
 			std::string dir = GetDirectory(path);
 			auto ptr = ProcessNode(scene,scene->mRootNode,dir);
 			return ptr;
