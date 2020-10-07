@@ -2,6 +2,7 @@
 
 #define WIDTH 1280
 #define HEIGHT 740
+
 #include  <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <memory>

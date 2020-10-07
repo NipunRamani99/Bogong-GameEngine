@@ -29,7 +29,7 @@ namespace bogong {
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\test2\\test.fbx");
+			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
 			auto sl = node::SpotLight();
 			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
 			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);

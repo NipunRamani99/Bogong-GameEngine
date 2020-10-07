@@ -242,8 +242,8 @@ namespace bogong {
 			static void LoadProgram(std::string name, Configuration configuration) {
 				Program program;
 				std::string file_name = name;
-				std::string path_vs = "shaders/" + name + "VertexShader.glsl";
-				std::string path_fs = "shaders/" + name + "FragmentShader.glsl";
+				std::string path_vs = "Shaders/" + name + "VertexShader.glsl";
+				std::string path_fs = "Shaders/" + name + "FragmentShader.glsl";
 				program.LoadShader(path_vs.c_str(), ShaderType::VERTEX,configuration.macros);
 				program.LoadShader(path_fs.c_str(), ShaderType::FRAGMENT,configuration.macros);
 				if (configuration.hasGeometryShader) {
