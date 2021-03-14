@@ -51,7 +51,6 @@ bogong::Engine::Engine()
 	kbd->SetCallback(window);
 	mouse->SetCallback(window);
 	Init::InitImgui(*window);
-	pane = std::make_shared<ImGuiPane>("Test Pane", glm::vec2(0, 0), glm::vec2(300, 300));
 }
 
 void bogong::Engine::Start()
@@ -82,7 +81,6 @@ void bogong::Engine::Update(float deltime)
 
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
 	assert(!error());
-	pane->UpdatePane();
 }
 
 void bogong::Engine::DrawCalls(float deltatime) const
@@ -94,7 +92,6 @@ void bogong::Engine::RenderEverything(float deltatime)
 {
 
 	DrawCalls(deltatime);
-	pane->Render();
 	Init::Render();
 	Init::EndImguiFrame();
 	glfwSwapBuffers(window);
