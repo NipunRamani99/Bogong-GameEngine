@@ -1,5 +1,5 @@
 #define MAX_STEPS 100
-#define MAX_DISTANCE 35.0
+#define MAX_DISTANCE 35.
 #define SURFACE_DIST 0.01
 #define THRESHOLD 0.01
 in vec2 pos;
@@ -160,8 +160,10 @@ void main() {
 	vec3 py = ddy_ro + ddy_rd * ddy;
 	float dif = Light(p);
 
-	
-	vec3 color = vec3(0.0f);
+	//vec3 color = vec3(0.2196, 0.5922, 0.9686) - 0.7*rd.y;
+	//vec3 color = vec3(ay);
+	//color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
+	vec3 color = vec3(0.0);
 	if (id == 2) {
 		vec2 uv = texCoords(p, id);
 		vec2 uvx = texCoords(px, id) - uv;
@@ -172,7 +174,7 @@ void main() {
 		//color *= dif;
 	}
 	else {
-		color = vec3(0.53f, 0.81f, 0.920f);
+		
 	}
 	gl_FragDepth = CalculateDepth(p);
 	float fog = 1.0f - exp(-0.1*d);

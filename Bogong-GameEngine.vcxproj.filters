@@ -288,5 +288,9 @@
     <None Include="Shaders\FrameFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightVertexShader.glsl" />
+    <None Include="Shaders\SkyboxFragmentShader.glsl" />
+    <None Include="Shaders\SkyboxVertexShader.glsl" />
+    <None Include="Shaders\EnvironmentalFragmentShader.glsl" />
+    <None Include="Shaders\EnvironmentalVertexShader.glsl" />
   </ItemGroup>
 </Project>
