@@ -436,7 +436,6 @@ namespace bogong {
 			//Bind Shader
 			environment_shader.Bind();
 			//Set Shader variables
-			
 			model = glm::rotate(model, time, glm::vec3(0.,1.,0.));
 			environment_shader.setMat4("model", model);
 			environment_shader.setMat4("view", cam->GetView());
@@ -447,7 +446,6 @@ namespace bogong {
 			cube_texture->Bind();
 			//Draw
 			CHECK_GL_ERROR(glDrawArrays(GL_TRIANGLES, 0, 36));
-
 			time += speed;
 		}
 	};

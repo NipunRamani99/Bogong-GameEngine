@@ -52,6 +52,14 @@ void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::s
 	{
 		cameraPos += normalize(cross(cameraFront, up)) * camSpeed;
 	}
+	if (kbd->isKeyPressed(KEY_SPACE) || kbd->isKeyRepeating(KEY_SPACE))
+	{
+		cameraPos += normalize(up) * camSpeed;
+	}
+	if (kbd->isKeyPressed(KEY_CTRL)|| kbd->isKeyRepeating(KEY_CTRL))
+	{
+		cameraPos += normalize(-up) * camSpeed;
+	}
 	prevMouseX = currMouseX;
 	prevMouseY = currMouseY;
 	currMouseX = mouse->x;
