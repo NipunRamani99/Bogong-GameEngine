@@ -156,6 +156,9 @@
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
+    <ClInclude Include="include\LearnOpenGL\Mesh.h" />
+    <ClInclude Include="include\LearnOpenGL\Model.h" />
+    <ClInclude Include="include\LearnOpenGL\Shaders.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\DirectionalLightNode.hpp" />
@@ -224,13 +227,22 @@
     <ClCompile Include="Source\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\FrameFragmentShader.glsl" />
     <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\model_normal_vis.gs" />
+    <None Include="Shaders\learnopengl\model_loading2.fs" />
+    <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.fs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.vs" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\model_loading.fs" />
+    <None Include="Shaders\learnopengl\model_explode.gs" />
+    <None Include="Shaders\learnopengl\model_loading.vs" />
     <None Include="Shaders\MultipleLightFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightVertexShader.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
@@ -239,6 +251,9 @@
     <None Include="Shaders\ColourVertexShader.glsl" />
     <None Include="Shaders\ScreenFragmentShader.glsl" />
     <None Include="Shaders\ScreenVertexShader.glsl" />
+    <None Include="Shaders\SimpleFragmentShader.glsl" />
+    <None Include="Shaders\SimpleGeometryShader.glsl" />
+    <None Include="Shaders\SimpleVertexShader.glsl" />
     <None Include="Shaders\SkyboxFragmentShader.glsl" />
     <None Include="Shaders\SkyboxVertexShader.glsl" />
     <None Include="Shaders\EnvironmentalFragmentShader.glsl" />

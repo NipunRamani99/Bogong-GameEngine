@@ -29,7 +29,8 @@ namespace bogong {
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
+			auto model1 = 
+			AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
 			auto sl = node::SpotLight();
 			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
 			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
@@ -46,8 +47,10 @@ namespace bogong {
 			dl.ambient = glm::vec3(0.2, 0.2, 0.2);
 			dl.specular = glm::vec3(0.0, 0.5, 0.0);
 			dl.dir = glm::vec3(-1.0, 0.0, 0.0);
-			auto spotlight = std::make_shared<node::SpotLightNode>(sl, glm::vec3(0., 0., 0.),"Spot Light");
-			auto dirlight = std::make_shared<node::DirectionalLightNode>(dl, glm::vec3(0.0,0.0, 0.),"Directional Light");
+			auto spotlight = std::make_shared<node::SpotLightNode>(sl, 
+				glm::vec3(0., 0., 0.),"Spot Light");
+			auto dirlight = std::make_shared<node::DirectionalLightNode>(dl, 
+				glm::vec3(0.0,0.0, 0.),"Directional Light");
 			root->AddChild(spotlight);
 			root->AddChild(dirlight);
 			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
@@ -66,11 +69,11 @@ namespace bogong {
  			manager->Draw(scene);
 			manager->clear();
 		}
-		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, float delta, GLFWwindow * window){
+		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, 
+			float delta, GLFWwindow * window){
 			scene->Update(kbd, mouse, delta,window);
 			angle += delta * alpha*2.0f;
 			manager->Update();
-
 		}
 	};
 }

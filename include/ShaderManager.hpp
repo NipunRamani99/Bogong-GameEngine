@@ -247,7 +247,7 @@ namespace bogong {
 				program.LoadShader(path_vs.c_str(), ShaderType::VERTEX,configuration.macros);
 				program.LoadShader(path_fs.c_str(), ShaderType::FRAGMENT,configuration.macros);
 				if (configuration.hasGeometryShader) {
-					std::string path_gs = "shaders/" + name + "GeometryShader.glsl";
+					std::string path_gs = "Shaders/" + name + "GeometryShader.glsl";
 					program.LoadShader(path_gs.c_str(), ShaderType::GEOMETRY,configuration.macros);
 				}
 				program.LoadProgram();

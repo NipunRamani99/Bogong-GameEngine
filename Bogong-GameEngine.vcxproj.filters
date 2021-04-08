@@ -189,6 +189,15 @@
     <ClInclude Include="include\Rendering\SceneManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\LearnOpenGL\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LearnOpenGL\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LearnOpenGL\Shaders.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -292,5 +301,17 @@
     <None Include="Shaders\SkyboxVertexShader.glsl" />
     <None Include="Shaders\EnvironmentalFragmentShader.glsl" />
     <None Include="Shaders\EnvironmentalVertexShader.glsl" />
+    <None Include="Shaders\SimpleGeometryShader.glsl" />
+    <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\SimpleFragmentShader.glsl" />
+    <None Include=".editorconfig" />
+    <None Include="Shaders\learnopengl\model_explode.gs" />
+    <None Include="Shaders\learnopengl\model_loading.fs" />
+    <None Include="Shaders\learnopengl\model_loading.vs" />
+    <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\model_loading2.fs" />
+    <None Include="Shaders\learnopengl\model_normal_vis.gs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.vs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.fs" />
   </ItemGroup>
 </Project>

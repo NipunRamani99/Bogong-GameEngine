@@ -12,12 +12,14 @@ namespace bogong {
 
 	public:
 		VertexBuffer() = default;
-		VertexBuffer(const void * p_Data, size_t p_Size, unsigned int p_Draw = GL_DYNAMIC_DRAW)
+		VertexBuffer(const void * p_Data, size_t p_Size, 
+            unsigned int p_Draw = GL_DYNAMIC_DRAW)
 		{
 			m_BufferSize = p_Size;
 			CHECK_GL_ERROR(glGenBuffers(1, &m_ID));
 			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, m_ID));
-			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, p_Size, p_Data, p_Draw));
+			CHECK_GL_ERROR(glBufferData(GL_ARRAY_BUFFER, p_Size, p_Data, 
+                p_Draw));
 			CHECK_GL_ERROR(glBindBuffer(GL_ARRAY_BUFFER, 0));
 		}
 		size_t GetSize() const
