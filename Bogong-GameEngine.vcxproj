@@ -233,6 +233,10 @@
     <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\asteroid_shader.fs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\instancing_shader.fs" />
+    <None Include="Shaders\learnopengl\instancing_shader.vs" />
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
     <None Include="Shaders\learnopengl\model_loading2.fs" />
     <None Include="Shaders\learnopengl\model_loading2.vs" />

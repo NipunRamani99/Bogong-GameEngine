@@ -73,12 +73,10 @@ void bogong::Engine::Start()
 	glEnable(GL_BLEND);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	
 }
 
 void bogong::Engine::Update(float deltime)
 {
-
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
 	assert(!error());
 }

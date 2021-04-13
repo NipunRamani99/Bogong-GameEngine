@@ -313,5 +313,9 @@
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
     <None Include="Shaders\learnopengl\simple_model_loading.vs" />
     <None Include="Shaders\learnopengl\simple_model_loading.fs" />
+    <None Include="Shaders\learnopengl\instancing_shader.vs" />
+    <None Include="Shaders\learnopengl\instancing_shader.fs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.fs" />
   </ItemGroup>
 </Project>
