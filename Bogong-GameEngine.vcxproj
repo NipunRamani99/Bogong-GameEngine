@@ -233,6 +233,10 @@
     <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\aa_post.fs" />
+    <None Include="Shaders\learnopengl\aa_post.vs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.fs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.vs" />
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
     <None Include="Shaders\learnopengl\asteroid_shader.vs" />
     <None Include="Shaders\learnopengl\instancing_shader.fs" />

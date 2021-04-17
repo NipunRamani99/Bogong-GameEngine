@@ -29,8 +29,8 @@ namespace bogong {
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
 				("Root",glm::vec3(0.0f,0.0f,0.0f));
-			auto model1 = 
-			AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
+			//auto model1 = 
+			//AssimpFactory::LoadModel("assets\\models\\nanosuit\\nanosuit.obj");
 			auto sl = node::SpotLight();
 			sl.ambient = glm::vec3(0.6f, 0.6f, 0.6f);
 			sl.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
@@ -53,9 +53,9 @@ namespace bogong {
 				glm::vec3(0.0,0.0, 0.),"Directional Light");
 			root->AddChild(spotlight);
 			root->AddChild(dirlight);
-			model1->Scale(glm::vec3(0.1, 0.1, 0.1));
-			model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
-			root->AddChild(model1);
+			//model1->Scale(glm::vec3(0.1, 0.1, 0.1));
+			//model1->Translate(glm::vec3(0.0f, 4.0f, 0.0f));
+			//root->AddChild(model1);
 			root->markdirty();
 			root->UpdateTree();
 			scene->SetRootNode(root);

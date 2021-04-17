@@ -40,6 +40,8 @@ bogong::Engine::Engine()
 	int gpuDevice = 0;
 	int device_count = 0;
 	Init::InitGLFW();
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
 	window = Init::CreateWindowGL(WIDTH, HEIGHT, "Mic Check.");
 	Init::SetGLFWWindow(*window, 4, 3, 3, GLFW_OPENGL_CORE_PROFILE, true);
 	glewExperimental = true;
