@@ -235,6 +235,8 @@
     <None Include="Shaders\GouradVertexShader.glsl" />
     <None Include="Shaders\learnopengl\aa_post.fs" />
     <None Include="Shaders\learnopengl\aa_post.vs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.fs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.vs" />
     <None Include="Shaders\learnopengl\anti_aliasing.fs" />
     <None Include="Shaders\learnopengl\anti_aliasing.vs" />
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
