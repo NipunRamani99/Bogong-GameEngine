@@ -14,7 +14,7 @@ uniform mat4 projection;
 
 void main(){
     gl_Position = projection * view * model * vec4(aPos,1.0);
-    vs_out.Pos = aPos;
-    vs_out.Normal = aNormal;
+    vs_out.Pos = vec3(model*vec4(aPos,1.0));
+    vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
     vs_out.TexCoord = aTexCoord;
 }

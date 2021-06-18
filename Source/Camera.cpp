@@ -71,13 +71,6 @@ void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::s
 
 	std::string frontpos = "Front X: " + std::to_string(cameraFront.x) + " Y: " + std::to_string(cameraFront.y) + " Z: " + std::to_string(cameraFront.z);
 
-	if (debug) {
-		ImGui::Begin("Camera debug.");
-		ImGui::SetWindowPos(ImVec2(800, 0));
-		ImGui::Text(pos.c_str());
-		ImGui::Text(frontpos.c_str());
-		ImGui::End();
-	}
 	xoffset = 0.05*xoffset;
 	yoffset = 0.05*yoffset;
 	yaw += xoffset;

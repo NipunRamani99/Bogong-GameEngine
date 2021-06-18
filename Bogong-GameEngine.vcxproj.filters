@@ -323,5 +323,13 @@
     <None Include="Shaders\learnopengl\aa_post.fs" />
     <None Include="Shaders\learnopengl\advanced_lighting.vs" />
     <None Include="Shaders\learnopengl\advanced_lighting.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\simple_shader.fs" />
   </ItemGroup>
 </Project>

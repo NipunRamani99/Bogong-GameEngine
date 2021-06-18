@@ -13,7 +13,7 @@ namespace bogong
 		glm::mat4 projection;
 		glm::mat4 view;
 		int width = 1280;
-		int height = 640;
+		int height = 740;
 	public:
 		glm::mat4 GetProjection();
 
@@ -27,9 +27,9 @@ namespace bogong
 		glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, 1.0f);
 		float cameraSpeed = 1.0f;
 		int screenWidth = 1280;
-		int screenHeight = 640;
+		int screenHeight = 740;
 		float prevMouseX = 1280.0f / 2.0f;
-		float prevMouseY = 640.0f / 2.0f;
+		float prevMouseY = 740.0f / 2.0f;
 		float currMouseX = 0.0f;
 		float currMouseY = 0.0f;
 		float pitch = 0.0f;

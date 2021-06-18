@@ -246,8 +246,16 @@
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
     <None Include="Shaders\learnopengl\model_loading2.fs" />
     <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.vs" />
     <None Include="Shaders\learnopengl\simple_model_loading.fs" />
     <None Include="Shaders\learnopengl\simple_model_loading.vs" />
+    <None Include="Shaders\learnopengl\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\simple_shader.vs" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\learnopengl\model_loading.fs" />

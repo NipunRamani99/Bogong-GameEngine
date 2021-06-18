@@ -15,7 +15,7 @@ uniform float specPower;
 void main(){
     vec3 color = texture(texture_diffuse1, vs_out.TexCoord).rgb;
     //ambient
-    vec3 ambient = 0.05 * color;
+    vec3 ambient = 0.5 * color;
     //diffuse
     vec3 lightDir = normalize(lightPos - vs_out.Pos);
     vec3 normal = normalize(vs_out.Normal);
