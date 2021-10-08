@@ -155,6 +155,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
+    <ClInclude Include="include\Rendering\Constants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\LearnOpenGL\Mesh.h" />
     <ClInclude Include="include\LearnOpenGL\Model.h" />
@@ -252,6 +253,8 @@
     <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.vs" />
     <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.fs" />
     <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.vs" />
     <None Include="Shaders\learnopengl\simple_model_loading.fs" />
     <None Include="Shaders\learnopengl\simple_model_loading.vs" />
     <None Include="Shaders\learnopengl\simple_shader.fs" />

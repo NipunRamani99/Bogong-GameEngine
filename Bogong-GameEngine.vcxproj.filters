@@ -198,6 +198,9 @@
     <ClInclude Include="include\LearnOpenGL\Shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Rendering\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -331,5 +334,7 @@
     <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />
     <None Include="Shaders\learnopengl\simple_shader.vs" />
     <None Include="Shaders\learnopengl\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.vs" />
   </ItemGroup>
 </Project>

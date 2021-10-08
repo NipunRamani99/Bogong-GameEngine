@@ -17,6 +17,10 @@ namespace learnopengl {
         Shader(const char* vertexPath, const char* fragmentPath,
             const char* geometryPath = nullptr)
         {
+            if (vertexPath)
+                std::cout << "Processing Vertex Shader " << vertexPath << ".\n";
+            if (fragmentPath)
+                std::cout << "Processing Fragment Shader " << fragmentPath << ".\n";
             // 1. retrieve the vertex/fragment source code from filePath
             std::string vertexCode;
             std::string fragmentCode;

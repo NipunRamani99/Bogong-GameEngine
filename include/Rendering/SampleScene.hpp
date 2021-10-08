@@ -73,7 +73,7 @@ namespace bogong {
 			float delta, GLFWwindow * window){
 			scene->Update(kbd, mouse, delta,window);
 			angle += delta * alpha*2.0f;
-			manager->Update();
+			manager->Update(delta);
 		}
 	};
 }
