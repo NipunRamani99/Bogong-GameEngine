@@ -1,54 +1,98 @@
 #pragma once
 namespace bogong {
+const static float skyboxVertices[] = {
+        // positions          
+        -1.0f,  1.0f, -1.0f,
+        -1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f, -1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+
+        -1.0f, -1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f,
+        -1.0f, -1.0f,  1.0f,
+
+        -1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f, -1.0f,
+         1.0f,  1.0f,  1.0f,
+         1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f,  1.0f,
+        -1.0f,  1.0f, -1.0f,
+
+        -1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f, -1.0f,
+         1.0f, -1.0f, -1.0f,
+        -1.0f, -1.0f,  1.0f,
+         1.0f, -1.0f,  1.0f
+    };
 const static float cubeVertices[108] = {
-            -0.5f, -0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
+            -1.0f, -1.0f, -1.0f,
+             1.0f,  1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
 
-             0.5f,  0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
-            -0.5f,  0.5f, -0.5f,
+             1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
 
-            -0.5f, -0.5f,  0.5f,
-             0.5f, -0.5f,  0.5f,
-             0.5f,  0.5f,  0.5f,
+            -1.0f, -1.0f,  1.0f,
+             1.0f, -1.0f,  1.0f,
+             1.0f,  1.0f,  1.0f,
 
-             0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
-            -0.5f, -0.5f,  0.5f,
+             1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
 
-            -0.5f,  0.5f,  0.5f,
-            -0.5f,  0.5f, -0.5f,
-            -0.5f, -0.5f, -0.5f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
 
-            -0.5f, -0.5f, -0.5f,
-            -0.5f, -0.5f,  0.5f,
-            -0.5f,  0.5f,  0.5f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
 
-             0.5f,  0.5f,  0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f,  0.5f, -0.5f,
+             1.0f,  1.0f,  1.0f,
+             1.0f, -1.0f, -1.0f,
+             1.0f,  1.0f, -1.0f,
 
-             0.5f, -0.5f, -0.5f,
-             0.5f,  0.5f,  0.5f,
-             0.5f, -0.5f,  0.5f,
+             1.0f, -1.0f, -1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f, -1.0f,  1.0f,
 
-            -0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f, -0.5f,
-             0.5f, -0.5f,  0.5f,
+            -1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f, -1.0f,
+             1.0f, -1.0f,  1.0f,
 
-             0.5f, -0.5f,  0.5f,
-            -0.5f, -0.5f,  0.5f,
-            -0.5f, -0.5f, -0.5f,
+             1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
 
 
-            -0.5f,  0.5f, -0.5f,
-             0.5f,  0.5f,  0.5f,
-             0.5f,  0.5f, -0.5f,
+            -1.0f,  1.0f, -1.0f,
+             1.0f,  1.0f,  1.0f,
+             1.0f,  1.0f, -1.0f,
 
-            -0.5f,  0.5f,  0.5f,
-            0.5f,  0.5f,  0.5f, 
-            -0.5f,  0.5f, -0.5f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f, 
+            -1.0f,  1.0f, -1.0f,
 
         };
 const static  float quadVertices[30] = {
@@ -128,8 +172,8 @@ const static float texturedCube[288] = {
         };
 const static unsigned int SCREEN_WIDTH = 1280;
 const static unsigned int SCREEN_HEIGHT = 740;
-const static unsigned int SHADOW_WIDTH = 1280;
-const static unsigned int SHADOW_HEIGHT = 740;
+const static unsigned int SHADOW_WIDTH = 1024;
+const static unsigned int SHADOW_HEIGHT = 1024;
 const static std::string WOOD_TEXTURE = "./assets/models/nicewood.png";
 const static std::string SHADER_DIRECTORY_PATH = "./Shaders/learnopengl";
 const static std::string ADVANCED_LIGHTNING_VERTEX_SHADER = SHADER_DIRECTORY_PATH 
@@ -152,4 +196,18 @@ const static std::string SIMPLE_VERTEX_SHADER = SHADER_DIRECTORY_PATH
 + "/shadowmapping/simple_shader.vs";
 const static std::string SIMPLE_FRAGMENT_SHADER = SHADER_DIRECTORY_PATH
 + "/shadowmapping/simple_shader.fs";
+const static std::string POINT_SHADOW_DEPTH_VERTEX_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth.vs";
+const static std::string POINT_SHADOW_DEPTH_FRAGMENT_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth.fs";
+const static std::string POINT_SHADOW_DEPTH_GEOMETRY_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth.gs";
+const static std::string POINT_SHADOW_PASS_VERTEX_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_pass.vs";
+const static std::string POINT_SHADOW_PASS_FRAGMENT_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_pass.fs";
+const static std::string POINT_SHADOW_DEPTH_DEBUG_VERTEX_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth_debug.vs";
+const static std::string POINT_SHADOW_DEPTH_DEBUG_FRAGMENT_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth_debug.fs";
 }

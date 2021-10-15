@@ -336,5 +336,12 @@
     <None Include="Shaders\learnopengl\simple_shader.fs" />
     <None Include="Shaders\learnopengl\shadowmapping\simple_shader.fs" />
     <None Include="Shaders\learnopengl\shadowmapping\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.gs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.fs" />
   </ItemGroup>
 </Project>

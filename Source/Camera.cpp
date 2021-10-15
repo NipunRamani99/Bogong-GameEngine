@@ -16,7 +16,7 @@ glm::mat4 bogong::Camera::GetView()
 }
 bogong::FPCamera::FPCamera()
 {
-	projection = glm::perspective(glm::radians(45.0f), float(screenWidth) / float(screenHeight), 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), float(screenWidth) / float(screenHeight), 0.1f, 25.0f);
 	view = lookAt(cameraPos, cameraPos + cameraFront, up);
 }
 void bogong::FPCamera::ClearMouse(const std::shared_ptr<Mouse>& mouse)
