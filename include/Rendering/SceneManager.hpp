@@ -17,11 +17,16 @@
 #include <vector>
 #include <string>
 #include "Constants.h"
+#include "SponzaScene.h"
+
 namespace bogong {
 
     class SceneManager {
 
     private:
+
+        SponzaScene sponzaScene;
+
         unsigned int tex = 0;
         unsigned int depthMapTex = 0;
         unsigned int depthMapFBO = 0;
@@ -62,13 +67,15 @@ namespace bogong {
 
         bool blinn = false;
         bool gammaCorrection = false;
-        float nearPlane = 1.0f;
+        float nearPlane = 0.10f;
         float farPlane = 25.f;
         glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), 
             float(SHADOW_WIDTH)/float(SHADOW_HEIGHT), nearPlane, farPlane);
         std::vector<glm::mat4> shadowTransforms;
         float time = 0.0f;
         unsigned int depthCubeMap = 0;
+        float phase = 0.0f;
+        float amplitude = 1.0f;
     public:
         SceneManager()
             :
@@ -101,7 +108,28 @@ namespace bogong {
 
         void Update(float delta) {
             time += delta;
-            ImGui::InputFloat("Camera Y", (float*)&lightPos.y, 0.01);
+            lightPos.x = phase + amplitude*sin(time);
+            lightModel = glm::translate(glm::mat4(1.0f), lightPos);
+            lightModel = glm::scale(lightModel, glm::vec3(0.25, 0.25, 0.25));
+            shadowTransforms.clear();
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 1.0, 0.0), glm::vec3(0.0, 0.0, 1.0)));
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(0.0, -1.0, 0.0), glm::vec3(0.0, 0.0, -1.0)));
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
+            shadowTransforms.push_back(shadowProj *
+                glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+
+
+            ImGui::InputFloat("Phase", &phase, 0.01);
+            ImGui::InputFloat("Amplitude", &amplitude, 0.01);
+
+
             if (ImGui::InputFloat3("Light Pos",(float*) &lightPos, 2)) {
                 shadowTransforms.clear();
                 shadowTransforms.push_back(shadowProj *
@@ -171,12 +199,12 @@ namespace bogong {
                 pointShadowDepthPass.setMat4("shadowProjections[" + std::to_string(i) + "]", shadowTransforms[i]);
             pointShadowDepthPass.setFloat("far_plane", farPlane);
             pointShadowDepthPass.setVec3("light_pos", lightPos);
-            RenderShit(pointShadowDepthPass);
+            sponzaScene.RenderScene(pointShadowDepthPass);
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             ConfigureShaderMatricesForRenderPass();
-            RenderShit(pointShadowRenderPass);
+            sponzaScene.RenderScene(pointShadowRenderPass);
             renderLightCube(simpleShader);
         }
 

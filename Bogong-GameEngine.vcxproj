@@ -175,6 +175,7 @@
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
     <ClInclude Include="include\Rendering\SceneManager.hpp" />
+    <ClInclude Include="include\Rendering\SponzaScene.h" />
     <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Surface.hpp" />
