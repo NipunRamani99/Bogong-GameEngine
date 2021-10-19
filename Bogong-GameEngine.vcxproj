@@ -174,7 +174,7 @@
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
-    <ClInclude Include="include\Rendering\SceneManager.hpp" />
+    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp" />
     <ClInclude Include="include\Rendering\SponzaScene.h" />
     <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
@@ -255,6 +255,8 @@
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.vs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.fs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.vs" />
     <None Include="Shaders\learnopengl\shadowmapping\debug_quad.fs" />
     <None Include="Shaders\learnopengl\shadowmapping\debug_quad.vs" />
     <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />

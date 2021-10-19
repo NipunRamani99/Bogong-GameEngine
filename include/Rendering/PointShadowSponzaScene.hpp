@@ -21,7 +21,7 @@
 
 namespace bogong {
 
-    class SceneManager {
+    class PointShadowSponzaScene {
 
     private:
 
@@ -53,7 +53,7 @@ namespace bogong {
         learnopengl::Shader pointShadowDepthPass;
         learnopengl::Shader pointShadowRenderPass;
         learnopengl::Shader pointShadowDepthDebug;
-
+        learnopengl::Shader pointShadowDepthPassTBN;
 
         glm::vec3 lightPos = glm::vec3(3.50, 4.0, -2.0);
         glm::vec3 cubePos = glm::vec3(0.5, 0.50, 0.0);
@@ -76,8 +76,9 @@ namespace bogong {
         unsigned int depthCubeMap = 0;
         float phase = 0.0f;
         float amplitude = 1.0f;
+
     public:
-        SceneManager()
+        PointShadowSponzaScene()
             :
             shader(ADVANCED_LIGHTNING_VERTEX_SHADER.c_str(),
                 ADVANCED_LIGHTNING_FRAGMENT_SHADER.c_str()),
@@ -92,7 +93,9 @@ namespace bogong {
             pointShadowRenderPass(POINT_SHADOW_PASS_VERTEX_SHADER.c_str(), 
                 POINT_SHADOW_PASS_FRAGMENT_SHADER.c_str()),
             pointShadowDepthDebug(POINT_SHADOW_DEPTH_DEBUG_VERTEX_SHADER.c_str(),
-                POINT_SHADOW_DEPTH_DEBUG_FRAGMENT_SHADER.c_str())
+                POINT_SHADOW_DEPTH_DEBUG_FRAGMENT_SHADER.c_str()),
+            pointShadowDepthPassTBN(POINT_SHADOW_PASS_TBN_VERTEX_SHADER.c_str(),
+                POINT_SHADOW_PASS_TBN_FRAGMENT_SHADER.c_str())
         {
             CHECK_GL_ERROR(SetupDepthCubeMap());
             SetupPlane();
@@ -124,8 +127,6 @@ namespace bogong {
                 glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
             shadowTransforms.push_back(shadowProj *
                 glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
-
-
             ImGui::InputFloat("Phase", &phase, 0.01);
             ImGui::InputFloat("Amplitude", &amplitude, 0.01);
 
@@ -203,8 +204,8 @@ namespace bogong {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            ConfigureShaderMatricesForRenderPass();
-            sponzaScene.RenderScene(pointShadowRenderPass);
+            ConfigureShaderMatricesForRenderPass(pointShadowDepthPassTBN);
+            sponzaScene.RenderScene(pointShadowDepthPassTBN);
             renderLightCube(simpleShader);
         }
 
@@ -220,19 +221,19 @@ namespace bogong {
             pointShadowDepthPass.setVec3("light_pos", lightPos);
         }
 
-        void ConfigureShaderMatricesForRenderPass() {
-            CHECK_GL_ERROR(pointShadowRenderPass.use());
-            CHECK_GL_ERROR(pointShadowRenderPass.setFloat("far_plane", farPlane));
-            CHECK_GL_ERROR(pointShadowRenderPass.setMat4("projection", cam->GetProjection()));
-            CHECK_GL_ERROR(pointShadowRenderPass.setMat4("view", cam->GetView()));
-            CHECK_GL_ERROR(pointShadowRenderPass.setVec3("viewPos", cam->GetPos()));
-            CHECK_GL_ERROR(pointShadowRenderPass.setVec3("lightPos", lightPos));
-            CHECK_GL_ERROR(glActiveTexture(GL_TEXTURE0));
-            CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, tex));
-            CHECK_GL_ERROR(pointShadowRenderPass.setInt("diffuse_texture", 0));
-            CHECK_GL_ERROR(glActiveTexture(GL_TEXTURE1));
+        void ConfigureShaderMatricesForRenderPass(learnopengl::Shader & shader) {
+            CHECK_GL_ERROR(shader.use());
+            CHECK_GL_ERROR(shader.setFloat("far_plane", farPlane));
+            CHECK_GL_ERROR(shader.setMat4("projection", cam->GetProjection()));
+            CHECK_GL_ERROR(shader.setMat4("view", cam->GetView()));
+            CHECK_GL_ERROR(shader.setVec3("viewPos", cam->GetPos()));
+            CHECK_GL_ERROR(shader.setVec3("lightPos", lightPos));
+            //CHECK_GL_ERROR(glActiveTexture(GL_TEXTURE0));
+            //CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, tex));
+          //  CHECK_GL_ERROR(shader.setInt("diffuse_texture", 0));
+            CHECK_GL_ERROR(glActiveTexture(GL_TEXTURE4));
             CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubeMap));
-            CHECK_GL_ERROR(pointShadowRenderPass.setInt("depth_cube_map", 1));
+            CHECK_GL_ERROR(shader.setInt("depth_cube_map", 4));
         }
 
         void RenderShit(learnopengl::Shader & shader) {
@@ -253,9 +254,9 @@ namespace bogong {
             glDepthFunc(GL_LEQUAL);
             cubeMapVao.Bind();
             shader.use();
-            glActiveTexture(GL_TEXTURE1);
+            glActiveTexture(GL_TEXTURE4);
             glBindTexture(GL_TEXTURE_CUBE_MAP, depthCubeMap);
-            shader.setInt("cubemap", 1);
+            shader.setInt("cubemap", 4);
             glm::mat4 view = glm::mat4(glm::mat3(cam->GetView()));
             shader.setMat4("view", view);
             shader.setMat4("projection", cam->GetProjection());

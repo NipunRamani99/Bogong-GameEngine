@@ -210,4 +210,8 @@ const static std::string POINT_SHADOW_DEPTH_DEBUG_VERTEX_SHADER =
 SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth_debug.vs";
 const static std::string POINT_SHADOW_DEPTH_DEBUG_FRAGMENT_SHADER =
 SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_depth_debug.fs";
+const static std::string POINT_SHADOW_PASS_TBN_VERTEX_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_pass_TBN.vs";
+const static std::string POINT_SHADOW_PASS_TBN_FRAGMENT_SHADER =
+SHADER_DIRECTORY_PATH + "/pointshadow/point_shadow_pass_TBN.fs";
 }

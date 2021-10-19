@@ -186,9 +186,6 @@
     <ClInclude Include="include\Rendering\Nodes\DirectionalLightNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\SceneManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\LearnOpenGL\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -202,6 +199,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\SponzaScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -346,5 +346,7 @@
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.fs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.vs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.fs" />
   </ItemGroup>
 </Project>
