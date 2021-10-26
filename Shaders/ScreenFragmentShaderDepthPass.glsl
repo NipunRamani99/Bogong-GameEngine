@@ -1,26 +1,26 @@
 #version 330 core
 #define MAX_STEPS 100
-#define MAX_DISTANCE 35.
+#define MAX_DISTANCE 100.0
 #define SURFACE_DIST 0.01
 #define THRESHOLD 0.01
-in VS_OUT{
-in vec2 pos;
-} fc_in;
-out vec4 FragColour;
+in GS_OUT{
+    mat4 shadowProjection;
+    vec2 pos;
+    vec3 shadowLightDir;
+} gs_out;
+
 uniform float iTime = 50.0f;
+
 vec2 iResolution = vec2(1280, 640);
-uniform vec3 cam_dir;
+
 uniform vec3 cam_pos;
-uniform mat4 view;
-uniform mat4 model;
-uniform mat4 proj;
 uniform float screen_width;
 uniform float screen_height;
 uniform float nearVal;
 uniform float farVal;
-//const vec3 Csky = vec3(0.902, 0.902, 0.980);
+vec2 pos = vec2(0.0);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
-uniform float thetaD = 45.0f;
+uniform float thetaD = 90.0f;
 float sdPlane(vec3 p, vec4 n)
 {
 	// n must be normalized
@@ -28,15 +28,16 @@ float sdPlane(vec3 p, vec4 n)
 }
 float GetDist(vec3 p, out int id)
 {
-
-
+	vec4 c = vec4(0.0, 1.90, 6.0, 1.0);
+	float circ = length(p - c.xyz) - c.w;
 	float plane = sdPlane(p,vec4(0,1.0f,0.0,0.0f));
+	float plane2 = sdPlane(p, vec4(-1, 0, 0, 7));
+	float plane3 = sdPlane(p, vec4(0, 0, -1, 15));
 	float minval = plane;
 
 	if (minval <= SURFACE_DIST)
 	{
 		if (minval == plane) id = 2;
-
 	}
 	return minval;
 }
@@ -68,17 +69,14 @@ void calcCamera(out vec3 ro, out vec3 ta)
 }
 void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
 {
-	//pix -> (0,0),(1280,640)
-	//vec2 p = (2.0f*pix - iResolution.xy) / iResolution.y;
 	vec2 p = pix;
 	p /= iResolution.xy;
-	//p -> ((-640,-320), (640,320))/iResolution.y
 	vec3 u, v, w;
 	float theta = radians(thetaD);
 	float half_height =tan(theta / 2.0f);
-	float half_width = 1280.0f/640.0f * half_height;
+	float half_width = screen_width/screen_height * half_height;
 	vec3 origin = cam_pos;
-	w = normalize(cam_dir);
+	w = normalize(gs_out.shadowLightDir);
 	u = normalize(cross(w,vec3(0.,1.,0.)));
 	v = normalize(cross(u,w ));
  	vec3 lower_left_corner = cam_pos - half_width * u - half_height * v +w;
@@ -87,17 +85,6 @@ void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
 	Ro = cam_pos;
 	Rd = normalize(lower_left_corner + p.x * horizontal + p.y * vertical-cam_pos);
 	//Rd = normalize(p.x * u + p.y * v + 2.0*w);
-}
-float Light(vec3 p)
-{
-	vec3 lightSource = vec3(2.*sin(iTime), 5., 6. + 2.*cos(iTime));
-	vec3 l = normalize(lightSource - p);
-	vec3 n = GetNormal(p);
-	float diff = max(dot(n, l), 0.0);
-	int id = 0;
-	float d = RayMarch(p + n * SURFACE_DIST*2., l, id);
-	if (d < length(p - lightSource)) diff = 0.01;
-	return diff;
 }
 vec2 texCoords(vec3 p, int id)
 {
@@ -127,58 +114,44 @@ float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
 	vec2 i = 2.0*(abs(fract((p - 0.5*w) / 2.0) - 0.5) - abs(fract((p + 0.5*w) / 2.0) - 0.5)) / w;
 	// xor pattern
 	return 0.5 - 0.5*i.x*i.y;
-	
-
 }
 float CalculateDepth(vec3 p) {
-	vec4 clip_space = proj*view*model*vec4(p,1.0f);
+	vec4 clip_space = gs_out.shadowProjection*vec4(p,1.0f);
 	float clip_space_depth = clip_space.z / clip_space.w;
-	float far = gl_DepthRange.far;
-	float near = gl_DepthRange.near;
-	float depth = (((far-near)*(clip_space_depth))+near+far)/2.0f;
-	return depth;
-
+    //float depth = (((farVal-nearVal)*(clip_space_depth))+nearVal+farVal)/2.0f;
+    return clip_space_depth;
+}
+float iPlane(in vec3 ro, in vec3 rd) {
+    return -ro.y / rd.y;
+}
+float intersect(in vec3 ro, in vec3 rd, out float resT) {
+    resT = 1000.0;
+    float t = -1.0;
+    float tpla = iPlane(ro, rd);
+    if (tpla > 0.0 && tpla < resT) {
+        t = 1.0;
+        resT = tpla;
+    }
+    return t;
 }
 void main() {
-	vec2 newpos= vec2(0.0f,0.0f);
-	newpos.x    = fc_in.pos.x;
-	newpos.y	= fc_in.pos.y;
+    pos = gs_out.pos;
+    iResolution = vec2(screen_width, screen_height);
+    vec2 newpos = vec2(0.0f,0.0f);
+	newpos.x    = pos.x;
+	newpos.y	= pos.y;
 	vec3 ro, rd;
 	vec3 ddx_ro, ddx_rd, ddy_ro, ddy_rd;
-	vec2 fragCoord = (newpos + vec2(1.0f,1.0f))*vec2(640.0f, 320.0f);
-
-	calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
-	calcRayForPixel(fragCoord + vec2(1.0, 0.0), ddx_ro, ddx_rd);
-	calcRayForPixel(fragCoord + vec2(0.0, 1.0), ddy_ro, ddy_rd);
-
-	int id = 0;
-	float d = RayMarch(ro, rd, id);
-	float ddx = RayMarch(ddx_ro, ddx_rd, id);
-	float ddy = RayMarch(ddy_ro, ddy_rd, id);
-
-	vec3 p = ro + rd * d;
-	vec3 px = ddx_ro + ddx_rd * ddx;
-	vec3 py = ddy_ro + ddy_rd * ddy;
-	float dif = Light(p);
-
-	//vec3 color = vec3(0.2196, 0.5922, 0.9686) - 0.7*rd.y;
-	//vec3 color = vec3(ay);
-	//color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
-	vec3 color = vec3(0.0);
-	if (id == 2) {
-		vec2 uv = texCoords(p, id);
-		vec2 uvx = texCoords(px, id) - uv;
-		vec2 uvy = texCoords(py, id) - uv;
-		color = mix(vec3(0.4),vec3(0.70f),checkersTextureGradBox(uv, uvx, uvy));
-		// color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
-		dif += 0.06;
-		//color *= dif;
-	}
-	else {
-		
-	}
-	//gl_FragDepth = CalculateDepth(p);
-	float fog = 1.0f - exp(-0.1*d);
-	color.rgb = mix(color.rgb, Csky, fog);
-	FragColour = vec4(color, 1.0);
-}
+  	vec2 fragCoord = (newpos + vec2(1.0f,1.0f))*vec2(screen_width/2.0f, screen_height/2.0f);
+    calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
+    float t = 1.0;
+    float tx = 1.0;
+    float ty = 1.0;
+    float id = intersect(ro, rd, t);
+    //intersect(ddx_ro, ddx_rd, tx);
+    //intersect(ddy_ro, ddy_rd, ty);
+    vec3 p = ro + rd * t;
+   // vec3 px = ddx_ro + ddx_rd * tx;
+  //  vec3 py = ddy_ro + ddy_rd * ty;  
+    gl_FragDepth = CalculateDepth(p);
+ }

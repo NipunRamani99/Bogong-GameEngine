@@ -195,13 +195,19 @@
     <ClInclude Include="include\LearnOpenGL\Shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Rendering\SponzaScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\RenderConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\NanosuitScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -348,5 +354,8 @@
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.fs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.vs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.fs" />
+    <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
+    <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
+    <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
   </ItemGroup>
 </Project>

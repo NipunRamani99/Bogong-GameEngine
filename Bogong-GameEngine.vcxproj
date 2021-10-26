@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Entity.hpp" />
     <ClInclude Include="include\ErrorLog.h" />
@@ -155,7 +156,8 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
-    <ClInclude Include="include\Rendering\Constants.h" />
+    <ClInclude Include="include\Rendering\NanosuitScene.h" />
+    <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\LearnOpenGL\Mesh.h" />
     <ClInclude Include="include\LearnOpenGL\Model.h" />
@@ -280,7 +282,10 @@
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\ColourFragmentShader.glsl" />
     <None Include="Shaders\ColourVertexShader.glsl" />
+    <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
+    <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenFragmentShader.glsl" />
+    <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenVertexShader.glsl" />
     <None Include="Shaders\SimpleFragmentShader.glsl" />
     <None Include="Shaders\SimpleGeometryShader.glsl" />

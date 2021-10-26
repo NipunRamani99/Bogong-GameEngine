@@ -16,16 +16,18 @@
 #include "../LearnOpenGL/Model.h"
 #include <vector>
 #include <string>
-#include "Constants.h"
+#include "RenderConstants.h"
 #include "SponzaScene.h"
+#include "NanosuitScene.h"
 
 namespace bogong {
 
     class PointShadowSponzaScene {
 
     private:
-
-        SponzaScene sponzaScene;
+        Screen screen;
+      //  SponzaScene sponzaScene;
+        NanosuitScene nanosuitScene;
 
         unsigned int tex = 0;
         unsigned int depthMapTex = 0;
@@ -72,6 +74,7 @@ namespace bogong {
         glm::mat4 shadowProj = glm::perspective(glm::radians(90.0f), 
             float(SHADOW_WIDTH)/float(SHADOW_HEIGHT), nearPlane, farPlane);
         std::vector<glm::mat4> shadowTransforms;
+        std::vector<glm::vec3> shadowDirections;
         float time = 0.0f;
         unsigned int depthCubeMap = 0;
         float phase = 0.0f;
@@ -80,6 +83,7 @@ namespace bogong {
     public:
         PointShadowSponzaScene()
             :
+            screen(),
             shader(ADVANCED_LIGHTNING_VERTEX_SHADER.c_str(),
                 ADVANCED_LIGHTNING_FRAGMENT_SHADER.c_str()),
             cubeShader(ADVANCED_LIGHTNING_VERTEX_SHADER.c_str(),
@@ -130,7 +134,7 @@ namespace bogong {
             ImGui::InputFloat("Phase", &phase, 0.01);
             ImGui::InputFloat("Amplitude", &amplitude, 0.01);
 
-
+            
             if (ImGui::InputFloat3("Light Pos",(float*) &lightPos, 2)) {
                 shadowTransforms.clear();
                 shadowTransforms.push_back(shadowProj *
@@ -167,6 +171,12 @@ namespace bogong {
                 glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, -1.0, 0.0)));
             shadowTransforms.push_back(shadowProj *
                 glm::lookAt(lightPos, lightPos + glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, -1.0, 0.0)));
+            shadowDirections.push_back(glm::vec3(1.0, 0., 0.));
+            shadowDirections.push_back(glm::vec3(1.0, 0., 0.));
+            shadowDirections.push_back(glm::vec3(0.0, 1., 0.));
+            shadowDirections.push_back(glm::vec3(1.0, -1., 0.));
+            shadowDirections.push_back(glm::vec3(0.0, 0., 1.0));
+            shadowDirections.push_back(glm::vec3(0.0, 0., -1.0));
         }
         
         void SetupModels() {
@@ -195,18 +205,27 @@ namespace bogong {
             glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
             glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
             glClear(GL_DEPTH_BUFFER_BIT);
-            pointShadowDepthPass.use();
-            for (unsigned int i = 0; i < 6; ++i)
-                pointShadowDepthPass.setMat4("shadowProjections[" + std::to_string(i) + "]", shadowTransforms[i]);
-            pointShadowDepthPass.setFloat("far_plane", farPlane);
-            pointShadowDepthPass.setVec3("light_pos", lightPos);
-            sponzaScene.RenderScene(pointShadowDepthPass);
+            screen.ConfigureForDepthPass(lightPos, shadowDirections, 
+                shadowTransforms, nearPlane, farPlane, SHADOW_WIDTH, SHADOW_HEIGHT );
+            screen.DepthPass();
+            ConfigureShaderMatricesForDepthPass();
+            nanosuitScene.RenderScene(pointShadowDepthPass);
+           // pointShadowDepthPass.use();
+            //for (unsigned int i = 0; i < 6; ++i)
+            //    pointShadowDepthPass.setMat4("shadowProjections[" + std::to_string(i) + "]", shadowTransforms[i]);
+            //pointShadowDepthPass.setFloat("far_plane", farPlane);
+            //pointShadowDepthPass.setVec3("light_pos", lightPos);
+            //sponzaScene.RenderScene(pointShadowDepthPass);
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            ConfigureShaderMatricesForRenderPass(pointShadowDepthPassTBN);
+      /*      ConfigureShaderMatricesForRenderPass(pointShadowDepthPassTBN);
             sponzaScene.RenderScene(pointShadowDepthPassTBN);
-            renderLightCube(simpleShader);
+            renderLightCube(simpleShader);*/
+           // RenderCubeMap(pointShadowDepthDebug);
+            screen.ConfigureForRenderPass(cam->GetPos(), cam->GetDir(), cam->GetView(), cam->GetProjection(),
+                lightPos, nearPlane, farPlane, SCREEN_WIDTH, SCREEN_HEIGHT);
+            screen.RenderPass(0.0f, depthCubeMap);
         }
 
     private:
