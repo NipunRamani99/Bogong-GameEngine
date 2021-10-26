@@ -178,9 +178,9 @@ void main() {
     //color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
     vec3 color = vec3(0.0);
     if (id == 1) {
-        vec2 uv = texCoords(p, id);
-        vec2 uvx = texCoords(px, id) - uv;
-        vec2 uvy = texCoords(py, id) - uv;
+        vec2 uv = texCoords(p, 2);
+        vec2 uvx = texCoords(px, 2) - uv;
+        vec2 uvy = texCoords(py, 2) - uv;
         color = mix(vec3(0.4), vec3(0.70f), checkersTextureGradBox(uv, uvx, uvy));
        // color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
                //color *= dif;
