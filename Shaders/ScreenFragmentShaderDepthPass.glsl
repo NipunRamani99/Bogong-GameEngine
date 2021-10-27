@@ -20,7 +20,7 @@ uniform float nearVal;
 uniform float farVal;
 vec2 pos = vec2(0.0);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
-uniform float thetaD = 90.0f;
+uniform float thetaD = 45.0f;
 float sdPlane(vec3 p, vec4 n)
 {
 	// n must be normalized

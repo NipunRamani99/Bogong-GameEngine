@@ -24,13 +24,14 @@ uniform float farVal;
 uniform float nearVal;
 vec2 pos = vec2(0.0);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
-uniform float thetaD = 90.0f;
+uniform float thetaD = 45.0f;
 
 
 float shadowMapping(in vec3 fragPos) {
     float currentDepth =  length(fragPos - lightPos);
     vec3 lightDir = fragPos - lightPos;
     float closestDepth = texture(depth_cube_map, lightDir).r;
+    closestDepth *= farVal;
     float bias = 0.005;
     float shadow = currentDepth - bias > closestDepth ? 0.0 : 1.0;
     return 1.0 - shadow;
@@ -103,11 +104,8 @@ void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
 }
 vec2 texCoords(vec3 p, int id)
 {
-    vec2 m;
-    if (id == 2)
-    {
-        m = p.xz;
-    }
+    vec2 m = p.xz;
+   
     return 2.0*m;
 }
 // triangular signal
@@ -133,23 +131,23 @@ float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
 float CalculateDepth(vec3 p) {
     vec4 clip_space = projection * view * model * vec4(p, 1.0f);
     float clip_space_depth = clip_space.z / clip_space.w;
-    float far = gl_DepthRange.far;
-    float near = gl_DepthRange.near;
-    float depth = (((far - near)*(clip_space_depth))+ near + far)/2.0f;
-    return depth;
+   // float far = gl_DepthRange.far;
+   // float near = gl_DepthRange.near;
+//    float depth = (((far - near)*(clip_space_depth))+ near + far)/2.0f;
+    return clip_space_depth;
 }
 float iPlane(in vec3 ro, in vec3 rd) {
     return -ro.y / rd.y;
 }
-int intersect(in vec3 ro, in vec3 rd, out float resT) {
+float intersect(in vec3 ro, in vec3 rd, out float resT) {
     resT = 1000.0;
-    int id = -1;
+    float t = -1.0;
     float tpla = iPlane(ro, rd);
     if (tpla > 0.0 && tpla < resT) {
-        id = 1;
+        t = 1.0;
         resT = tpla;
     }
-    return id;
+    return t;
 }
 void main() {
     pos = fc_in.pos;
@@ -166,9 +164,9 @@ void main() {
 
     float d = 0, ddx = 0.0, ddy = 0.0;
     intersect(ddx_ro, ddx_rd, ddx);
-    intersect(ddy_ro, ddy_ro, ddy);
+    intersect(ddy_ro, ddy_rd, ddy);
 
-    int id = intersect(ro, rd, d);
+    float id = intersect(ro, rd, d);
     vec3 p = ro + rd * d;
     vec3 px = ddx_ro + ddx_rd * ddx;
     vec3 py = ddy_ro + ddy_rd * ddy;
@@ -177,7 +175,7 @@ void main() {
     //vec3 color = vec3(ay);
     //color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
     vec3 color = vec3(0.0);
-    if (id == 1) {
+    if (id > 0.5 && id < 1.5) {
         vec2 uv = texCoords(p, 2);
         vec2 uvx = texCoords(px, 2) - uv;
         vec2 uvy = texCoords(py, 2) - uv;
@@ -187,9 +185,8 @@ void main() {
           }
     else {
     }
-    gl_FragDepth = CalculateDepth(p);
-    float fog = 1.0f - exp(-0.1*d);
     float shadow = shadowMapping(p);
-    color.rgb = mix(color.rgb, Csky, fog) ;
+    gl_FragDepth = CalculateDepth(p);
+    color = color * (1.0-shadow);
     FragColour = vec4(color, 1.0);
 }

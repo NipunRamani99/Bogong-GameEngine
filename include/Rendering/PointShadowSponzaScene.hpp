@@ -226,6 +226,8 @@ namespace bogong {
             screen.ConfigureForRenderPass(cam->GetPos(), cam->GetDir(), cam->GetView(), cam->GetProjection(),
                 lightPos, nearPlane, farPlane, SCREEN_WIDTH, SCREEN_HEIGHT);
             screen.RenderPass(0.0f, depthCubeMap);
+            ConfigureShaderMatricesForRenderPass(pointShadowRenderPass);
+            nanosuitScene.RenderScene(pointShadowRenderPass);
         }
 
     private:
