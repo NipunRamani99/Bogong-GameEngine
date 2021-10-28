@@ -78,7 +78,7 @@ namespace bogong {
         float time = 0.0f;
         unsigned int depthCubeMap = 0;
         float phase = 0.0f;
-        float amplitude = 1.0f;
+        float amplitude = 4.0f;
 
     public:
         PointShadowSponzaScene()

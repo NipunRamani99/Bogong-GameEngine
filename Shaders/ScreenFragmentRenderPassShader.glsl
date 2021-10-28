@@ -25,18 +25,40 @@ uniform float nearVal;
 vec2 pos = vec2(0.0);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
 uniform float thetaD = 45.0f;
+// array of offset direction for sampling
+vec3 gridSamplingDisk[20] = vec3[]
+(
+    vec3(1, 1, 1), vec3(1, -1, 1), vec3(-1, -1, 1), vec3(-1, 1, 1),
+    vec3(1, 1, -1), vec3(1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+    vec3(1, 1, 0), vec3(1, -1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
+    vec3(1, 0, 1), vec3(-1, 0, 1), vec3(1, 0, -1), vec3(-1, 0, -1),
+    vec3(0, 1, 1), vec3(0, -1, 1), vec3(0, -1, -1), vec3(0, 1, -1)
+    );
 
-
-float shadowMapping(in vec3 fragPos) {
-    float currentDepth =  length(fragPos - lightPos);
-    vec3 lightDir = fragPos - lightPos;
-    float closestDepth = texture(depth_cube_map, lightDir).r;
-    closestDepth *= farVal;
-    float bias = 0.005;
-    float shadow = currentDepth - bias > closestDepth ? 0.0 : 1.0;
-    return 1.0 - shadow;
+float shadowCalculation(in vec3 fragPos) {
+    vec3 fragToLight = fragPos - lightPos;
+    //float closestDepth = texture(depth_cube_map, fragToLight).r;
+    //closestDepth *= far_plane;
+    float currentDepth = length(fragToLight);
+    //float bias = 0.05;
+    //float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    float shadow = 0.0;
+    float bias = 0.15;
+    int samples = 20;
+    float viewDistance = length(cam_pos - fragPos) * 2.0f;
+    float diskRadius = (1.0 + (viewDistance / farVal)) / 100.0;
+    float closestDepth = texture(depth_cube_map, fragToLight).r;
+    if (closestDepth > 0.99) return 0.0f;
+    for (int i = 0; i < samples; ++i)
+    {
+        float closestDepth = texture(depth_cube_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
+        closestDepth *= farVal;   // undo mapping [0;1]
+        if (currentDepth - bias > closestDepth)
+            shadow += 1.0;
+    }
+    shadow /= float(samples);
+    return shadow;
 }
-
 float sdPlane(vec3 p, vec4 n)
 {
     // n must be normalized
@@ -128,13 +150,30 @@ float checkersTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
     // xor pattern
     return 0.5 - 0.5*i.x*i.y;
 }
+
+const float N = 20.0; // grid ratio
+float gridTextureGradBox(in vec2 p, in vec2 ddx, in vec2 ddy)
+{
+    // filter kernel
+    vec2 w = max(abs(ddx), abs(ddy)) + 0.01;
+
+    // analytic (box) filtering
+    vec2 a = p + 0.5*w;
+    vec2 b = p - 0.5*w;
+    vec2 i = (floor(a) + min(fract(a)*N, 1.0) -
+        floor(b) - min(fract(b)*N, 1.0)) / (N*w);
+    //pattern
+    return (1.0 - i.x)*(1.0 - i.y);
+}
+
+
 float CalculateDepth(vec3 p) {
     vec4 clip_space = projection * view * model * vec4(p, 1.0f);
     float clip_space_depth = clip_space.z / clip_space.w;
-   // float far = gl_DepthRange.far;
-   // float near = gl_DepthRange.near;
-//    float depth = (((far - near)*(clip_space_depth))+ near + far)/2.0f;
-    return clip_space_depth;
+    float far = gl_DepthRange.far;
+    float near = gl_DepthRange.near;
+    float depth = (((far - near)*(clip_space_depth))+ near + far)/2.0f;
+    return depth;
 }
 float iPlane(in vec3 ro, in vec3 rd) {
     return -ro.y / rd.y;
@@ -147,6 +186,11 @@ float intersect(in vec3 ro, in vec3 rd, out float resT) {
         t = 1.0;
         resT = tpla;
     }
+    else {
+        resT = 100.0;
+        t = 2.0;
+    }
+    
     return t;
 }
 void main() {
@@ -161,7 +205,7 @@ void main() {
     calcRayForPixel(fragCoord + vec2(0.0, 0.0), ro, rd);
     calcRayForPixel(fragCoord + vec2(1.0, 0.0), ddx_ro, ddx_rd);
     calcRayForPixel(fragCoord + vec2(0.0, 1.0), ddy_ro, ddy_rd);
-
+    vec3 newRd = rd;
     float d = 0, ddx = 0.0, ddy = 0.0;
     intersect(ddx_ro, ddx_rd, ddx);
     intersect(ddy_ro, ddy_rd, ddy);
@@ -174,19 +218,29 @@ void main() {
     //vec3 color = vec3(0.2196, 0.5922, 0.9686) - 0.7*rd.y;
     //vec3 color = vec3(ay);
     //color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
-    vec3 color = vec3(0.0);
+    vec3 color = vec3(0.90);
+
     if (id > 0.5 && id < 1.5) {
         vec2 uv = texCoords(p, 2);
         vec2 uvx = texCoords(px, 2) - uv;
         vec2 uvy = texCoords(py, 2) - uv;
-        color = mix(vec3(0.4), vec3(0.70f), checkersTextureGradBox(uv, uvx, uvy));
+        color = vec3(gridTextureGradBox(uv, uvx, uvy));
        // color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
                //color *= dif;
-          }
-    else {
+        gl_FragDepth = CalculateDepth(p);
     }
-    float shadow = shadowMapping(p);
-    gl_FragDepth = CalculateDepth(p);
+    else {
+        color = vec3(0.9);
+        gl_FragDepth = CalculateDepth(p);
+    }
+    float shadow = shadowCalculation(p);
+   
     color = color * (1.0-shadow);
+    float fog = 1.0f - exp(-0.1*d);
+    if (newRd.y > 0.0) color = Csky;
+  //  else
+   /// color.rgb = mix(color.rgb, Csky, newRd.g);
+    // gamma correction	
+    color = pow(color, vec3(0.4545));
     FragColour = vec4(color, 1.0);
 }
