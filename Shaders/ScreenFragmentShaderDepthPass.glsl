@@ -21,52 +21,6 @@ uniform float farVal;
 vec2 pos = vec2(0.0);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
 uniform float thetaD = 45.0f;
-float sdPlane(vec3 p, vec4 n)
-{
-	// n must be normalized
-	return dot(p, n.xyz) + n.w;
-}
-float GetDist(vec3 p, out int id)
-{
-	vec4 c = vec4(0.0, 1.90, 6.0, 1.0);
-	float circ = length(p - c.xyz) - c.w;
-	float plane = sdPlane(p,vec4(0,1.0f,0.0,0.0f));
-	float plane2 = sdPlane(p, vec4(-1, 0, 0, 7));
-	float plane3 = sdPlane(p, vec4(0, 0, -1, 15));
-	float minval = plane;
-
-	if (minval <= SURFACE_DIST)
-	{
-		if (minval == plane) id = 2;
-	}
-	return minval;
-}
-float RayMarch(vec3 ro, vec3 rd, out int id) {
-	float d = 0.0;
-	vec3 p = ro;
-	for (int i = 0; i < MAX_STEPS; i++)
-	{
-		p = ro + rd * d;
-		float dS = GetDist(p, id);
-		d += dS;
-		if (dS < SURFACE_DIST || d > MAX_DISTANCE) break;
-	}
-	return d;
-}
-vec3 GetNormal(vec3 p) {
-	vec3 norm = vec3(0);
-	vec2 e = vec2(0.01, 0.0);
-	int id = 0;
-	float d = GetDist(p, id);
-	norm = vec3(d) - vec3(GetDist(p - e.xyy, id), GetDist(p - e.yxy, id), GetDist(p - e.yyx, id));
-	return normalize(norm);
-}
-void calcCamera(out vec3 ro, out vec3 ta)
-{
-	float an = sin(0.1*iTime);
-	ro = vec3(6.0*cos(an), 1., 6.0 + 5.0*sin(an));
-	ta = vec3(0.0, 1.0, 6.0);
-}
 void calcRayForPixel(in vec2 pix, out vec3 Ro, out vec3 Rd)
 {
 	vec2 p = pix;
@@ -148,10 +102,6 @@ void main() {
     float tx = 1.0;
     float ty = 1.0;
     float id = intersect(ro, rd, t);
-    //intersect(ddx_ro, ddx_rd, tx);
-    //intersect(ddy_ro, ddy_rd, ty);
     vec3 p = ro + rd * t;
-   // vec3 px = ddx_ro + ddx_rd * tx;
-  //  vec3 py = ddy_ro + ddy_rd * ty;  
     gl_FragDepth = CalculateDepth(p);
  }
