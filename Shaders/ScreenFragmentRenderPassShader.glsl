@@ -23,7 +23,7 @@ uniform float screen_height;
 uniform float farVal;
 uniform float nearVal;
 vec2 pos = vec2(0.0);
-const vec3 Csky = vec3(0.75, 0.75, 0.75);
+const vec3 Csky = vec3(0.0, 0.75, 0.75);
 uniform float thetaD = 45.0f;
 // array of offset direction for sampling
 vec3 gridSamplingDisk[20] = vec3[]
@@ -48,7 +48,7 @@ float shadowCalculation(in vec3 fragPos) {
     float viewDistance = length(cam_pos - fragPos) * 2.0f;
     float diskRadius = (1.0 + (viewDistance / farVal)) / 100.0;
     float closestDepth = texture(depth_cube_map, fragToLight).r;
-    if (closestDepth > 0.99) return 0.0f;
+    if (closestDepth > 0.999) return 0.0f;
     for (int i = 0; i < samples; ++i)
     {
         float closestDepth = texture(depth_cube_map, fragToLight + gridSamplingDisk[i] * diskRadius).r;
@@ -176,10 +176,10 @@ float CalculateDepth(vec3 p) {
     return depth;
 }
 float iPlane(in vec3 ro, in vec3 rd) {
-    return -ro.y / rd.y;
+    return (-ro.y) / (rd.y+0.0001);
 }
 float intersect(in vec3 ro, in vec3 rd, out float resT) {
-    resT = 1000.0;
+    resT = 100.0;
     float t = -1.0;
     float tpla = iPlane(ro, rd);
     if (tpla > 0.0 && tpla < resT) {
@@ -187,7 +187,7 @@ float intersect(in vec3 ro, in vec3 rd, out float resT) {
         resT = tpla;
     }
     else {
-        resT = 100.0;
+        resT = 40.0;
         t = 2.0;
     }
     
@@ -228,18 +228,19 @@ void main() {
        // color = vec3(1.0)*checkersTexture(uv); // unfiltered pattern.
                //color *= dif;
         gl_FragDepth = CalculateDepth(p);
+        float shadow = shadowCalculation(p);
+
+        color = color * (1.0 - shadow);
     }
     else {
         color = vec3(0.9);
         gl_FragDepth = CalculateDepth(p);
     }
-    float shadow = shadowCalculation(p);
-   
-    color = color * (1.0-shadow);
-    float fog = 1.0f - exp(-0.1*d);
-    if (newRd.y > 0.0) color = Csky;
+
+  //  float fog = 1.0f - exp(-0.1*d);
+    /*if (newRd.y > 0.0) color = Csky;*/
   //  else
-   /// color.rgb = mix(color.rgb, Csky, newRd.g);
+     color.rgb = mix(color.rgb, Csky, newRd.y);
     // gamma correction	
     color = pow(color, vec3(0.4545));
     FragColour = vec4(color, 1.0);
