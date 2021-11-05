@@ -186,7 +186,34 @@
     <ClInclude Include="include\Rendering\Nodes\DirectionalLightNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\SceneManager.hpp">
+    <ClInclude Include="include\LearnOpenGL\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LearnOpenGL\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LearnOpenGL\Shaders.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\SponzaScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\RenderConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\NanosuitScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\MyDocument.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -269,6 +296,9 @@
     <ClCompile Include="include\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Imgui\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="include\LightFragmentShader.glsl">
@@ -288,5 +318,53 @@
     <None Include="Shaders\FrameFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightVertexShader.glsl" />
+    <None Include="Shaders\SkyboxFragmentShader.glsl" />
+    <None Include="Shaders\SkyboxVertexShader.glsl" />
+    <None Include="Shaders\EnvironmentalFragmentShader.glsl" />
+    <None Include="Shaders\EnvironmentalVertexShader.glsl" />
+    <None Include="Shaders\SimpleGeometryShader.glsl" />
+    <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\SimpleFragmentShader.glsl" />
+    <None Include=".editorconfig" />
+    <None Include="Shaders\learnopengl\model_explode.gs" />
+    <None Include="Shaders\learnopengl\model_loading.fs" />
+    <None Include="Shaders\learnopengl\model_loading.vs" />
+    <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\model_loading2.fs" />
+    <None Include="Shaders\learnopengl\model_normal_vis.gs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.vs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.fs" />
+    <None Include="Shaders\learnopengl\instancing_shader.vs" />
+    <None Include="Shaders\learnopengl\instancing_shader.fs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.fs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.vs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.fs" />
+    <None Include="Shaders\learnopengl\aa_post.vs" />
+    <None Include="Shaders\learnopengl\aa_post.fs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.vs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.gs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.fs" />
+    <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
+    <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
+    <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
   </ItemGroup>
 </Project>

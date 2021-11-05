@@ -76,8 +76,8 @@
     <IncludePath>$(SolutionDir)\Extra\Assimp\include\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\Extra\Assimp\include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Extra\Assimp\x64-Debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\Extra\GLFW\include\;$(SolutionDir)\Extra\Assimp\include\;$(SolutionDir)\Extra\GLEW\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Extra\GLFW\x64-Debug\lib;$(SolutionDir)Extra\Assimp\x64-Debug\lib;$(SolutionDir)Extra\GLEW\x64-Debug\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)\Extra\Assimp\include\;$(IncludePath)</IncludePath>
@@ -101,7 +101,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>assimp-vc142-mtd.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;Shlwapi.lib;glfw3.lib;glew32d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -133,12 +133,14 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Laptop.000\Source\Repos\Bogong-GameEngine\Extra\Assimp\x64-Release\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\Entity.hpp" />
     <ClInclude Include="include\ErrorLog.h" />
@@ -155,7 +157,13 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
+    <ClInclude Include="include\Rendering\MyDocument.h" />
+    <ClInclude Include="include\Rendering\NanosuitScene.h" />
+    <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
+    <ClInclude Include="include\LearnOpenGL\Mesh.h" />
+    <ClInclude Include="include\LearnOpenGL\Model.h" />
+    <ClInclude Include="include\LearnOpenGL\Shaders.hpp" />
     <ClInclude Include="include\Rendering\MeshBank.hpp" />
     <ClInclude Include="include\Rendering\Nodes\CameraNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\DirectionalLightNode.hpp" />
@@ -170,7 +178,8 @@
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
-    <ClInclude Include="include\Rendering\SceneManager.hpp" />
+    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp" />
+    <ClInclude Include="include\Rendering\SponzaScene.h" />
     <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
     <ClInclude Include="include\Surface.hpp" />
@@ -196,6 +205,7 @@
     <ClInclude Include="include\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="include\ImGuiPane.cpp" />
     <ClCompile Include="include\Models\TextureFactory.cpp" />
     <ClCompile Include="include\Rendering\Mesh.cpp" />
@@ -224,21 +234,69 @@
     <ClCompile Include="Source\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="include\LightFragmentShader.glsl" />
     <None Include="Shaders\FrameFragmentShader.glsl" />
     <None Include="Shaders\FrameVertexShader.glsl" />
     <None Include="Shaders\GouradFragmentShader.glsl" />
     <None Include="Shaders\GouradVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\aa_post.fs" />
+    <None Include="Shaders\learnopengl\aa_post.vs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.fs" />
+    <None Include="Shaders\learnopengl\advanced_lighting.vs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.fs" />
+    <None Include="Shaders\learnopengl\anti_aliasing.vs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.fs" />
+    <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\instancing_shader.fs" />
+    <None Include="Shaders\learnopengl\instancing_shader.vs" />
+    <None Include="Shaders\learnopengl\model_normal_vis.gs" />
+    <None Include="Shaders\learnopengl\model_loading2.fs" />
+    <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.gs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth_debug.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.fs" />
+    <None Include="Shaders\learnopengl\pointshadow\point_shadow_pass_TBN.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\debug_quad.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\shadow_pass.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_depth_shader.vs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\shadowmapping\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.fs" />
+    <None Include="Shaders\learnopengl\simple_model_loading.vs" />
+    <None Include="Shaders\learnopengl\simple_shader.fs" />
+    <None Include="Shaders\learnopengl\simple_shader.vs" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
+    <None Include="Shaders\learnopengl\model_loading.fs" />
+    <None Include="Shaders\learnopengl\model_explode.gs" />
+    <None Include="Shaders\learnopengl\model_loading.vs" />
     <None Include="Shaders\MultipleLightFragmentShader.glsl" />
     <None Include="Shaders\MultipleLightVertexShader.glsl" />
     <None Include="Shaders\PhongFragmentShader.glsl" />
     <None Include="Shaders\PhongVertexShader.glsl" />
     <None Include="Shaders\ColourFragmentShader.glsl" />
     <None Include="Shaders\ColourVertexShader.glsl" />
+    <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
+    <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenFragmentShader.glsl" />
+    <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenVertexShader.glsl" />
+    <None Include="Shaders\SimpleFragmentShader.glsl" />
+    <None Include="Shaders\SimpleGeometryShader.glsl" />
+    <None Include="Shaders\SimpleVertexShader.glsl" />
+    <None Include="Shaders\SkyboxFragmentShader.glsl" />
+    <None Include="Shaders\SkyboxVertexShader.glsl" />
+    <None Include="Shaders\EnvironmentalFragmentShader.glsl" />
+    <None Include="Shaders\EnvironmentalVertexShader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

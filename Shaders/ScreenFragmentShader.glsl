@@ -1,8 +1,11 @@
+#version 330 core
 #define MAX_STEPS 100
-#define MAX_DISTANCE 35.0
+#define MAX_DISTANCE 35.
 #define SURFACE_DIST 0.01
 #define THRESHOLD 0.01
+in VS_OUT{
 in vec2 pos;
+} fc_in;
 out vec4 FragColour;
 uniform float iTime = 50.0f;
 vec2 iResolution = vec2(1280, 640);
@@ -11,9 +14,12 @@ uniform vec3 cam_pos;
 uniform mat4 view;
 uniform mat4 model;
 uniform mat4 proj;
+uniform float screen_width;
+uniform float screen_height;
+uniform float nearVal;
+uniform float farVal;
 //const vec3 Csky = vec3(0.902, 0.902, 0.980);
 const vec3 Csky = vec3(0.75, 0.75, 0.75);
-uniform float nearVal = 1.0f;
 uniform float thetaD = 45.0f;
 float sdPlane(vec3 p, vec4 n)
 {
@@ -24,17 +30,12 @@ float GetDist(vec3 p, out int id)
 {
 
 
-	vec4 c = vec4(0.0, 1.90, 6.0, 1.0);
-	float circ = length(p - c.xyz) - c.w;
 	float plane = sdPlane(p,vec4(0,1.0f,0.0,0.0f));
-	float plane2 = sdPlane(p, vec4(-1, 0, 0, 7));
-	float plane3 = sdPlane(p, vec4(0, 0, -1, 15));
 	float minval = plane;
 
 	if (minval <= SURFACE_DIST)
 	{
 		if (minval == plane) id = 2;
-
 
 	}
 	return minval;
@@ -140,8 +141,8 @@ float CalculateDepth(vec3 p) {
 }
 void main() {
 	vec2 newpos= vec2(0.0f,0.0f);
-	newpos.x    = pos.x;
-	newpos.y	= pos.y;
+	newpos.x    = fc_in.pos.x;
+	newpos.y	= fc_in.pos.y;
 	vec3 ro, rd;
 	vec3 ddx_ro, ddx_rd, ddy_ro, ddy_rd;
 	vec2 fragCoord = (newpos + vec2(1.0f,1.0f))*vec2(640.0f, 320.0f);
@@ -160,8 +161,10 @@ void main() {
 	vec3 py = ddy_ro + ddy_rd * ddy;
 	float dif = Light(p);
 
-	
-	vec3 color = vec3(0.0f);
+	//vec3 color = vec3(0.2196, 0.5922, 0.9686) - 0.7*rd.y;
+	//vec3 color = vec3(ay);
+	//color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
+	vec3 color = vec3(0.0);
 	if (id == 2) {
 		vec2 uv = texCoords(p, id);
 		vec2 uvx = texCoords(px, id) - uv;
@@ -172,9 +175,9 @@ void main() {
 		//color *= dif;
 	}
 	else {
-		color = vec3(0.53f, 0.81f, 0.920f);
+		
 	}
-	gl_FragDepth = CalculateDepth(p);
+	//gl_FragDepth = CalculateDepth(p);
 	float fog = 1.0f - exp(-0.1*d);
 	color.rgb = mix(color.rgb, Csky, fog);
 	FragColour = vec4(color, 1.0);

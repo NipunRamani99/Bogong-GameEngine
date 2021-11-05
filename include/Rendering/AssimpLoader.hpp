@@ -26,7 +26,8 @@ namespace bogong {
 			BOOL b = PathFileExistsA(path.c_str());
 			return b == FALSE ? false : true;
 		}
-		static std::shared_ptr<node::ShapeNode> ProcessNode(const aiScene * scene,aiNode * node,std::string  path) {
+		static std::shared_ptr<node::ShapeNode> ProcessNode(const aiScene * scene
+            , aiNode * node, std::string  path) {
 			//create mesh
 			auto meshes = node->mMeshes;
 			int n = node->mNumMeshes;
@@ -50,7 +51,7 @@ namespace bogong {
 
 					if (isPathValid(name)) {
 						
-						mtl->diffuse = TextureManager::make_texture			(name);
+						mtl->diffuse = TextureManager::make_texture(name);
 
 					}
 					

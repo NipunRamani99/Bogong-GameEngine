@@ -12,7 +12,9 @@ namespace bogong {
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::StyleColorsDark();
 			//ImGui::StyleColorsClassic();
-			const char* glsl_version = "#version 330";
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+			const char* glsl_version = "#version 410";
 			// Setup Platform/Rendeer bindings
 			ImGui_ImplGlfw_InitForOpenGL(&window, true);
 			ImGui_ImplOpenGL3_Init(glsl_version);
@@ -29,7 +31,14 @@ namespace bogong {
 		}
 		void EndImguiFrame()
 		{
-
+            ImGuiIO& io = ImGui::GetIO();
+            if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            {
+                GLFWwindow* backup_current_context = glfwGetCurrentContext();
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+                glfwMakeContextCurrent(backup_current_context);
+            }
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		}
@@ -40,6 +49,8 @@ bogong::Engine::Engine()
 	int gpuDevice = 0;
 	int device_count = 0;
 	Init::InitGLFW();
+    glfwWindowHint(GLFW_SAMPLES, 4);
+
 	window = Init::CreateWindowGL(WIDTH, HEIGHT, "Mic Check.");
 	Init::SetGLFWWindow(*window, 4, 3, 3, GLFW_OPENGL_CORE_PROFILE, true);
 	glewExperimental = true;
@@ -51,7 +62,6 @@ bogong::Engine::Engine()
 	kbd->SetCallback(window);
 	mouse->SetCallback(window);
 	Init::InitImgui(*window);
-	pane = std::make_shared<ImGuiPane>("Test Pane", glm::vec2(0, 0), glm::vec2(300, 300));
 }
 
 void bogong::Engine::Start()
@@ -74,15 +84,12 @@ void bogong::Engine::Start()
 	glEnable(GL_BLEND);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
-	
 }
 
 void bogong::Engine::Update(float deltime)
 {
-
 	game->Update(kbd, mouse, static_cast<float>(deltime),window);
 	assert(!error());
-	pane->UpdatePane();
 }
 
 void bogong::Engine::DrawCalls(float deltatime) const
@@ -94,7 +101,6 @@ void bogong::Engine::RenderEverything(float deltatime)
 {
 
 	DrawCalls(deltatime);
-	pane->Render();
 	Init::Render();
 	Init::EndImguiFrame();
 	glfwSwapBuffers(window);
@@ -109,9 +115,10 @@ void bogong::Engine::Loop()
 {
 	prevTime = currentTime;
 	currentTime = (float)glfwGetTime();
+    glfwPollEvents();
 	Init::StartImguiFrame();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glfwPollEvents();
+
 	Update(currentTime - prevTime);
 	//Timer::LogTimeElapsed("Update");
 	RenderEverything(currentTime-prevTime);

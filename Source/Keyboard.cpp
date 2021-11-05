@@ -27,8 +27,6 @@ namespace bogong {
 		}
 	}
 
-
-
 	void Keyboard::SetCallback(GLFWwindow* p_Window)
 	{
 		glfwSetKeyCallback(p_Window, Keyboard::Callback);
@@ -46,8 +44,7 @@ namespace bogong {
 
 		if (p_Key >= 65 && p_Key <= 90)
 		{
-			p_Key = p_Key - 65;
-			
+			p_Key = p_Key - 65;	
 			Keyboard::KeyMap.find(p_Key)->second = stat;
 		}
 		if (p_Key == GLFW_KEY_LEFT_SHIFT) {
@@ -56,6 +53,10 @@ namespace bogong {
 		}
 		if (p_Key == GLFW_KEY_LEFT_CONTROL) {
 			p_Key = KEY::KEY_CTRL;
+			Keyboard::KeyMap.find(p_Key)->second = stat;
+		}
+		if (p_Key == GLFW_KEY_SPACE) {
+			p_Key = KEY::KEY_SPACE;
 			Keyboard::KeyMap.find(p_Key)->second = stat;
 		}
 	}

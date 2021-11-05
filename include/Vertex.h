@@ -17,7 +17,8 @@ struct Vertex
 	float v  = 0.0f;
 	char padding[16];
 	Vertex<T>(){}
-	Vertex<T>(glm::vec3 pos, glm::vec4 color, glm::vec3 normals=glm::vec3(0,0,0), glm::vec2 uv = glm::vec2(0,0))
+	Vertex<T>(glm::vec3 pos, glm::vec4 color, glm::vec3 normals = glm::vec3(0, 0, 0)
+        , glm::vec2 uv = glm::vec2(0, 0))
 	{
 		x  = pos.x;
 		y  = pos.y;
@@ -49,7 +50,8 @@ Vertex<T> CreateVertex(glm::vec3 p_Pos, glm::vec4 p_Color, glm::vec2 p_UV)
 	return vertex;
 };
 template<typename T>
-Vertex<T> CreateVertex(glm::vec3 p_Pos, glm::vec4 p_Color, glm::vec2 p_UV, glm::vec3 p_Norm)
+Vertex<T> CreateVertex(glm::vec3 p_Pos, glm::vec4 p_Color, glm::vec2 p_UV, 
+    glm::vec3 p_Norm)
 {
 	Vertex<T> vertex;
 	vertex.x  = p_Pos.x;

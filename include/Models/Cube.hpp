@@ -201,15 +201,15 @@ namespace bogong {
 			std::string label1 = "Input Scale##"+id;
 			std::string label2 = "Input Pos##"+id;
 			std::string label3 = "Input Rotate##"+id;
-			if (ImGui::InputFloat3(label1.c_str(), (float*)&scale, 4))
+			if (ImGui::InputFloat3(label1.c_str(), (float*)&scale))
 			{
 				Scale(scale);
 			}
-			if (ImGui::InputFloat3(label2.c_str(), (float*)&pos, 4))
+			if (ImGui::InputFloat3(label2.c_str(), (float*)&pos))
 			{
 				Translate(pos);
 			}
-			if (ImGui::InputFloat3(label3.c_str(), (float*)&rotate, 4))
+			if (ImGui::InputFloat3(label3.c_str(), (float*)&rotate))
 			{
 				Rotate(rotate);
 			}

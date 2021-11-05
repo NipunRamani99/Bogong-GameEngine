@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\include",
+    "\\include\\Rendering",
+    "\\Source"
   ],
-  "SelectedNode": "\\Extra",
   "PreviewInSolutionExplorer": false
 }
