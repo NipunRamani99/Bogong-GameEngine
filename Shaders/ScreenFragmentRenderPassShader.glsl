@@ -218,7 +218,7 @@ void main() {
     //vec3 color = vec3(0.2196, 0.5922, 0.9686) - 0.7*rd.y;
     //vec3 color = vec3(ay);
     //color = mix(color, vec3(0.7137, 0.6863, 0.6863), exp(-15.0*rd.y));
-    vec3 color = vec3(0.90);
+    vec3 color = vec3(0.0);
 
     if (id > 0.5 && id < 1.5) {
         vec2 uv = texCoords(p, 2);
@@ -233,14 +233,17 @@ void main() {
         color = color * (1.0 - shadow);
     }
     else {
-        color = vec3(0.9);
+        color = vec3(0.4, 0.75, 1.0) - 0.7 * rd.y;        
+        color = mix(color, vec3(0.9), exp(-10.0*rd.y));
         gl_FragDepth = CalculateDepth(p);
+
     }
 
   //  float fog = 1.0f - exp(-0.1*d);
     /*if (newRd.y > 0.0) color = Csky;*/
   //  else
-     color.rgb = mix(color.rgb, Csky, newRd.y);
+    //float yshit = clamp(newRd.y, 0., 1.0)*2.0;
+    // color.rgb = mix(color.rgb, Csky, yshit);
     // gamma correction	
     color = pow(color, vec3(0.4545));
     FragColour = vec4(color, 1.0);

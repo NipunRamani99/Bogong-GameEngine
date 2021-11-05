@@ -67,10 +67,6 @@ void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::s
 	float xoffset = currMouseX - prevMouseX;
 	float yoffset = prevMouseY - currMouseY;
 
-	std::string pos = "Pos X: " + std::to_string(cameraPos.x) + " Y: " + std::to_string(cameraPos.y)+ " Z: " + std::to_string(cameraPos.z);
-
-	std::string frontpos = "Front X: " + std::to_string(cameraFront.x) + " Y: " + std::to_string(cameraFront.y) + " Z: " + std::to_string(cameraFront.z);
-
 	xoffset = 0.05*xoffset;
 	yoffset = 0.05*yoffset;
 	yaw += xoffset;

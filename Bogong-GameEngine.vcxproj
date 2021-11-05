@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\Engine.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Rendering\AssimpLoader.hpp" />
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
+    <ClInclude Include="include\Rendering\MyDocument.h" />
     <ClInclude Include="include\Rendering\NanosuitScene.h" />
     <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
@@ -203,6 +205,7 @@
     <ClInclude Include="include\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="include\ImGuiPane.cpp" />
     <ClCompile Include="include\Models\TextureFactory.cpp" />
     <ClCompile Include="include\Rendering\Mesh.cpp" />

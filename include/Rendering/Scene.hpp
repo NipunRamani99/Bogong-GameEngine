@@ -48,7 +48,6 @@ namespace bogong {
 					}
 					else {
 						glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-						
 						ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 					}
 				}

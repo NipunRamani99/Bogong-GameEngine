@@ -32,6 +32,9 @@ namespace bogong {
         unsigned int tex = 0;
         unsigned int depthMapTex = 0;
         unsigned int depthMapFBO = 0;
+        unsigned int outputFBO = 0;
+        unsigned int outputTex = 0;
+        unsigned int outputRBO = 0;
         float blinnPower = 32.0f;
         float specPower = 8.0f;
 
@@ -102,6 +105,7 @@ namespace bogong {
                 POINT_SHADOW_PASS_TBN_FRAGMENT_SHADER.c_str())
         {
             CHECK_GL_ERROR(SetupDepthCubeMap());
+            SetupOutputFBO();
             SetupPlane();
             LoadCube();
             SetupScreenQuad();
@@ -114,6 +118,7 @@ namespace bogong {
         }
 
         void Update(float delta) {
+            ImGui::Begin("Update");
             time += delta;
             lightPos.x = phase + amplitude*sin(time);
             lightModel = glm::translate(glm::mat4(1.0f), lightPos);
@@ -135,7 +140,7 @@ namespace bogong {
             ImGui::InputFloat("Amplitude", &amplitude, 0.01);
 
             
-            if (ImGui::InputFloat3("Light Pos",(float*) &lightPos, 2)) {
+            if (ImGui::InputFloat3("Light Pos",(float*) &lightPos)) {
                 shadowTransforms.clear();
                 shadowTransforms.push_back(shadowProj *
                     glm::lookAt(lightPos, lightPos + glm::vec3(1.0, 0.0, 0.0), glm::vec3(0.0, -1.0, 0.0)));
@@ -156,6 +161,7 @@ namespace bogong {
                 shadowProj = glm::perspective(glm::radians(90.0f),
                     float(SHADOW_WIDTH) / float(SHADOW_HEIGHT), nearPlane, farPlane);
             }
+            ImGui::End();
         }
 
         void SetupShadowMatrices() {
@@ -195,13 +201,15 @@ namespace bogong {
         }
 
         void init_render(std::shared_ptr<node::NodeBase> node) {
+
+
         }
 
         void SetCamera(std::shared_ptr<FPCamera>  cam) {
             this->cam = cam;
         }
 
-        void Draw(std::shared_ptr<Scene> scene) {
+        int Draw(std::shared_ptr<Scene> scene) {
             glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
             glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
             glClear(GL_DEPTH_BUFFER_BIT);
@@ -216,8 +224,8 @@ namespace bogong {
             //pointShadowDepthPass.setFloat("far_plane", farPlane);
             //pointShadowDepthPass.setVec3("light_pos", lightPos);
             //sponzaScene.RenderScene(pointShadowDepthPass);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       /*      ConfigureShaderMatricesForRenderPass(pointShadowDepthPassTBN);
             sponzaScene.RenderScene(pointShadowDepthPassTBN);
@@ -228,6 +236,10 @@ namespace bogong {
             screen.RenderPass(0.0f, depthCubeMap);
             ConfigureShaderMatricesForRenderPass(pointShadowRenderPass);
             nanosuitScene.RenderScene(pointShadowRenderPass);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            return outputTex;
         }
 
     private:
@@ -393,7 +405,26 @@ namespace bogong {
             quadVao.Unbind();
         }
 
-        
+        void SetupOutputFBO() {
+            CHECK_GL_ERROR(glGenFramebuffers(1, &outputFBO));
+            CHECK_GL_ERROR(glGenTextures(1, &outputTex));
+            CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, outputTex));
+            CHECK_GL_ERROR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
+            CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+            CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
+            CHECK_GL_ERROR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTex, 0));
+         /*   glGenRenderbuffers(1, &outputRBO);
+            glBindRenderbuffer(GL_RENDERBUFFER, outputRBO);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, outputRBO);
+         */   
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+                std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
+
         void SetupDepthCubeMap() {
             CHECK_GL_ERROR(glGenFramebuffers(1, &depthMapFBO));
             CHECK_GL_ERROR(glGenTextures(1, &depthCubeMap));

@@ -12,7 +12,9 @@ namespace bogong {
 			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::StyleColorsDark();
 			//ImGui::StyleColorsClassic();
-			const char* glsl_version = "#version 330";
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+			const char* glsl_version = "#version 410";
 			// Setup Platform/Rendeer bindings
 			ImGui_ImplGlfw_InitForOpenGL(&window, true);
 			ImGui_ImplOpenGL3_Init(glsl_version);
@@ -29,7 +31,14 @@ namespace bogong {
 		}
 		void EndImguiFrame()
 		{
-
+            ImGuiIO& io = ImGui::GetIO();
+            if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+            {
+                GLFWwindow* backup_current_context = glfwGetCurrentContext();
+                ImGui::UpdatePlatformWindows();
+                ImGui::RenderPlatformWindowsDefault();
+                glfwMakeContextCurrent(backup_current_context);
+            }
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		}
@@ -106,9 +115,10 @@ void bogong::Engine::Loop()
 {
 	prevTime = currentTime;
 	currentTime = (float)glfwGetTime();
+    glfwPollEvents();
 	Init::StartImguiFrame();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glfwPollEvents();
+
 	Update(currentTime - prevTime);
 	//Timer::LogTimeElapsed("Update");
 	RenderEverything(currentTime-prevTime);

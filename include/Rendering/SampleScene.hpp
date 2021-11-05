@@ -38,13 +38,41 @@ namespace bogong {
 		}
 		
         void Draw() {
-			manager->init_render(root);
- 			manager->Draw(scene);
+            manager->init_render(root);
+            unsigned int out = manager->Draw(scene);
+            ImGui::Begin("Output"); 
+            {
+                ImVec2 uv1 = ImVec2(0, 1);
+                ImVec2 uv2 = ImVec2(1, 0);
+                ImTextureID id = (ImTextureID)out;
+                ImVec2 outputWindowSize = ImGui::GetWindowSize();
+                ImGui::Image(id, outputWindowSize, uv1, uv2);
+            }
+            ImGui::End();
 			manager->clear();
 		}
 
 		void Update(std::shared_ptr<Keyboard> kbd, std::shared_ptr<Mouse> mouse, 
 			float delta, GLFWwindow * window){
+            bool mainWindow = true;
+
+            static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+            ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+            const ImGuiViewport* viewport = ImGui::GetMainViewport();
+            ImGui::SetNextWindowPos(viewport->WorkPos);
+            ImGui::SetNextWindowSize(viewport->WorkSize);
+            ImGui::SetNextWindowViewport(viewport->ID);
+            window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+            window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+            ImGui::Begin("Bogong Main Window", &mainWindow, window_flags);
+            ImGui::End();
+            {
+                ImGui::Begin("Placeholder 1");
+                ImGui::End();
+                ImGui::Begin("Placeholder 2");
+                ImGui::End();
+            }
             toggle(kbd, mouse, delta, window);
 			angle += delta * alpha*2.0f;
 			manager->Update(delta);
