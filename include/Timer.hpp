@@ -1,6 +1,8 @@
 #pragma once
 #include <chrono>
 #include <vector>
+#include <utility>
+#include <string>
 namespace bogong {
 	class Timer {
 		static std::chrono::steady_clock::time_point tp;

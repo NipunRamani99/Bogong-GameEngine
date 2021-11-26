@@ -66,9 +66,24 @@ namespace bogong {
             window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
             window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
             ImGui::Begin("Bogong Main Window", &mainWindow, window_flags);
+            ImVec2 uv1 = ImVec2(0, 1);
+            ImVec2 uv2 = ImVec2(1, 0);
             ImGui::End();
             {
-                ImGui::Begin("Placeholder 1");
+                ImGui::Begin("Albedo Output");
+                ImVec2 outputWindowSize = ImGui::GetWindowSize();
+                ImTextureID gAlbedoSpec = (ImTextureID)manager->gAlbedoSpec;
+                ImGui::Image(gAlbedoSpec, outputWindowSize, uv1, uv2);
+                ImGui::End();
+                ImGui::Begin("Position Output");
+                outputWindowSize = ImGui::GetWindowSize();
+                ImTextureID gPos = (ImTextureID)manager->gPos;
+                ImGui::Image(gPos, outputWindowSize, uv1, uv2);
+                ImGui::End();
+                ImGui::Begin("Normal Output");
+                outputWindowSize = ImGui::GetWindowSize();
+                ImTextureID gNormal = (ImTextureID)manager->gNormal;
+                ImGui::Image(gNormal, outputWindowSize, uv1, uv2);
                 ImGui::End();
                 ImGui::Begin("Placeholder 2");
                 ImGui::End();

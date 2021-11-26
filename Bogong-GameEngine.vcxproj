@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{5BFF45D0-8941-4627-AAAC-32C7CBA52809}</ProjectGuid>
     <RootNamespace>BogongGameEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="include\Rendering\BackpackScene.hpp" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\Engine.h" />
@@ -248,6 +249,14 @@
     <None Include="Shaders\learnopengl\anti_aliasing.vs" />
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
     <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.vs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
     <None Include="Shaders\learnopengl\instancing_shader.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.vs" />
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />

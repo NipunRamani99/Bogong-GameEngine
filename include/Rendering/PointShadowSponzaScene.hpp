@@ -19,7 +19,7 @@
 #include "RenderConstants.h"
 #include "SponzaScene.h"
 #include "NanosuitScene.h"
-
+#include "BackpackScene.hpp"
 namespace bogong {
 
     class PointShadowSponzaScene {
@@ -27,7 +27,8 @@ namespace bogong {
     private:
         Screen screen;
       //  SponzaScene sponzaScene;
-        NanosuitScene nanosuitScene;
+      //  NanosuitScene nanosuitScene;
+        BackpackScene backpackSceneData;
 
         unsigned int tex = 0;
         unsigned int depthMapTex = 0;
@@ -35,6 +36,10 @@ namespace bogong {
         unsigned int outputFBO = 0;
         unsigned int outputTex = 0;
         unsigned int outputRBO = 0;
+
+
+
+
         float blinnPower = 32.0f;
         float specPower = 8.0f;
 
@@ -51,6 +56,7 @@ namespace bogong {
         std::shared_ptr<VertexBuffer> untexturedCubeVbo;
 
         std::shared_ptr<FPCamera> cam;
+
         learnopengl::Shader shader;
         learnopengl::Shader cubeShader;
         learnopengl::Shader debugScreenShader;
@@ -59,6 +65,11 @@ namespace bogong {
         learnopengl::Shader pointShadowRenderPass;
         learnopengl::Shader pointShadowDepthDebug;
         learnopengl::Shader pointShadowDepthPassTBN;
+        learnopengl::Shader gBufferPass;
+        learnopengl::Shader fboDebugPass;
+        learnopengl::Shader deferredLightBoxPass;
+        learnopengl::Shader deferredShadingPass;
+
 
         glm::vec3 lightPos = glm::vec3(3.50, 4.0, -2.0);
         glm::vec3 cubePos = glm::vec3(0.5, 0.50, 0.0);
@@ -82,8 +93,15 @@ namespace bogong {
         unsigned int depthCubeMap = 0;
         float phase = 0.0f;
         float amplitude = 4.0f;
-
+        const unsigned int NR_LIGHTS = 32;
+        std::vector<glm::vec3> lightPositions;
+        std::vector<glm::vec3> lightColors;
     public:
+        unsigned int gBuffer;
+        unsigned int gAlbedoSpec;
+        unsigned int gNormal;
+        unsigned int gPos;
+        unsigned int rboDepth = 0;
         PointShadowSponzaScene()
             :
             screen(),
@@ -95,14 +113,18 @@ namespace bogong {
                 DEBUG_QUAD_FRAGMENT_SHADER.c_str()),
             simpleShader(SIMPLE_VERTEX_SHADER.c_str(), SIMPLE_FRAGMENT_SHADER.c_str()),
             pointShadowDepthPass(POINT_SHADOW_DEPTH_VERTEX_SHADER.c_str(),
-                POINT_SHADOW_DEPTH_FRAGMENT_SHADER.c_str(), 
+                POINT_SHADOW_DEPTH_FRAGMENT_SHADER.c_str(),
                 POINT_SHADOW_DEPTH_GEOMETRY_SHADER.c_str()),
-            pointShadowRenderPass(POINT_SHADOW_PASS_VERTEX_SHADER.c_str(), 
+            pointShadowRenderPass(POINT_SHADOW_PASS_VERTEX_SHADER.c_str(),
                 POINT_SHADOW_PASS_FRAGMENT_SHADER.c_str()),
             pointShadowDepthDebug(POINT_SHADOW_DEPTH_DEBUG_VERTEX_SHADER.c_str(),
                 POINT_SHADOW_DEPTH_DEBUG_FRAGMENT_SHADER.c_str()),
             pointShadowDepthPassTBN(POINT_SHADOW_PASS_TBN_VERTEX_SHADER.c_str(),
-                POINT_SHADOW_PASS_TBN_FRAGMENT_SHADER.c_str())
+                POINT_SHADOW_PASS_TBN_FRAGMENT_SHADER.c_str()),
+            gBufferPass(G_BUFFER_VS.c_str(), G_BUFFER_FS.c_str()),
+            fboDebugPass(FBO_DEBUG_VS.c_str(), FBO_DEBUG_FS.c_str()),
+            deferredShadingPass(DEFERRED_SHADING_VS.c_str(), DEFERRED_SHADING_FS.c_str()),
+            deferredLightBoxPass(DEFERRED_LIGHT_BOX_VS.c_str(), DEFERRED_LIGHT_BOX_FS.c_str())
         {
             CHECK_GL_ERROR(SetupDepthCubeMap());
             SetupOutputFBO();
@@ -113,8 +135,28 @@ namespace bogong {
             SetupShadowMatrices();
             LoadLightCube();
             SetupCubeMap();
+            SetupGBuffer();
             lightModel = glm::translate(glm::mat4(1.0f), lightPos);
             lightModel = glm::scale(lightModel, glm::vec3(0.25, 0.25, 0.25));
+            
+            deferredShadingPass.use();
+            deferredShadingPass.setInt("gPosition", 0);
+            deferredShadingPass.setInt("gNormal", 1);
+            deferredShadingPass.setInt("gAlbedoSpec", 2);
+            srand(13);
+            for (unsigned int i = 0; i < NR_LIGHTS; i++)
+            {
+                // calculate slightly random offsets
+                float xPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
+                float yPos = ((rand() % 100) / 100.0) * 6.0 - 4.0;
+                float zPos = ((rand() % 100) / 100.0) * 6.0 - 3.0;
+                lightPositions.push_back(glm::vec3(xPos, yPos, zPos));
+                // also calculate random color
+                float rColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
+                float gColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
+                float bColor = ((rand() % 100) / 200.0f) + 0.5; // between 0.5 and 1.0
+                lightColors.push_back(glm::vec3(rColor, gColor, bColor));
+            }
         }
 
         void Update(float delta) {
@@ -210,32 +252,56 @@ namespace bogong {
         }
 
         int Draw(std::shared_ptr<Scene> scene) {
-            glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-            glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-            glClear(GL_DEPTH_BUFFER_BIT);
-            screen.ConfigureForDepthPass(lightPos, shadowDirections, 
-                shadowTransforms, nearPlane, farPlane, SHADOW_WIDTH, SHADOW_HEIGHT );
-            screen.DepthPass();
-            ConfigureShaderMatricesForDepthPass();
-            nanosuitScene.RenderScene(pointShadowDepthPass);
-           // pointShadowDepthPass.use();
-            //for (unsigned int i = 0; i < 6; ++i)
-            //    pointShadowDepthPass.setMat4("shadowProjections[" + std::to_string(i) + "]", shadowTransforms[i]);
-            //pointShadowDepthPass.setFloat("far_plane", farPlane);
-            //pointShadowDepthPass.setVec3("light_pos", lightPos);
-            //sponzaScene.RenderScene(pointShadowDepthPass);
-            glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      /*      ConfigureShaderMatricesForRenderPass(pointShadowDepthPassTBN);
-            sponzaScene.RenderScene(pointShadowDepthPassTBN);
-            renderLightCube(simpleShader);*/
-           // RenderCubeMap(pointShadowDepthDebug);
-            screen.ConfigureForRenderPass(cam->GetPos(), cam->GetDir(), cam->GetView(), cam->GetProjection(),
-                lightPos, nearPlane, farPlane, SCREEN_WIDTH, SCREEN_HEIGHT);
-            screen.RenderPass(0.0f, depthCubeMap);
-            ConfigureShaderMatricesForRenderPass(pointShadowRenderPass);
-            nanosuitScene.RenderScene(pointShadowRenderPass);
+   
+           CHECK_GL_ERROR( glBindFramebuffer(GL_FRAMEBUFFER, gBuffer) );
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                gBufferPass.use();
+                gBufferPass.setMat4("projection", cam->GetProjection());
+                gBufferPass.setMat4("view", cam->GetView());
+                backpackSceneData.RenderScene(gBufferPass);
+           
+           CHECK_GL_ERROR( glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
+           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                deferredShadingPass.use();
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, gPos);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, gNormal);
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+                // send light relevant uniforms
+                for (unsigned int i = 0; i < lightPositions.size(); i++)
+                {
+                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
+                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
+                    // update attenuation parameters and calculate radius
+                    const float linear = 0.7;
+                    const float quadratic = 1.8;
+                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
+                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
+                }
+                deferredShadingPass.setVec3("viewPos", cam->GetPos());
+                quadVao.Bind();
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFBO);
+
+                glBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+                glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
+
+                deferredLightBoxPass.use();
+                deferredLightBoxPass.setMat4("projection", cam->GetProjection());
+                deferredLightBoxPass.setMat4("view", cam->GetView());
+                for (unsigned int i = 0; i < lightPositions.size(); i++)
+                {
+                    glm::mat4 model = glm::mat4(1.0f);
+                    model = glm::translate(model, lightPositions[i]);
+                    model = glm::scale(model, glm::vec3(0.125f));
+                    deferredLightBoxPass.setMat4("model", model);
+                    deferredLightBoxPass.setVec3("lightColor", lightColors[i]);
+                    renderLightCube(deferredLightBoxPass, model);
+                }
+ 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -297,10 +363,10 @@ namespace bogong {
             glDepthFunc(GL_LESS);
         }
 
-        void renderLightCube(learnopengl::Shader & shader) {
+        void renderLightCube(learnopengl::Shader & shader, glm::mat4 model) {
             lightCubeVao.Bind();
             shader.use();
-            shader.setMat4("model", lightModel);
+            shader.setMat4("model", model);
             shader.setMat4("projection", cam->GetProjection());
             shader.setMat4("view", cam->GetView());
             glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -414,12 +480,12 @@ namespace bogong {
             CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
             CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
             CHECK_GL_ERROR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, outputTex, 0));
-         /*   glGenRenderbuffers(1, &outputRBO);
+            glGenRenderbuffers(1, &outputRBO);
             glBindRenderbuffer(GL_RENDERBUFFER, outputRBO);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_WIDTH, SCREEN_HEIGHT);
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, outputRBO);
-         */   
+            
             if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
                 std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -452,6 +518,44 @@ namespace bogong {
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3,
                 (void*)0);
             cubeMapVao.Unbind();
+        }
+
+        void SetupGBuffer() {
+            glGenFramebuffers(1, &gBuffer);
+            glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+            // position color buffer
+            glGenTextures(1, &gPos);
+            glBindTexture(GL_TEXTURE_2D, gPos);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPos, 0);
+            // normal color buffer
+            glGenTextures(1, &gNormal);
+            glBindTexture(GL_TEXTURE_2D, gNormal);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
+            // color + specular color buffer
+            glGenTextures(1, &gAlbedoSpec);
+            glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+            // tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
+            unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+            glDrawBuffers(3, attachments);
+            // create and attach depth buffer (renderbuffer)
+            CHECK_GL_ERROR(glGenRenderbuffers(1, &rboDepth));
+            glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+            // finally check if framebuffer is complete
+            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+                std::cout << "Framebuffer not complete!" << std::endl;
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
         }
     };
 }

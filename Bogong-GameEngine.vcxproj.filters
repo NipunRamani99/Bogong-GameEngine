@@ -216,6 +216,9 @@
     <ClInclude Include="include\Rendering\MyDocument.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Rendering\BackpackScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -366,5 +369,13 @@
     <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.vs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
   </ItemGroup>
 </Project>
