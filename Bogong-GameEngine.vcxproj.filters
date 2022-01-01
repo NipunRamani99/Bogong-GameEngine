@@ -198,7 +198,7 @@
     <ClInclude Include="include\Rendering\SponzaScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp">
+    <ClInclude Include="include\Rendering\DeferredSceneManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Constants.h">
@@ -375,7 +375,7 @@
     <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
-    <None Include="Shaders\learnopengl\deferred\deferred_light_box.vs" />
     <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
+    <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
   </ItemGroup>
 </Project>

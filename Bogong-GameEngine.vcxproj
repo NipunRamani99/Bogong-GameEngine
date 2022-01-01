@@ -179,7 +179,7 @@
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
-    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp" />
+    <ClInclude Include="include\Rendering\DeferredSceneManager.hpp" />
     <ClInclude Include="include\Rendering\SponzaScene.h" />
     <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
@@ -250,13 +250,13 @@
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
     <None Include="Shaders\learnopengl\asteroid_shader.vs" />
     <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
-    <None Include="Shaders\learnopengl\deferred\deferred_light_box.vs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
     <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
     <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
     <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
     <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
+    <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.vs" />
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />

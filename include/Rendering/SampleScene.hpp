@@ -5,7 +5,7 @@
 #include "Nodes/PointLightNode.hpp"
 #include "Nodes/SpotLightNode.hpp"
 #include "Nodes/DirectionalLightNode.hpp"
-#include "PointShadowSponzaScene.hpp"
+#include "DeferredSceneManager.hpp"
 #include "../Models/TextureFactory.hpp"
 #include "AssimpLoader.hpp"
 #include <future>
@@ -15,7 +15,7 @@ namespace bogong {
 		std::shared_ptr<CubeMesh> cube;
 		std::shared_ptr<TexturedCubeMesh> texcube;
 		std::shared_ptr<Scene> scene;
-		std::shared_ptr<PointShadowSponzaScene> manager;
+		std::shared_ptr<DefferedSceneManager> manager;
 		std::shared_ptr<FPCamera> cam;
 		std::shared_ptr<node::NodeBase> root;
 		glm::vec3 angle = glm::vec3(0.0f,0.0f,0.0f);
@@ -27,7 +27,7 @@ namespace bogong {
 	public:
 	
 		SampleScene() {
-			manager = std::make_shared<PointShadowSponzaScene>();
+			manager = std::make_shared<DefferedSceneManager>();
 			cam      = std::make_shared<FPCamera>();
 			scene    = std::make_shared<Scene>();
 			root     = std::make_shared<node::NodeBase>
@@ -68,24 +68,34 @@ namespace bogong {
             ImGui::Begin("Bogong Main Window", &mainWindow, window_flags);
             ImVec2 uv1 = ImVec2(0, 1);
             ImVec2 uv2 = ImVec2(1, 0);
+            ImGuiWindowFlags output_window = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar;
             ImGui::End();
             {
-                ImGui::Begin("Albedo Output");
+                ImGui::Begin("Albedo Output", &mainWindow);
                 ImVec2 outputWindowSize = ImGui::GetWindowSize();
                 ImTextureID gAlbedoSpec = (ImTextureID)manager->gAlbedoSpec;
                 ImGui::Image(gAlbedoSpec, outputWindowSize, uv1, uv2);
                 ImGui::End();
-                ImGui::Begin("Position Output");
+                ImGui::Begin("Position Output", &mainWindow);
                 outputWindowSize = ImGui::GetWindowSize();
                 ImTextureID gPos = (ImTextureID)manager->gPos;
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, manager->gPos);
                 ImGui::Image(gPos, outputWindowSize, uv1, uv2);
                 ImGui::End();
-                ImGui::Begin("Normal Output");
+                ImGui::Begin("Normal Output", &mainWindow);
                 outputWindowSize = ImGui::GetWindowSize();
                 ImTextureID gNormal = (ImTextureID)manager->gNormal;
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, manager->gNormal);
                 ImGui::Image(gNormal, outputWindowSize, uv1, uv2);
                 ImGui::End();
-                ImGui::Begin("Placeholder 2");
+                ImGui::Begin("Depth Output");
+                outputWindowSize = ImGui::GetWindowSize();
+                ImTextureID gDepth = (ImTextureID)manager->gDepth;
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, manager->gDepth);
+                ImGui::Image(gDepth, outputWindowSize, uv1, uv2);
                 ImGui::End();
             }
             toggle(kbd, mouse, delta, window);
@@ -109,7 +119,6 @@ namespace bogong {
                     }
                     else {
                         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
                         ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
                     }
                 }
@@ -124,7 +133,6 @@ namespace bogong {
                     timer = 0.0f;
                 }
             }
-
         }
 	};
 }
