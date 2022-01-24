@@ -160,6 +160,7 @@
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
     <ClInclude Include="include\Rendering\MyDocument.h" />
     <ClInclude Include="include\Rendering\NanosuitScene.h" />
+    <ClInclude Include="include\Rendering\ReflectionScene.hpp" />
     <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\LearnOpenGL\Mesh.h" />
@@ -249,6 +250,7 @@
     <None Include="Shaders\learnopengl\anti_aliasing.vs" />
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
     <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\deferred\box_blur.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
@@ -256,7 +258,10 @@
     <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
     <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
     <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
+    <None Include="Shaders\learnopengl\deferred\reflection_color.fs" />
     <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao_blur.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.vs" />
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
@@ -283,6 +288,7 @@
     <None Include="Shaders\learnopengl\simple_model_loading.vs" />
     <None Include="Shaders\learnopengl\simple_shader.fs" />
     <None Include="Shaders\learnopengl\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\ssr\screen_space_reflections.fs" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\learnopengl\model_loading.fs" />

@@ -7,3 +7,8 @@
 /Debug
 /x64
 /.vs/Bogong-GameEngine
+assets
+*.obj
+*.mtl
+assets/models/nanosuit/nanosuit.mtl
+assets/models/nanosuit/nanosuit.obj

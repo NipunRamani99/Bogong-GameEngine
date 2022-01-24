@@ -219,6 +219,9 @@
     <ClInclude Include="include\Rendering\BackpackScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Rendering\ReflectionScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui.cpp">
@@ -377,5 +380,10 @@
     <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
     <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
     <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
+    <None Include="Shaders\learnopengl\ssr\screen_space_reflections.fs" />
+    <None Include="Shaders\learnopengl\deferred\box_blur.fs" />
+    <None Include="Shaders\learnopengl\deferred\reflection_color.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao_blur.fs" />
   </ItemGroup>
 </Project>

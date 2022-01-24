@@ -231,4 +231,15 @@ const static std::string DEFERRED_LIGHT_BOX_FS =
 SHADER_DIRECTORY_PATH + "/deferred/deferred_light_box.fs";
 const static std::string DEFERRED_LIGHT_BOX_VS =
 SHADER_DIRECTORY_PATH + "/deferred/deferred_light_box.vs";
+const static std::string SCREEN_SPACE_REFLECTION_FS =
+SHADER_DIRECTORY_PATH + "/deferred/screen_space_reflection.fs";
+const static std::string SCREEN_SPACE_AMBIENT_OCCLUSION_FS =
+SHADER_DIRECTORY_PATH + "/deferred/ssao.fs";
+const static std::string SCREEN_SPACE_AMBIENT_OCCLUSION_BLUR_FS =
+SHADER_DIRECTORY_PATH + "/deferred/ssao_blur.fs";
+const static std::string DEFERRED_BOX_BLUR_FS =
+SHADER_DIRECTORY_PATH + "/deferred/box_blur.fs";
+const static std::string DEFERRED_REFLECTION_COLOR_FS =
+SHADER_DIRECTORY_PATH + "/deferred/reflection_color.fs";
+
 }
