@@ -11,17 +11,17 @@ uniform sampler2D gAlbedoSpec;
 out vec4 fragColor;
 
 void main() {
-  int   size       = 6;
+  int   size       = 12;
   float separation = 2.0;
 
   vec2 texSize  = textureSize(ssrReflectedUV, 0).xy;
   vec2 texCoord = gl_FragCoord.xy / texSize;
 
   vec4 uv = texture(ssrReflectedUV, texCoord);
-  
+
   // Removes holes in the UV map.
   if (uv.b <= 0.0) {
-    uv = vec4(0.0);
+          uv    = vec4(0.0);
     float count = 0.0;
 
     for (int i = -size; i <= size; ++i) {
@@ -41,9 +41,9 @@ void main() {
   }
 
   if (uv.b <= 0.0) { fragColor = vec4(0.0); return;}
-  
-  vec4 color = texture(gAlbedoSpec, uv.xy);
+
+  vec4  color = texture(gAlbedoSpec, uv.xy);
   float alpha = clamp(uv.b, 0.0, 1.0);
-  color.a = alpha;
-  fragColor = color;
+
+  fragColor = vec4(mix(vec3(0.0), color.rgb, alpha), alpha);
 }

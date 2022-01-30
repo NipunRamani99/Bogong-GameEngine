@@ -72,6 +72,11 @@ namespace bogong {
         std::vector<glm::vec3> lightPositions;
         std::vector<glm::vec3> lightColors;
         float vigPow = 0.5f;
+        float thickness = 0.01f;
+        float maxDistance = 10.0;
+        float resolution = 0.4;
+        int  steps = 20;
+        int iterationCount = 1024;
         std::vector<glm::vec3> ssaoKernel;
     public:
         unsigned int gBuffer;
@@ -134,6 +139,27 @@ namespace bogong {
             if (ImGui::InputFloat("Vig Power", &vigPow))
             {
                 deferredShadingPass.setFloat("vigPow", vigPow);
+            }
+            ssrPass.use();
+            if (ImGui::InputFloat("SSR Thickness", &thickness))
+            {
+                ssrPass.setFloat("thickness", thickness);
+            }
+            if (ImGui::InputFloat("SSR maxDistance", &maxDistance))
+            {
+                ssrPass.setFloat("maxDistance", maxDistance);
+            }
+            if (ImGui::InputInt("SSR steps", &steps))
+            {
+                ssrPass.setInt("steps", steps);
+            }
+            if (ImGui::InputInt("SSR iterationCount", &iterationCount))
+            {
+                ssrPass.setInt("iterationCount", iterationCount);
+            }
+            if (ImGui::InputFloat("SSR resolution", &resolution))
+            {
+                ssrPass.setFloat("resolution", resolution);
             }
             ImGui::End();
         }
@@ -215,20 +241,59 @@ namespace bogong {
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, gNormal);
                 glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, ssaoNoiseTexture);
+                glBindTexture(GL_TEXTURE_2D, gDepth);
                 ssaoPass.setInt("gPosition", 0);
                 ssaoPass.setInt("gNormal", 1);
                 ssaoPass.setInt("texNoise", 2);
                 ssaoPass.setFloat("screenWidth", SCREEN_WIDTH);
                 ssaoPass.setFloat("screenHeight", SCREEN_HEIGHT);
                 glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
+                glClear(GL_COLOR_BUFFER_BIT );
                 glDrawArrays(GL_TRIANGLES, 0, 6);
                 glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+                glClear(GL_COLOR_BUFFER_BIT );
                 ssaoBlurPass.use();
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, ssaoTex);
                 ssaoBlurPass.setInt("ssaoInput", 0);
                 glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+                glClear(GL_COLOR_BUFFER_BIT );
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                quadVao.Bind();
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, gPos);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, gNormal);
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, gDepth);
+                ssrPass.use();
+                ssrPass.setInt("gPosition", 0);
+                ssrPass.setInt("gNormal", 1);
+                ssrPass.setInt("gDepth", 2);
+                ssrPass.setMat4("projection", projection);
+                ssrPass.setMat4("view", cam->GetView());
+                ssrPass.setVec3("camPos", cam->GetPos());
+                glBindFramebuffer(GL_FRAMEBUFFER, ssrFBO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    /*            quadVao.Bind();
+                boxBlurPass.use();
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, ssrTex);
+                reflectionColorPass.setInt("inputTexture", 0);
+                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);*/
+
+                quadVao.Bind();
+                reflectionColorPass.use();
+                glActiveTexture(GL_TEXTURE9);
+                glBindTexture(GL_TEXTURE_2D, ssrTex);
+                reflectionColorPass.setInt("ssrReflectedUV", 9);
+                glActiveTexture(GL_TEXTURE10);
+                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+                reflectionColorPass.setInt("gAlbedoSpec", 10);
+                glBindFramebuffer(GL_FRAMEBUFFER, reflectedColorFBO);
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -351,6 +416,7 @@ namespace bogong {
         }
         void SetupBoxBlurFBO() {
             CHECK_GL_ERROR(glGenFramebuffers(1, &boxBlurFBO));
+
             CHECK_GL_ERROR(glGenTextures(1, &boxBlurTex));
             CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, boxBlurTex));
             CHECK_GL_ERROR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL));
@@ -396,8 +462,6 @@ namespace bogong {
                 std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
-
- 
 
         void SetupGBuffer() {
             glGenFramebuffers(1, &gBuffer);

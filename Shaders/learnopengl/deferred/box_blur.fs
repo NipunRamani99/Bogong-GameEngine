@@ -18,7 +18,7 @@ void main() {
   if (size <= 0) { return; }
 
   float separation = parameters.y;
-        separation = max(separation, 1.0);
+        separation = max(separation, 1);
 
   fragColor.rgb = vec3(0);
 
@@ -39,10 +39,5 @@ void main() {
     }
   }
 
-  fragColor.rgb =  texture
-          ( inputTexture
-          ,   (gl_FragCoord.xy)
-            / texSize
-          ).rgb;
-  fragColor.a = 1.0;
+  fragColor.rgb /= count;
 }
