@@ -198,7 +198,7 @@
     <ClInclude Include="include\Rendering\SponzaScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp">
+    <ClInclude Include="include\Rendering\DeferredSceneManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Constants.h">
@@ -214,6 +214,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\MyDocument.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\BackpackScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\ReflectionScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -366,5 +372,18 @@
     <None Include="Shaders\ScreenFragmentShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenGeometricShaderDepthPass.glsl" />
     <None Include="Shaders\ScreenFragmentRenderPassShader.glsl" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
+    <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
+    <None Include="Shaders\learnopengl\ssr\screen_space_reflections.fs" />
+    <None Include="Shaders\learnopengl\deferred\box_blur.fs" />
+    <None Include="Shaders\learnopengl\deferred\reflection_color.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao_blur.fs" />
   </ItemGroup>
 </Project>

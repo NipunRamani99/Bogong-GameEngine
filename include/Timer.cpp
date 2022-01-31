@@ -1,5 +1,5 @@
 #include "Timer.hpp"
-
+#include <string>
 namespace bogong {
 	std::chrono::steady_clock::time_point Timer::tp = std::chrono::steady_clock::time_point();
 	std::vector<std::pair<std::string, std::chrono::duration<float,std::nano>>> Timer::durations;

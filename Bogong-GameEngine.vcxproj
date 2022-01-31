@@ -22,32 +22,32 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{5BFF45D0-8941-4627-AAAC-32C7CBA52809}</ProjectGuid>
     <RootNamespace>BogongGameEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="include\Rendering\BackpackScene.hpp" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\Engine.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
     <ClInclude Include="include\Rendering\MyDocument.h" />
     <ClInclude Include="include\Rendering\NanosuitScene.h" />
+    <ClInclude Include="include\Rendering\ReflectionScene.hpp" />
     <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
     <ClInclude Include="include\LearnOpenGL\Mesh.h" />
@@ -178,7 +180,7 @@
     <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
-    <ClInclude Include="include\Rendering\PointShadowSponzaScene.hpp" />
+    <ClInclude Include="include\Rendering\DeferredSceneManager.hpp" />
     <ClInclude Include="include\Rendering\SponzaScene.h" />
     <ClInclude Include="include\Screen.hpp" />
     <ClInclude Include="include\ShaderManager.hpp" />
@@ -248,6 +250,18 @@
     <None Include="Shaders\learnopengl\anti_aliasing.vs" />
     <None Include="Shaders\learnopengl\asteroid_shader.fs" />
     <None Include="Shaders\learnopengl\asteroid_shader.vs" />
+    <None Include="Shaders\learnopengl\deferred\box_blur.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_light_box.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.fs" />
+    <None Include="Shaders\learnopengl\deferred\deferred_shading.vs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.fs" />
+    <None Include="Shaders\learnopengl\deferred\fbo_debug.vs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.fs" />
+    <None Include="Shaders\learnopengl\deferred\g_buffer.vs" />
+    <None Include="Shaders\learnopengl\deferred\reflection_color.fs" />
+    <None Include="Shaders\learnopengl\deferred\screen_space_reflection.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao.fs" />
+    <None Include="Shaders\learnopengl\deferred\ssao_blur.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.fs" />
     <None Include="Shaders\learnopengl\instancing_shader.vs" />
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
@@ -274,6 +288,7 @@
     <None Include="Shaders\learnopengl\simple_model_loading.vs" />
     <None Include="Shaders\learnopengl\simple_shader.fs" />
     <None Include="Shaders\learnopengl\simple_shader.vs" />
+    <None Include="Shaders\learnopengl\ssr\screen_space_reflections.fs" />
     <None Include="Shaders\LightMapFragmentShader.glsl" />
     <None Include="Shaders\LightMapVertexShader.glsl" />
     <None Include="Shaders\learnopengl\model_loading.fs" />
