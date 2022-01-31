@@ -45,6 +45,7 @@ namespace bogong {
                 ImVec2 uv1 = ImVec2(0, 1);
                 ImVec2 uv2 = ImVec2(1, 0);
                 ImTextureID id = (ImTextureID)out;
+                glBindTexture(GL_TEXTURE_2D, out);
                 ImVec2 outputWindowSize = ImGui::GetWindowSize();
                 ImGui::Image(id, outputWindowSize, uv1, uv2);
             }
@@ -112,13 +113,13 @@ namespace bogong {
                 glBindTexture(GL_TEXTURE_2D, manager->reflectedColorTex);
                 ImGui::Image(reflectedColorTex, outputWindowSize, uv1, uv2);
                 ImGui::End();
-                //ImGui::Begin("Box Blur Output");
-                //outputWindowSize = ImGui::GetWindowSize();
-                //ImTextureID boxBlurTex = (ImTextureID)manager->boxBlurTex;
-                //glActiveTexture(GL_TEXTURE0);
-                //glBindTexture(GL_TEXTURE_2D, manager->boxBlurTex);
-                //ImGui::Image(boxBlurTex, outputWindowSize, uv1, uv2);
-                //ImGui::End();
+                ImGui::Begin("Box Blur Output");
+                outputWindowSize = ImGui::GetWindowSize();
+                ImTextureID boxBlurTex = (ImTextureID)manager->boxBlurTex;
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, manager->boxBlurTex);
+                ImGui::Image(boxBlurTex, outputWindowSize, uv1, uv2);
+                ImGui::End();
             }
             toggle(kbd, mouse, delta, window);
 			angle += delta * alpha*2.0f;

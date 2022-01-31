@@ -77,6 +77,7 @@ namespace bogong {
         float resolution = 0.4;
         int  steps = 20;
         int iterationCount = 1024;
+        glm::vec2 blurSize = glm::vec2{0.0f,0.0f};
         std::vector<glm::vec3> ssaoKernel;
     public:
         unsigned int gBuffer;
@@ -161,6 +162,11 @@ namespace bogong {
             {
                 ssrPass.setFloat("resolution", resolution);
             }
+            if (ImGui::InputFloat2("Blur Size", (float*) & blurSize))
+            {
+                boxBlurPass.use();
+                boxBlurPass.setVec2("parameters", blurSize);
+            }
             ImGui::End();
         }
 
@@ -190,47 +196,7 @@ namespace bogong {
                 gBufferPass.setMat4("view", cam->GetView());
                 reflectionScene.RenderScene(gBufferPass);
            
-           CHECK_GL_ERROR( glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
-           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                deferredShadingPass.use();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, gPos);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, gNormal);
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-                // send light relevant uniforms
-                for (unsigned int i = 0; i < lightPositions.size(); i++)
-                {
-                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-                    // update attenuation parameters and calculate radius
-                    const float linear = 0.5;
-                    const float quadratic = 1.8;
-                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
-                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
-                }
-                deferredShadingPass.setVec3("viewPos", cam->GetPos());
-                quadVao.Bind();
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFBO);
 
-                glBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-                glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
-
-                deferredLightBoxPass.use();
-                deferredLightBoxPass.setMat4("projection", cam->GetProjection());
-                deferredLightBoxPass.setMat4("view", cam->GetView());
-                for (unsigned int i = 0; i < lightPositions.size(); i++)
-                {
-                    glm::mat4 model = glm::mat4(1.0f);
-                    model = glm::translate(model, lightPositions[i]);
-                    model = glm::scale(model, glm::vec3(0.125f));
-                    deferredLightBoxPass.setMat4("model", model);
-                    deferredLightBoxPass.setVec3("lightColor", lightColors[i]);
-                    renderLightCube(deferredLightBoxPass, model);
-                }
                 quadVao.Bind();
                 ssaoPass.use();
                 glm::mat4 projection = cam->GetProjection();
@@ -250,15 +216,15 @@ namespace bogong {
                 glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
                 glClear(GL_COLOR_BUFFER_BIT );
                 glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-                glClear(GL_COLOR_BUFFER_BIT );
-                ssaoBlurPass.use();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, ssaoTex);
-                ssaoBlurPass.setInt("ssaoInput", 0);
-                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-                glClear(GL_COLOR_BUFFER_BIT );
-                glDrawArrays(GL_TRIANGLES, 0, 6);
+              //  glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+              //  glClear(GL_COLOR_BUFFER_BIT );
+                //ssaoBlurPass.use();
+                //glActiveTexture(GL_TEXTURE0);
+                //glBindTexture(GL_TEXTURE_2D, ssaoTex);
+                //ssaoBlurPass.setInt("ssaoInput", 0);
+                //glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+                //glClear(GL_COLOR_BUFFER_BIT );
+                //glDrawArrays(GL_TRIANGLES, 0, 6);
 
                 quadVao.Bind();
                 glActiveTexture(GL_TEXTURE0);
@@ -276,15 +242,6 @@ namespace bogong {
                 ssrPass.setVec3("camPos", cam->GetPos());
                 glBindFramebuffer(GL_FRAMEBUFFER, ssrFBO);
                 glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    /*            quadVao.Bind();
-                boxBlurPass.use();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, ssrTex);
-                reflectionColorPass.setInt("inputTexture", 0);
-                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);*/
-
                 quadVao.Bind();
                 reflectionColorPass.use();
                 glActiveTexture(GL_TEXTURE9);
@@ -296,10 +253,67 @@ namespace bogong {
                 glBindFramebuffer(GL_FRAMEBUFFER, reflectedColorFBO);
                 glDrawArrays(GL_TRIANGLES, 0, 6);
 
+                quadVao.Bind();
+                boxBlurPass.use();
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, reflectedColorTex);
+                reflectionColorPass.setInt("inputTexture", 0);
+                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+                CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                deferredShadingPass.use();
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, gPos);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, gNormal);
+                glActiveTexture(GL_TEXTURE2);
+                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+                glActiveTexture(GL_TEXTURE3);
+                glBindTexture(GL_TEXTURE_2D, boxBlurTex);
+                // send light relevant uniforms
+                for (unsigned int i = 0; i < lightPositions.size(); i++)
+                {
+                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
+                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
+                    // update attenuation parameters and calculate radius
+                    const float linear = 0.5;
+                    const float quadratic = 1.8;
+                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
+                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
+                }
+                deferredShadingPass.setVec3("viewPos", cam->GetPos());
+                deferredShadingPass.setInt("gPosition", 0);
+                deferredShadingPass.setInt("gNormal", 1);
+                deferredShadingPass.setInt("gAlbedoSpec", 2);
+                deferredShadingPass.setInt("ssrColorTex", 3);
+                quadVao.Bind();
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFBO);
+
+                glBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+                glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
+
+                deferredLightBoxPass.use();
+                deferredLightBoxPass.setMat4("projection", cam->GetProjection());
+                deferredLightBoxPass.setMat4("view", cam->GetView());
+              /*  for (unsigned int i = 0; i < lightPositions.size(); i++)
+                {
+                    glm::mat4 model = glm::mat4(1.0f);
+                    model = glm::translate(model, lightPositions[i]);
+                    model = glm::scale(model, glm::vec3(0.125f));
+                    deferredLightBoxPass.setMat4("model", model);
+                    deferredLightBoxPass.setVec3("lightColor", lightColors[i]);
+                    renderLightCube(deferredLightBoxPass, model);
+                }*/
+
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            return outputTex;
+            return  outputTex;
         }
 
     private:
@@ -416,14 +430,13 @@ namespace bogong {
         }
         void SetupBoxBlurFBO() {
             CHECK_GL_ERROR(glGenFramebuffers(1, &boxBlurFBO));
-
             CHECK_GL_ERROR(glGenTextures(1, &boxBlurTex));
             CHECK_GL_ERROR(glBindTexture(GL_TEXTURE_2D, boxBlurTex));
             CHECK_GL_ERROR(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL));
             CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
             CHECK_GL_ERROR(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
             CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO));
-            CHECK_GL_ERROR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, boxBlurFBO, 0));
+            CHECK_GL_ERROR(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, boxBlurTex, 0));
             if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
                 std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
             glBindFramebuffer(GL_FRAMEBUFFER, 0);

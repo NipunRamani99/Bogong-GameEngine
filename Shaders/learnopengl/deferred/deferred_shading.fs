@@ -6,6 +6,7 @@ in vec2 TexCoords;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
+uniform sampler2D ssrColorTex;
 uniform float vigPow = 0.5; 
 struct Light {
     vec3 Position;
@@ -50,7 +51,8 @@ void main()
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
     float Specular = texture(gAlbedoSpec, TexCoords).a;
-    
+    vec4 reflection = texture(ssrColorTex, TexCoords);
+
     // then calculate lighting as usual
     vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component
     vec3 viewDir  = normalize(viewPos - FragPos);
@@ -75,7 +77,8 @@ void main()
     
     float vig = uv.x*uv.y * 15.0; // multiply with sth for intensity
     
-    vig = pow(vig, vigPow); // change pow for modifying the extend of the  vignette
+    vig = pow(vig, vigPow); // change pow for modifying the extend of the vignette
+    FragColor = vec4(lighting, 1.0);
+    FragColor.rgb = mix(FragColor.rgb, reflection.rgb, clamp(reflection.a, 0.0, 0.200));
 
-    FragColor = vec4(lighting,1.0);
 }
