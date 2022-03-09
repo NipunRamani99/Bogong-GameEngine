@@ -35,7 +35,6 @@ void bogong::FPCamera::Update(const std::shared_ptr<Keyboard>& kbd, const std::s
 	else {
 		camSpeed = cameraSpeed * delta;
 	}
-
 	if (kbd->isKeyPressed(KEY_W) || kbd->isKeyRepeating(KEY_W))
 	{
 		cameraPos += camSpeed * cameraFront;

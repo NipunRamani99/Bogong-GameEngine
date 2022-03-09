@@ -21,6 +21,8 @@
 #include "NanosuitScene.h"
 #include "BackpackScene.hpp"
 #include "ReflectionScene.hpp"
+#include "PBRExampleScene.h"
+#include "PBRTexturedExampleScene.h"
 #include <random>
 #include <glm/common.hpp>
 namespace bogong {
@@ -31,7 +33,9 @@ namespace bogong {
       //  BackpackScene backpackSceneData;
       //  SponzaScene sponzaScene;
         ReflectionScene reflectionScene;
-        
+        PBRExampleScene pbrExampleScene;
+        PBRTexturedExampleScene pbrTexturedExampleScene;
+
         unsigned int tex = 0;
         unsigned int depthMapTex = 0;
         unsigned int depthMapFBO = 0;
@@ -67,6 +71,8 @@ namespace bogong {
         learnopengl::Shader ssaoBlurPass;
         learnopengl::Shader boxBlurPass;
         learnopengl::Shader reflectionColorPass;
+        learnopengl::Shader pbrShader;
+        learnopengl::Shader pbrTextureShader;
 
         const unsigned int NR_LIGHTS = 32;
         std::vector<glm::vec3> lightPositions;
@@ -79,6 +85,7 @@ namespace bogong {
         int iterationCount = 1024;
         glm::vec2 blurSize = glm::vec2{0.0f,0.0f};
         std::vector<glm::vec3> ssaoKernel;
+
     public:
         unsigned int gBuffer;
         unsigned int gAlbedoSpec;
@@ -91,7 +98,8 @@ namespace bogong {
         unsigned int ssaoNoiseTexture = 0;
         unsigned int boxBlurTex = 0;
         unsigned int reflectedColorTex = 0;
-
+        bool enableNDF = true;
+        bool enableG = true;
         DefferedSceneManager()
             :
             gBufferPass(G_BUFFER_VS.c_str(), G_BUFFER_FS.c_str()),
@@ -102,7 +110,10 @@ namespace bogong {
             boxBlurPass(DEFERRED_SHADING_VS.c_str(), DEFERRED_BOX_BLUR_FS.c_str()),
             reflectionColorPass(DEFERRED_SHADING_VS.c_str(), DEFERRED_REFLECTION_COLOR_FS.c_str()),
             ssaoPass(DEFERRED_SHADING_VS.c_str(), SCREEN_SPACE_AMBIENT_OCCLUSION_FS.c_str()),
-            ssaoBlurPass(DEFERRED_SHADING_VS.c_str(), SCREEN_SPACE_AMBIENT_OCCLUSION_BLUR_FS.c_str())
+            ssaoBlurPass(DEFERRED_SHADING_VS.c_str(), SCREEN_SPACE_AMBIENT_OCCLUSION_BLUR_FS.c_str()),
+            pbrShader(PBR_VS.c_str(), PBR_FS.c_str()),
+            pbrTextureShader(PBR_VS.c_str(), PBR_TEXTURED_FS.c_str()),
+            pbrExampleScene(0.,0.,0.,0.,0.)
         {
             SetupOutputFBO();
             SetupScreenQuad();
@@ -136,6 +147,7 @@ namespace bogong {
 
         void Update(float delta) {
             deferredShadingPass.use();
+            pbrTextureShader.use();
             ImGui::Begin("Post Process");
             if (ImGui::InputFloat("Vig Power", &vigPow))
             {
@@ -167,10 +179,17 @@ namespace bogong {
                 boxBlurPass.use();
                 boxBlurPass.setVec2("parameters", blurSize);
             }
+            if (ImGui::Checkbox("Enable NDF", &enableNDF)) {
+                pbrTextureShader.use();
+                pbrTextureShader.setBool("enableNDF", enableNDF);
+            }
+            if (ImGui::Checkbox("Enable G", &enableG)) {
+                pbrTextureShader.use();
+                pbrTextureShader.setBool("enableG", enableG);
+            }
             ImGui::End();
+            pbrExampleScene.Update();
         }
-
-
 
         void clear() {
         }
@@ -188,137 +207,24 @@ namespace bogong {
         }
 
         int Draw(std::shared_ptr<Scene> scene) {
-   
-           CHECK_GL_ERROR( glBindFramebuffer(GL_FRAMEBUFFER, gBuffer) );
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                gBufferPass.use();
-                gBufferPass.setMat4("projection", cam->GetProjection());
-                gBufferPass.setMat4("view", cam->GetView());
-                reflectionScene.RenderScene(gBufferPass);
-           
-
-                quadVao.Bind();
-                ssaoPass.use();
-                glm::mat4 projection = cam->GetProjection();
-                ssaoPass.setMat4("projection", projection);
-                ssaoPass.setMat4("view", cam->GetView());
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, gPos);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, gNormal);
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, gDepth);
-                ssaoPass.setInt("gPosition", 0);
-                ssaoPass.setInt("gNormal", 1);
-                ssaoPass.setInt("texNoise", 2);
-                ssaoPass.setFloat("screenWidth", SCREEN_WIDTH);
-                ssaoPass.setFloat("screenHeight", SCREEN_HEIGHT);
-                glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
-                glClear(GL_COLOR_BUFFER_BIT );
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-              //  glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-              //  glClear(GL_COLOR_BUFFER_BIT );
-                //ssaoBlurPass.use();
-                //glActiveTexture(GL_TEXTURE0);
-                //glBindTexture(GL_TEXTURE_2D, ssaoTex);
-                //ssaoBlurPass.setInt("ssaoInput", 0);
-                //glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-                //glClear(GL_COLOR_BUFFER_BIT );
-                //glDrawArrays(GL_TRIANGLES, 0, 6);
-
-                quadVao.Bind();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, gPos);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, gNormal);
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, gDepth);
-                ssrPass.use();
-                ssrPass.setInt("gPosition", 0);
-                ssrPass.setInt("gNormal", 1);
-                ssrPass.setInt("gDepth", 2);
-                ssrPass.setMat4("projection", projection);
-                ssrPass.setMat4("view", cam->GetView());
-                ssrPass.setVec3("camPos", cam->GetPos());
-                glBindFramebuffer(GL_FRAMEBUFFER, ssrFBO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                quadVao.Bind();
-                reflectionColorPass.use();
-                glActiveTexture(GL_TEXTURE9);
-                glBindTexture(GL_TEXTURE_2D, ssrTex);
-                reflectionColorPass.setInt("ssrReflectedUV", 9);
-                glActiveTexture(GL_TEXTURE10);
-                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-                reflectionColorPass.setInt("gAlbedoSpec", 10);
-                glBindFramebuffer(GL_FRAMEBUFFER, reflectedColorFBO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-
-                quadVao.Bind();
-                boxBlurPass.use();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, reflectedColorTex);
-                reflectionColorPass.setInt("inputTexture", 0);
-                glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-
-                CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                deferredShadingPass.use();
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, gPos);
-                glActiveTexture(GL_TEXTURE1);
-                glBindTexture(GL_TEXTURE_2D, gNormal);
-                glActiveTexture(GL_TEXTURE2);
-                glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
-                glActiveTexture(GL_TEXTURE3);
-                glBindTexture(GL_TEXTURE_2D, boxBlurTex);
-                // send light relevant uniforms
-                for (unsigned int i = 0; i < lightPositions.size(); i++)
-                {
-                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
-                    deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
-                    // update attenuation parameters and calculate radius
-                    const float linear = 0.5;
-                    const float quadratic = 1.8;
-                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
-                    deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
-                }
-                deferredShadingPass.setVec3("viewPos", cam->GetPos());
-                deferredShadingPass.setInt("gPosition", 0);
-                deferredShadingPass.setInt("gNormal", 1);
-                deferredShadingPass.setInt("gAlbedoSpec", 2);
-                deferredShadingPass.setInt("ssrColorTex", 3);
-                quadVao.Bind();
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-                glBindTexture(GL_TEXTURE_2D, 0);
-                glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
-                glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFBO);
-
-                glBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-                glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
-
-                deferredLightBoxPass.use();
-                deferredLightBoxPass.setMat4("projection", cam->GetProjection());
-                deferredLightBoxPass.setMat4("view", cam->GetView());
-              /*  for (unsigned int i = 0; i < lightPositions.size(); i++)
-                {
-                    glm::mat4 model = glm::mat4(1.0f);
-                    model = glm::translate(model, lightPositions[i]);
-                    model = glm::scale(model, glm::vec3(0.125f));
-                    deferredLightBoxPass.setMat4("model", model);
-                    deferredLightBoxPass.setVec3("lightColor", lightColors[i]);
-                    renderLightCube(deferredLightBoxPass, model);
-                }*/
-
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
             glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            return  outputTex;
+
+            pbrTextureShader.use();
+            pbrTextureShader.setMat4("projection", cam->GetProjection());
+            pbrTextureShader.setMat4("view", cam->GetView());
+            pbrTextureShader.setVec3("camPos", cam->GetPos());
+
+            pbrTexturedExampleScene.RenderScene(pbrTextureShader);
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+            glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            return outputTex;
         }
 
     private:
 
- 
         void renderLightCube(learnopengl::Shader & shader, glm::mat4 model) {
             lightCubeVao.Bind();
             shader.use();
@@ -339,7 +245,6 @@ namespace bogong {
                     sizeof(float) * 3, (void*)(0)));
             lightCubeVao.Unbind();
         }
- 
 
         void SetupScreenQuad() {
             quadVao.Bind();
@@ -470,7 +375,6 @@ namespace bogong {
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_WIDTH, SCREEN_HEIGHT);
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
             glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, outputRBO);
-            
             if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
                 std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -521,6 +425,133 @@ namespace bogong {
             if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
                 std::cout << "Framebuffer not complete!" << std::endl;
             CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+        }
+
+        int DrawSSR(std::shared_ptr<Scene> scene) {
+
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, gBuffer));
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            gBufferPass.use();
+            gBufferPass.setMat4("projection", cam->GetProjection());
+            gBufferPass.setMat4("view", cam->GetView());
+            reflectionScene.RenderScene(gBufferPass);
+            quadVao.Bind();
+            ssaoPass.use();
+            glm::mat4 projection = cam->GetProjection();
+            ssaoPass.setMat4("projection", projection);
+            ssaoPass.setMat4("view", cam->GetView());
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, gPos);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, gNormal);
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, gDepth);
+            ssaoPass.setInt("gPosition", 0);
+            ssaoPass.setInt("gNormal", 1);
+            ssaoPass.setInt("texNoise", 2);
+            ssaoPass.setFloat("screenWidth", SCREEN_WIDTH);
+            ssaoPass.setFloat("screenHeight", SCREEN_HEIGHT);
+            glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
+            glClear(GL_COLOR_BUFFER_BIT);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            //  glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+            //  glClear(GL_COLOR_BUFFER_BIT );
+              //ssaoBlurPass.use();
+              //glActiveTexture(GL_TEXTURE0);
+              //glBindTexture(GL_TEXTURE_2D, ssaoTex);
+              //ssaoBlurPass.setInt("ssaoInput", 0);
+              //glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+              //glClear(GL_COLOR_BUFFER_BIT );
+              //glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            quadVao.Bind();
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, gPos);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, gNormal);
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, gDepth);
+            ssrPass.use();
+            ssrPass.setInt("gPosition", 0);
+            ssrPass.setInt("gNormal", 1);
+            ssrPass.setInt("gDepth", 2);
+            ssrPass.setMat4("projection", projection);
+            ssrPass.setMat4("view", cam->GetView());
+            ssrPass.setVec3("camPos", cam->GetPos());
+            glBindFramebuffer(GL_FRAMEBUFFER, ssrFBO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            quadVao.Bind();
+            reflectionColorPass.use();
+            glActiveTexture(GL_TEXTURE9);
+            glBindTexture(GL_TEXTURE_2D, ssrTex);
+            reflectionColorPass.setInt("ssrReflectedUV", 9);
+            glActiveTexture(GL_TEXTURE10);
+            glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+            reflectionColorPass.setInt("gAlbedoSpec", 10);
+            glBindFramebuffer(GL_FRAMEBUFFER, reflectedColorFBO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            quadVao.Bind();
+            boxBlurPass.use();
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, reflectedColorTex);
+            reflectionColorPass.setInt("inputTexture", 0);
+            glBindFramebuffer(GL_FRAMEBUFFER, boxBlurFBO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+
+            CHECK_GL_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, outputFBO));
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            deferredShadingPass.use();
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, gPos);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, gNormal);
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, boxBlurTex);
+            // send light relevant uniforms
+            for (unsigned int i = 0; i < lightPositions.size(); i++)
+            {
+                deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Position", lightPositions[i]);
+                deferredShadingPass.setVec3("lights[" + std::to_string(i) + "].Color", lightColors[i]);
+                // update attenuation parameters and calculate radius
+                const float linear = 0.5;
+                const float quadratic = 1.8;
+                deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Linear", linear);
+                deferredShadingPass.setFloat("lights[" + std::to_string(i) + "].Quadratic", quadratic);
+            }
+            deferredShadingPass.setVec3("viewPos", cam->GetPos());
+            deferredShadingPass.setInt("gPosition", 0);
+            deferredShadingPass.setInt("gNormal", 1);
+            deferredShadingPass.setInt("gAlbedoSpec", 2);
+            deferredShadingPass.setInt("ssrColorTex", 3);
+            quadVao.Bind();
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glBindFramebuffer(GL_READ_FRAMEBUFFER, gBuffer);
+            glBindFramebuffer(GL_DRAW_FRAMEBUFFER, outputFBO);
+
+            glBlitFramebuffer(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+            glBindFramebuffer(GL_FRAMEBUFFER, outputFBO);
+
+            deferredLightBoxPass.use();
+            deferredLightBoxPass.setMat4("projection", cam->GetProjection());
+            deferredLightBoxPass.setMat4("view", cam->GetView());
+            for (unsigned int i = 0; i < lightPositions.size(); i++)
+            {
+                glm::mat4 model = glm::mat4(1.0f);
+                model = glm::translate(model, lightPositions[i]);
+                model = glm::scale(model, glm::vec3(0.125f));
+                deferredLightBoxPass.setMat4("model", model);
+                deferredLightBoxPass.setVec3("lightColor", lightColors[i]);
+                renderLightCube(deferredLightBoxPass, model);
+            }
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            return  outputTex;
         }
     };
 }

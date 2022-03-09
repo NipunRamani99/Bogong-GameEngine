@@ -81,9 +81,6 @@
     <ClInclude Include="include\Shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Sphere.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -159,7 +156,7 @@
     <ClInclude Include="include\Rendering\AssimpMesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp">
+    <ClInclude Include="include\Rendering\RenderPasses\GBufferPass.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Material.hpp">
@@ -220,6 +217,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\ReflectionScene.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\PBRExampleScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\PBRTexturedExampleScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -385,5 +388,8 @@
     <None Include="Shaders\learnopengl\deferred\reflection_color.fs" />
     <None Include="Shaders\learnopengl\deferred\ssao.fs" />
     <None Include="Shaders\learnopengl\deferred\ssao_blur.fs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.fs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.vs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.texture.fs" />
   </ItemGroup>
 </Project>

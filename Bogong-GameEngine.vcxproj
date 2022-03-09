@@ -160,6 +160,8 @@
     <ClInclude Include="include\Rendering\AssimpMesh.hpp" />
     <ClInclude Include="include\Rendering\MyDocument.h" />
     <ClInclude Include="include\Rendering\NanosuitScene.h" />
+    <ClInclude Include="include\Rendering\PBRExampleScene.h" />
+    <ClInclude Include="include\Rendering\PBRTexturedExampleScene.h" />
     <ClInclude Include="include\Rendering\ReflectionScene.hpp" />
     <ClInclude Include="include\Rendering\RenderConstants.h" />
     <ClInclude Include="include\Rendering\Framebuffer.hpp" />
@@ -177,7 +179,7 @@
     <ClInclude Include="include\Rendering\Nodes\ShapeNode.hpp" />
     <ClInclude Include="include\Rendering\Nodes\SpotLightNode.hpp" />
     <ClInclude Include="include\Rendering\Rendering.hpp" />
-    <ClInclude Include="include\Rendering\RenderPasses\RenderPassBase.hpp" />
+    <ClInclude Include="include\Rendering\RenderPasses\GBufferPass.hpp" />
     <ClInclude Include="include\Rendering\SampleScene.hpp" />
     <ClInclude Include="include\Rendering\Scene.hpp" />
     <ClInclude Include="include\Rendering\DeferredSceneManager.hpp" />
@@ -204,7 +206,6 @@
     <ClInclude Include="Imgui\imstb_rectpack.h" />
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
-    <ClInclude Include="include\Sphere.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Imgui\imgui_tables.cpp" />
@@ -267,6 +268,9 @@
     <None Include="Shaders\learnopengl\model_normal_vis.gs" />
     <None Include="Shaders\learnopengl\model_loading2.fs" />
     <None Include="Shaders\learnopengl\model_loading2.vs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.fs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.texture.fs" />
+    <None Include="Shaders\learnopengl\pbr\pbr.vs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.fs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.gs" />
     <None Include="Shaders\learnopengl\pointshadow\point_shadow_depth.vs" />

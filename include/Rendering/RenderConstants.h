@@ -241,5 +241,10 @@ const static std::string DEFERRED_BOX_BLUR_FS =
 SHADER_DIRECTORY_PATH + "/deferred/box_blur.fs";
 const static std::string DEFERRED_REFLECTION_COLOR_FS =
 SHADER_DIRECTORY_PATH + "/deferred/reflection_color.fs";
-
+const static std::string PBR_VS =
+SHADER_DIRECTORY_PATH + "/pbr/pbr.vs";
+const static std::string PBR_FS =
+SHADER_DIRECTORY_PATH + "/pbr/pbr.fs";
+const static std::string PBR_TEXTURED_FS =
+SHADER_DIRECTORY_PATH + "/pbr/pbr.texture.fs";
 }
